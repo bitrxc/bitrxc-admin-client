@@ -29,6 +29,15 @@
           :collapse-transition="false"
           router
         >
+          <el-submenu index="/orderList">
+            <template #title>
+              <i class="el-icon-location"></i>
+              <span>预约管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="/orderList">预约列表</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
           <el-submenu index="/roleList">
             <template #title>
               <i class="el-icon-location"></i>

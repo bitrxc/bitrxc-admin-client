@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from "vue-router";
 const Home = () => import("@/views/Home.vue");
 const Login = () => import("@/views/Login.vue");
 const Register = () => import("@/views/Register.vue");
+/* 预约管理 */
+const OrderList = () => import("@/views/appointment/OrderList.vue"); // 预约列表
 const AuthorizationList = () => import("@/views/role/AuthorizationList.vue");
 const RoleList = () => import("@/views/role/RoleList.vue");
 const Classification = () => import("@/views/room/Classification.vue");
@@ -10,7 +12,6 @@ const Parameter = () => import("@/views/room/Parameter.vue");
 const RoomList = () => import("@/views/room/RoomList.vue");
 const OrderCharts = () => import("@/views/statistics/OrderCharts.vue");
 const PersonalDeatils = () => import("@/views/person/PersonalDeatils.vue");
-const LayRow = () => import("@/components/layRow/LayRow.vue");
 
 const routes = [
   { path: "/", redirect: "/home" },
@@ -20,8 +21,9 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
-    redirect: "/roleList",
+    redirect: "/orderList",
     children: [
+      { path: "/orderList", name: "OrderList", component: OrderList },
       { path: "/roleList", name: "RoleList", component: RoleList },
       {
         path: "/authorizationList",
@@ -54,8 +56,7 @@ const routes = [
         component: PersonalDeatils
       }
     ]
-  },
-  { path: "/layRow", name: "LayRow", component: LayRow }
+  }
 ];
 
 const router = createRouter({

@@ -58,8 +58,8 @@ export default {
     return {
       titleTips: "睿信书院管理系统",
       loginForm: {
-        username: "test",
-        password: "123456"
+        username: "admin",
+        password: "admin"
       },
       // 这是表单的验证规则对象
       loginFormRules: {
@@ -69,7 +69,7 @@ export default {
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 12, message: "长度为 6-12", trigger: "blur" }
+          { min: 5, max: 12, message: "长度为 5-12", trigger: "blur" }
         ]
       }
     };
@@ -84,7 +84,8 @@ export default {
           return;
         }
 
-        const { data: res } = await this.$axios.get("login", this.loginForm);
+        const { data: res } = await this.$axios.post("login", this.loginForm);
+        console.log(res);
         // 登录失败直接弹窗显示
         if (res.code !== 200) {
           return this.$message({

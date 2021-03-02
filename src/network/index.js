@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // 配置请求的根路径
-axios.defaults.baseURL = "http://localhost:8000/admin/";
+axios.defaults.baseURL = "http://rap2api.taobao.org/app/mock/278185/admin/";
 
 // 配置请求拦截器
 axios.interceptors.request.use(config => {

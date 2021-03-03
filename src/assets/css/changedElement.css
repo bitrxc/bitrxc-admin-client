@@ -23,3 +23,8 @@
 .el-menu-item-group__title {
   display: none !important;
 }
+
+/* 重置输入框文本域的颜色 */
+.el-textarea__inner {
+  background-color: #fef6f8 !important;
+}

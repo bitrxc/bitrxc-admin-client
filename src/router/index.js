@@ -5,6 +5,7 @@ const Login = () => import("@/views/Login.vue");
 const Register = () => import("@/views/Register.vue");
 /* 预约管理 */
 const OrderList = () => import("@/views/appointment/OrderList.vue"); // 预约列表
+const Approval = () => import("@/views/appointment/Approval.vue"); // 预约审批
 const AuthorizationList = () => import("@/views/role/AuthorizationList.vue");
 const RoleList = () => import("@/views/role/RoleList.vue");
 const Classification = () => import("@/views/room/Classification.vue");
@@ -24,6 +25,7 @@ const routes = [
     redirect: "/orderList",
     children: [
       { path: "/orderList", name: "OrderList", component: OrderList },
+      { path: "/approval", name: "Approval", component: Approval },
       { path: "/roleList", name: "RoleList", component: RoleList },
       {
         path: "/authorizationList",

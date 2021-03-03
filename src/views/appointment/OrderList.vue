@@ -19,7 +19,7 @@
         class="role-table"
         :data="tableData"
         style="width: 100%"
-        height="400"
+        height="420"
         border
         stripe
       >
@@ -37,15 +37,6 @@
             <el-tag v-else type="info">
               {{ scope.row.status }}
             </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column>
-          <template #default="scope">
-            <el-switch
-              v-model="scope.row.state"
-              @change="userStateChanged(scope.row)"
-            >
-            </el-switch>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
@@ -106,6 +97,10 @@ export default {
     // 点击按钮进入审批界面
     handelBtnClick(id) {
       console.log(id);
+      this.$router.push({
+        path: "/approval",
+        query: { id }
+      });
     }
   },
   async mounted() {

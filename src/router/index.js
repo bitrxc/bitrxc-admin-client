@@ -6,6 +6,8 @@ const Register = () => import("@/views/Register.vue");
 /* 预约管理 */
 const OrderList = () => import("@/views/appointment/OrderList.vue"); // 预约列表
 const Approval = () => import("@/views/appointment/Approval.vue"); // 预约审批
+/* 管理员管理 */
+const UserList = () => import("@/views/admin/UserList.vue"); // 管理员列表
 const AuthorizationList = () => import("@/views/role/AuthorizationList.vue");
 const RoleList = () => import("@/views/role/RoleList.vue");
 const Classification = () => import("@/views/room/Classification.vue");
@@ -26,6 +28,7 @@ const routes = [
     children: [
       { path: "/orderList", name: "OrderList", component: OrderList },
       { path: "/approval", name: "Approval", component: Approval },
+      { path: "/userList", name: "UserList", component: UserList },
       { path: "/roleList", name: "RoleList", component: RoleList },
       {
         path: "/authorizationList",

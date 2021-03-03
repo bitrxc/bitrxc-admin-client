@@ -39,10 +39,14 @@
         <template v-slot:default>{{ userNote }}</template>
       </lay-card>
 
-      <div class="btns-container">
-        <el-button type="success">同意</el-button>
-        <el-button type="danger">拒绝</el-button>
-      </div>
+      <lay-btns-container>
+        <template v-slot:left>
+          <el-button type="danger">拒绝</el-button>
+        </template>
+        <template v-slot:right>
+          <el-button type="success">同意</el-button>
+        </template>
+      </lay-btns-container>
 
       <el-input
         class="textarea"
@@ -53,11 +57,13 @@
       >
       </el-input>
 
-      <div class="btns-container">
-        <el-button type="primary" @click="dialogApprovalVisible = true">
-          完成
-        </el-button>
-      </div>
+      <lay-btns-container>
+        <template v-slot:left>
+          <el-button type="primary" @click="dialogApprovalVisible = true">
+            完成
+          </el-button>
+        </template>
+      </lay-btns-container>
     </el-card>
 
     <!-- 审批完成的对话框 -->
@@ -69,8 +75,8 @@
     >
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="primary">确 定</el-button>
           <el-button>取 消</el-button>
+          <el-button type="primary">确 定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -79,10 +85,12 @@
 
 <script>
 import LayCard from "@/components/layCard/LayCard";
+import LayBtnsContainer from "@/components/layBtnsContainer/LayBtnsContainer.vue";
 export default {
   name: "Approval",
   components: {
-    LayCard
+    LayCard,
+    LayBtnsContainer
   },
   data() {
     return {
@@ -124,11 +132,6 @@ export default {
   .card {
     .table {
       margin: 20px 0;
-    }
-    .btns-container {
-      display: flex;
-      justify-content: flex-end;
-      padding: 15px;
     }
   }
 }

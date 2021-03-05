@@ -89,13 +89,28 @@
         v-model="dialogAddVisible"
         v-bind:before-colose="handleClose"
       >
-        <el-input placeholder="请输入姓名" />
-        <el-input placeholder="请输入手机号" />
-        <el-input placeholder="请输入邮箱" />
-        <el-input placeholder="请输入密码" />
-        <el-button type="primary">
-          确认
-        </el-button>
+        <el-form :label-position="labelPosition" :model="formAddAdmin">
+          <el-form-item label="姓名">
+            <el-input v-model="formAddAdmin.username"></el-input>
+          </el-form-item>
+          <el-form-item label="手机号">
+            <el-input v-model="formAddAdmin.mobile"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input v-model="formAddAdmin.email"></el-input>
+          </el-form-item>
+          <el-form-item label="初始密码">
+            <el-input v-model="formAddAdmin.password"></el-input>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogAddVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false">
+              确 定
+            </el-button>
+          </span>
+        </template>
       </el-dialog>
     </div>
   </div>
@@ -120,7 +135,14 @@ export default {
         pageSize: 4
       },
       tableData: [],
-      dialogAddVisible: false
+      dialogAddVisible: false,
+      labelPosition: "right",
+      formAddAdmin: {
+        username: "",
+        mobile: "",
+        email: "",
+        password: ""
+      }
     };
   },
   methods: {

@@ -84,6 +84,23 @@
 
     <!-- 对话框区域 -->
     <div>
+      <!-- 选择管理员类型 -->
+      <el-dialog
+        title="分配角色"
+        v-model="dialogAllocateVisible"
+        v-bind:before-close="handleClose"
+      >
+        <el-select v-model="roleValue" placeholder="请选择">
+          <el-option
+            v-for="item in roleOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-dialog>
+      <!-- 添加管理员对话框 -->
       <el-dialog
         title="增加管理员"
         v-model="dialogAddVisible"
@@ -135,7 +152,13 @@ export default {
         pageSize: 4
       },
       tableData: [],
+      dialogAllocateVisible: false,
       dialogAddVisible: false,
+      roleOptions: [
+        { value: "普通管理员", label: "普通管理员" },
+        { value: "超级管理员", lable: "超级管理员" }
+      ],
+      roleValue: "",
       labelPosition: "right",
       formAddAdmin: {
         username: "",
@@ -153,8 +176,15 @@ export default {
     // 监听页码值的改变
     handleCurrentChange(newPage) {
       console.log(newPage);
+    },
+    // 控制弹窗关闭
+    handleClose(done) {
+      this.$confirm("确认关闭?")
+        .then(() => {
+          done();
+        })
+        .catch(() => {});
     }
-    // 点击按钮进入审批界面
   },
   async mounted() {
     const { data: res } = await this.$axios.get("user", {

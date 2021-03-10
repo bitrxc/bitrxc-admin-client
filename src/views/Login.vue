@@ -84,7 +84,12 @@ export default {
           return;
         }
 
-        const { data: res } = await this.$axios.post("login", this.loginForm);
+        const { data: res } = await this.$axios({
+          url: "https://test.ruixincommunity.cn/admin/login",
+          method: "post",
+          data: this.loginForm
+        });
+
         console.log(res);
         // 登录失败直接弹窗显示
         if (res.code !== 200) {
@@ -103,6 +108,10 @@ export default {
 
         // 保存 token 到 sessionStorage
         window.sessionStorage.setItem("token", res.data.token);
+        window.sessionStorage.setItem(
+          "userInfo",
+          JSON.stringify(res.data.userInfo)
+        );
         // 跳转
         this.$router.push("/home");
       });

@@ -8,18 +8,12 @@
 
     <!-- 卡片视图区域 -->
     <el-card class="card">
-      <el-input type="text">
-        <template #append>
-          <el-button icon="el-icon-search"></el-button>
-        </template>
-      </el-input>
-
       <!-- 用户列表 -->
       <el-table
         class="role-table"
         :data="tableData"
         style="width: 100%"
-        height="420"
+        height="380"
         border
         stripe
       >
@@ -27,11 +21,11 @@
         <el-table-column prop="id" label="预约编号"></el-table-column>
         <el-table-column prop="roomId" label="房间编号"></el-table-column>
         <el-table-column prop="launcher" label="预约人"></el-table-column>
-        <el-table-column prop="execDate" label="预约日期"></el-table-column>
         <el-table-column prop="launchTime" label="预约时间"></el-table-column>
+        <el-table-column prop="dealDate" label="处理时间"></el-table-column>
         <el-table-column prop="status" label="房间状态">
           <template #default="scope">
-            <el-tag v-if="scope.row.status === 'receive'" type="success">
+            <el-tag v-if="scope.row.status === 'new'" type="success">
               {{ scope.row.status }}
             </el-tag>
             <el-tag v-else type="info">
@@ -43,10 +37,13 @@
           <!-- 审批按钮 -->
           <template #default="scope">
             <el-button
+              v-if="scope.row.status === 'new'"
               type="primary"
-              icon="el-icon-edit"
               @click="handelBtnClick(scope.row.id)"
             >
+              审批
+            </el-button>
+            <el-button v-else type="info" @click="handelBtnClick(scope.row.id)">
               审批
             </el-button>
           </template>
@@ -54,17 +51,37 @@
       </el-table>
 
       <!-- 分页区域 -->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pageNum"
-        :page-sizes="[4, 8, 12]"
-        :page-size="queryInfo.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalElement"
-        background
-      >
-      </el-pagination>
+      <div class="paging">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="current"
+          :page-sizes="[5, 10, 20]"
+          :page-size="limit"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalElements"
+          background
+        >
+        </el-pagination>
+        <!-- 房间状态, 自定义分页 -->
+        <div>
+          <span style="margin: 0 5px;">房间状态</span>
+          <el-select
+            v-model="value"
+            placeholder="请选择"
+            clearable
+            @change="handleValueChange"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+      </div>
     </el-card>
   </div>
 </template>
@@ -74,48 +91,68 @@ export default {
   name: "OrderList",
   data() {
     return {
+      tableData: [],
+      // 与表单分页有关的数据
       totalPage: null,
-      totalElement: null,
-      // 获取用户列表的参数对象
-      queryInfo: {
-        query: "",
-        // 当前每页显示多少条
-        pageSize: 4
-      },
-      tableData: []
+      totalElements: null,
+      current: 1,
+      limit: 5,
+      options: [
+        { value: "executing", label: "executing" },
+        { value: "receive", label: "receive" },
+        { value: "reject", label: "reject" },
+        { value: "new", label: "new" }
+      ],
+      value: ""
     };
   },
+  created() {
+    this.getOrderList();
+  },
   methods: {
-    // 监听 newPageSize 的改变
-    handleSizeChange(newPageSize) {
-      console.log(newPageSize);
-    },
-    // 监听页码值的改变
-    handleCurrentChange(newPage) {
-      console.log(newPage);
+    // 获取预约列表
+    async getOrderList() {
+      let correctCurrent = this.current - 1;
+      const { data: res } = await this.$axios.get(
+        `https://test.ruixincommunity.cn/admin/appointment/${correctCurrent}/${this.limit}`,
+        {
+          params: {
+            status: this.value
+          }
+        }
+      );
+      // 给数据赋值
+      this.totalPage = res.data.totalPage;
+      this.totalElements = res.data.totalElements;
+      this.tableData = res.data.items;
     },
     // 点击按钮进入审批界面
     handelBtnClick(id) {
       console.log(id);
       this.$router.push({
-        path: "/approval",
-        query: { id }
+        path: "/orderDetails",
+        query: {
+          orderId: id
+        }
       });
+    },
+    // 监听 limit 的改变
+    handleSizeChange(newLimit) {
+      this.limit = newLimit;
+      this.current = 1;
+      this.getOrderList();
+    },
+    // 监听 current 的改变
+    handleCurrentChange(newCurrent) {
+      this.current = newCurrent;
+      this.getOrderList();
+    },
+    // 监听选中值的改变
+    handleValueChange(newValue) {
+      this.current = 1;
+      this.value = newValue;
+      this.getOrderList();
     }
-  },
-  async mounted() {
-    const { data: res } = await this.$axios.get("appointment", {
-      params: {
-        current: 1,
-        limit: 5
-      }
-    });
-    console.log(res);
-
-    // 给数据赋值
-    this.totalPage = res.totalPage;
-    this.totalElement = res.totalElement;
-    this.tableData = res.items;
   }
 };
 </script>
@@ -130,6 +167,14 @@ export default {
   .card {
     .role-table {
       margin: 20px 0;
+    }
+
+    .paging {
+      display: flex;
+      display: -webkit-flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      font-size: 13px;
     }
   }
 }

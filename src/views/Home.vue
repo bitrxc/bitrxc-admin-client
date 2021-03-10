@@ -64,8 +64,6 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="/roomList">房间列表</el-menu-item>
-              <el-menu-item index="/classification">分类管理</el-menu-item>
-              <el-menu-item index="/parameter">参数管理</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="/orderCharts">

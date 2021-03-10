@@ -5,14 +5,16 @@ const Login = () => import("@/views/Login.vue");
 const Register = () => import("@/views/Register.vue");
 /* 预约管理 */
 const OrderList = () => import("@/views/appointment/OrderList.vue"); // 预约列表
-const Approval = () => import("@/views/appointment/Approval.vue"); // 预约审批
+const OrderDetails = () => import("@/views/appointment/OrderDetails.vue"); // 预约审批
 /* 管理员管理 */
 const UserList = () => import("@/views/admin/UserList.vue"); // 管理员列表
 const AuthorizationList = () => import("@/views/role/AuthorizationList.vue");
 const RoleList = () => import("@/views/role/RoleList.vue");
-const Classification = () => import("@/views/room/Classification.vue");
-const Parameter = () => import("@/views/room/Parameter.vue");
-const RoomList = () => import("@/views/room/RoomList.vue");
+
+/* 房间管理 */
+const RoomList = () => import("@/views/room/RoomList.vue"); // 房间列表
+const RoomDetails = () => import("@/views/room/RoomDetails.vue"); // 房间详情
+
 const OrderCharts = () => import("@/views/statistics/OrderCharts.vue");
 const PersonalDeatils = () => import("@/views/person/PersonalDeatils.vue");
 
@@ -27,7 +29,7 @@ const routes = [
     redirect: "/orderList",
     children: [
       { path: "/orderList", name: "OrderList", component: OrderList },
-      { path: "/approval", name: "Approval", component: Approval },
+      { path: "/orderDetails", name: "OrderDetails", component: OrderDetails },
       { path: "/userList", name: "UserList", component: UserList },
       { path: "/roleList", name: "RoleList", component: RoleList },
       {
@@ -36,19 +38,14 @@ const routes = [
         component: AuthorizationList
       },
       {
-        path: "/classification",
-        name: "Classification",
-        component: Classification
-      },
-      {
-        path: "/parameter",
-        name: "Parameter",
-        component: Parameter
-      },
-      {
         path: "/roomList",
         name: "RoomList",
         component: RoomList
+      },
+      {
+        path: "/roomDetails",
+        name: "RoomDetails",
+        component: RoomDetails
       },
       {
         path: "/orderCharts",

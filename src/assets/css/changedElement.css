@@ -26,5 +26,5 @@
 
 /* 重置输入框文本域的颜色 */
 .el-textarea__inner {
-  background-color: #fef6f8 !important;
+  background-color: #fffffa !important;
 }

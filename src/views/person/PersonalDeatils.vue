@@ -149,8 +149,8 @@ export default {
 
     return {
       userInfo: {
-        oldEmail: "1808150553@qq.com",
-        oldPhone: "15910921962"
+        oldEmail: JSON.parse(window.sessionStorage.getItem("userInfo")).email,
+        oldPhone: JSON.parse(window.sessionStorage.getItem("userInfo")).mobile
       },
       // 控制弹窗的变量
       dialogPasswordVisible: false,

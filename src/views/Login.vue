@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { loginRequest } from "../network/api/login";
 export default {
   name: "Login",
   data() {
@@ -84,36 +85,42 @@ export default {
           return;
         }
 
-        const { data: res } = await this.$axios({
-          url: "https://test.ruixincommunity.cn/admin/login",
-          method: "post",
-          data: this.loginForm
-        });
+        loginRequest(this.loginForm)
+          .then(result => {
+            // 可以发送网络请求
+            const res = result.data;
 
-        console.log(res);
-        // 登录失败直接弹窗显示
-        if (res.code !== 200) {
-          return this.$message({
-            type: "error",
-            message: "登录失败",
-            center: true
+            if (res.code !== 200) {
+              return this.$message({
+                type: "error",
+                message: "用户名或密码错误",
+                center: true
+              });
+            }
+
+            this.$message({
+              type: "success",
+              message: "登录成功",
+              center: true
+            });
+
+            // 保存 token 到 sessionStorage
+            window.sessionStorage.setItem("token", res.data.token);
+            window.sessionStorage.setItem(
+              "userInfo",
+              JSON.stringify(res.data.userInfo)
+            );
+            // 跳转
+            this.$router.push("/home");
+          })
+          .catch(err => {
+            console.log(err);
+            return this.$message({
+              type: "error",
+              message: "网络出现故障",
+              center: true
+            });
           });
-        }
-
-        this.$message({
-          type: "success",
-          message: "登录成功",
-          center: true
-        });
-
-        // 保存 token 到 sessionStorage
-        window.sessionStorage.setItem("token", res.data.token);
-        window.sessionStorage.setItem(
-          "userInfo",
-          JSON.stringify(res.data.userInfo)
-        );
-        // 跳转
-        this.$router.push("/home");
       });
     },
     // 重置表单

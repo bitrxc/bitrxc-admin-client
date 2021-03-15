@@ -1,16 +1,23 @@
 import axios from "axios";
 
-// 配置请求的根路径
-// axios.defaults.baseURL = "https://test.ruixincommunity.cn/admin/";
+export function request(config) {
+  const instance = axios.create({
+    baseURL: "https://test.ruixincommunity.cn/admin/",
+    timeout: 5000
+  });
 
-// 配置请求拦截器
-axios.interceptors.request.use(config => {
-  // 为请求头对象， 添加 Token 验证的 Authorization 字段
-  const tokenStr = window.sessionStorage.getItem("token");
-  if (tokenStr) {
-    config.headers.Authorization = tokenStr;
-  }
-  return config;
-});
-
-export default axios;
+  instance.interceptors.request.use(
+    config => {
+      // 如果此时有 token , 就给请求头加上
+      const tokenStr = window.sessionStorage.getItem("token");
+      if (tokenStr) {
+        config.headers.token = tokenStr;
+      }
+      return config;
+    },
+    err => {
+      console.log(err);
+    }
+  );
+  return instance(config);
+}

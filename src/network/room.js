@@ -1,9 +1,17 @@
 import { request } from "./index";
 
-// 获取房间详情列表
+// 获取房间列表
 export function getRoomList(correctCurrent, limit) {
   return request({
     url: `/room/${correctCurrent}/${limit}`,
+    method: "get"
+  });
+}
+
+// 获取房间详情
+export function getRoomDetail(roomId) {
+  return request({
+    url: `/room/${roomId}`,
     method: "get"
   });
 }

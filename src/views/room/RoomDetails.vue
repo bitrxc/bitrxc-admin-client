@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { getRoomDetail } from "../../network/room";
+import { reqError } from "../../utils/tips";
 export default {
   name: "RoomDetails",
   data() {
@@ -39,11 +41,19 @@ export default {
     this.getRoomInfo();
   },
   methods: {
-    async getRoomInfo() {
-      const { data: res } = await this.$axios.get(
-        `https://test.ruixincommunity.cn/admin/room/${this.roomId}`
-      );
-      this.tableData = [res.data.roomInfo];
+    reuseGetRoomDetail(roomId) {
+      getRoomDetail(roomId)
+        .then(result => {
+          const res = result.data;
+          if (res.code !== 200) {
+            return reqError("获取数据失败");
+          }
+          this.tableData = res.data.roomData;
+        })
+        .catch(err => {
+          console.log(err);
+          return reqError("网络故障");
+        });
     }
   }
 };

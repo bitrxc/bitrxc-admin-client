@@ -113,6 +113,13 @@
 </template>
 
 <script>
+import {
+  getRoomList,
+  addRoomItem,
+  deleteRoomItem,
+  searchRooms
+} from "../../network/room";
+import { reqSuccess, reqError, reqInfo } from "../../utils/tips";
 export default {
   name: "RoomList",
   data() {
@@ -135,59 +142,74 @@ export default {
     };
   },
   created() {
-    this.getRoomList();
+    this.reuseGetRoomList();
   },
   methods: {
-    async getRoomList() {
+    reuseGetRoomList() {
       let correctCurrent = this.current - 1; // 前端分页从 1 开始, 后端分页从 0 开始
-      const { data: res } = await this.$axios.get(
-        `https://test.ruixincommunity.cn/admin/room/${correctCurrent}/${this.limit}`
-      );
-      // 给数据赋值
-      console.log(res);
-      this.totalPage = res.data.totalPage;
-      this.totalElements = res.data.totalElements;
-      this.tableData = res.data.items;
-    },
-    async addRoomItem() {
-      const { data: res } = await this.$axios({
-        url: "https://test.ruixincommunity.cn/admin/room",
-        method: "post",
-        data: this.addRoomForm
-      });
-      if (res.data !== 200) {
-        this.$message({
-          type: "error",
-          message: "添加房间失败",
-          center: true
-        });
-      }
-      this.$message({
-        type: "success",
-        message: "添加房间成功",
-        center: true
-      });
-      this.addRoomForm.roomName = "";
-      this.addRoomForm.roomDescription = "";
-      this.addRoomForm.roomImgUrl = "";
-    },
-    async deleteRoomItem(roomId) {
-      const { data: res } = await this.$axios.delete(
-        `https://test.ruixincommunity.cn/admin/room/${roomId}`
-      );
-      console.log(res);
-    },
-    async searchRooms() {
-      const { data: res } = await this.$axios.get(
-        "https://test.ruixincommunity.cn/admin/room/nameLike",
-        {
-          params: {
-            nameLike: this.searchValue
+      getRoomList(correctCurrent, this.limit)
+        .then(result => {
+          const res = result.data;
+          if (res.code !== 200) {
+            return reqError("获取数据失败");
           }
-        }
-      );
-      console.log(res);
-      this.tableData = res.data.rooms;
+          this.totalPage = res.data.totalPage;
+          this.totalElements = res.data.totalElements;
+          this.tableData = res.data.items;
+        })
+        .catch(err => {
+          console.log(err);
+          return reqError("网络故障");
+        });
+    },
+    reuseAddRoomItem() {
+      addRoomItem(this.addRoomForm)
+        .then(result => {
+          const res = result.data;
+          if (res.code !== 200) {
+            return reqError("添加房间失败");
+          }
+          reqSuccess("添加房间成功");
+          this.tableData.push(this.addRoomForm);
+          // 清空添加的表单，以备下次添加
+          this.addRoomForm.roomName = "";
+          this.addRoomForm.roomDescription = "";
+          this.addRoomForm.roomImgUrl = "";
+        })
+        .catch(err => {
+          console.log(err);
+          return reqError("网络故障");
+        });
+    },
+    reuseDeleteRoomItem(roomId, index) {
+      deleteRoomItem(roomId)
+        .then(result => {
+          const res = result.data;
+          if (res.code !== 200) {
+            return reqError("删除房间失败");
+          }
+          reqSuccess("删除房间成功");
+          // 刷新
+          this.tableData.splice(index, 1);
+        })
+        .catch(err => {
+          console.log(err);
+          return reqError("网络故障");
+        });
+    },
+    reuseSearchRooms() {
+      searchRooms(this.searchValue)
+        .then(result => {
+          const res = result.data;
+          if (res.code !== 200) {
+            return reqError("获取数据失败");
+          }
+          this.tableData = res.data.rooms;
+        })
+        .catch(err => {
+          console.log(err);
+          return reqError("网络故障");
+        });
     },
     // 点击按钮进入审批界面
     handelBtnClick(id) {
@@ -202,12 +224,12 @@ export default {
     handleSizeChange(newLimit) {
       this.limit = newLimit;
       this.current = 1;
-      this.getRoomList();
+      this.reuseGetRoomList();
     },
     // 监听 current 的改变
     handleCurrentChange(newCurrent) {
       this.current = newCurrent;
-      this.getRoomList();
+      this.reuseGetRoomList();
     },
     // 控制弹窗关闭
     handleClose(done) {
@@ -219,7 +241,7 @@ export default {
     },
     // 添加房间
     handleBtnAddRoomItem() {
-      this.addRoomItem();
+      this.reuseAddRoomItem();
       this.dialogAddRoomVisible = false;
     },
     handleBtnDeleteRoomItem(roomId, index) {
@@ -229,27 +251,19 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.deleteRoomItem(roomId);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-          this.tableData.splice(index, 1);
+          this.reuseDeleteRoomItem(roomId, index);
         })
         .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
+          reqInfo("取消删除");
         });
     },
     // 搜索
     handleBtnSearch() {
-      this.searchRooms();
+      this.reuseSearchRooms();
     },
     // 清空搜索时触发
     handleClear() {
-      this.getRoomList();
+      this.reuseGetRoomList();
     }
   }
 };

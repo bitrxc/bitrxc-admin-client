@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import { loginRequest } from "../network/api/login";
+import { loginRequest } from "../network/login";
+import { reqSuccess, reqError } from "../utils/tips";
 export default {
   name: "Login",
   data() {
@@ -91,18 +92,8 @@ export default {
             const res = result.data;
 
             if (res.code !== 200) {
-              return this.$message({
-                type: "error",
-                message: "用户名或密码错误",
-                center: true
-              });
+              return reqError("用户名或密码错误");
             }
-
-            this.$message({
-              type: "success",
-              message: "登录成功",
-              center: true
-            });
 
             // 保存 token 到 sessionStorage
             window.sessionStorage.setItem("token", res.data.token);
@@ -110,16 +101,13 @@ export default {
               "userInfo",
               JSON.stringify(res.data.userInfo)
             );
-            // 跳转
+
+            reqSuccess("登录成功");
             this.$router.push("/home");
           })
           .catch(err => {
             console.log(err);
-            return this.$message({
-              type: "error",
-              message: "网络出现故障",
-              center: true
-            });
+            return reqError("网络故障");
           });
       });
     },

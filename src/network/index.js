@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function request(config) {
   const instance = axios.create({
-    baseURL: "https://test.ruixincommunity.cn/admin/",
+    baseURL: "https://test.ruixincommunity.cn/admin",
     timeout: 5000
   });
 
@@ -10,9 +10,7 @@ export function request(config) {
     config => {
       // 如果此时有 token , 就给请求头加上
       const tokenStr = window.sessionStorage.getItem("token");
-      if (tokenStr) {
-        config.headers.token = tokenStr;
-      }
+      config.headers.token = tokenStr;
       return config;
     },
     err => {

@@ -87,6 +87,8 @@
 </template>
 
 <script>
+import { getOrderList } from "../../network/order";
+import { reqError } from "../../utils/tips";
 export default {
   name: "OrderList",
   data() {
@@ -107,28 +109,30 @@ export default {
     };
   },
   created() {
-    this.getOrderList();
+    this.reuseGetOrderList();
   },
   methods: {
-    // 获取预约列表
-    async getOrderList() {
-      let correctCurrent = this.current - 1;
-      const { data: res } = await this.$axios.get(
-        `https://test.ruixincommunity.cn/admin/appointment/${correctCurrent}/${this.limit}`,
-        {
-          params: {
-            status: this.value
+    reuseGetOrderList() {
+      let correntCurrent = this.current - 1;
+      getOrderList(correntCurrent, this.limit, this.value)
+        .then(result => {
+          // 可以发送网络请求
+          const res = result.data;
+          if (res.data !== 200) {
+            return reqError("无法获取数据");
           }
-        }
-      );
-      // 给数据赋值
-      this.totalPage = res.data.totalPage;
-      this.totalElements = res.data.totalElements;
-      this.tableData = res.data.items;
+          console.log(res);
+          this.totalPage = res.data.totalPage;
+          this.totalElements = res.data.totalElements;
+          this.tableData = res.data.items;
+        })
+        .catch(err => {
+          console.log(err);
+          return reqError("网络故障");
+        });
     },
     // 点击按钮进入审批界面
     handelBtnClick(id) {
-      console.log(id);
       this.$router.push({
         path: "/orderDetails",
         query: {
@@ -140,18 +144,18 @@ export default {
     handleSizeChange(newLimit) {
       this.limit = newLimit;
       this.current = 1;
-      this.getOrderList();
+      this.reuseGetOrderList();
     },
     // 监听 current 的改变
     handleCurrentChange(newCurrent) {
       this.current = newCurrent;
-      this.getOrderList();
+      this.reuseGetOrderList();
     },
     // 监听选中值的改变
     handleValueChange(newValue) {
       this.current = 1;
       this.value = newValue;
-      this.getOrderList();
+      this.reuseGetOrderList();
     }
   }
 };

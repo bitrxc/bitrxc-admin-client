@@ -91,6 +91,8 @@
 <script>
 import LayCard from "@/components/layCard/LayCard";
 import LayBtnsContainer from "@/components/layBtnsContainer/LayBtnsContainer.vue";
+import { reqSuccess, reqError } from "../../utils/tips";
+import { getOrderDetail, checkOrder } from "../../network/order";
 export default {
   name: "OrderDetails",
   components: {
@@ -111,69 +113,61 @@ export default {
     };
   },
   created() {
-    this.getOrderInfo();
+    this.reuseGetOrderDetail();
   },
   methods: {
-    async getOrderInfo() {
-      const { data: res } = await this.$axios.get(
-        "https://test.ruixincommunity.cn/admin/appointment",
-        {
-          params: {
-            id: this.orderId
+    reuseGetOrderDetail() {
+      getOrderDetail(this.orderId)
+        .then(result => {
+          const res = result.data;
+          if (res.code !== 200) {
+            return reqError("获取数据失败");
           }
-        }
-      );
-      if (res.code !== 200) {
-        return this.$message({
-          type: "error",
-          message: "获取预约详细信息失败",
-          center: true
+
+          this.tableData = [res.data.appointment];
+          this.userNote = res.data.userNote;
+          this.checkNote = res.data.appointment.checkNote;
+          this.status = res.data.appointment.status;
+        })
+        .catch(err => {
+          console.log(err);
+          return reqError("网络故障");
         });
-      }
-      this.tableData = [res.data.appointment];
-      this.userNote = res.data.userNote;
-      this.checkNote = res.data.appointment.checkNote;
-      this.status = res.data.appointment.status;
     },
-    async checkOrder() {
+    reuseCheckOrder() {
       let data = {
         status: this.status,
         conductor: this.conductor,
         checkNote: this.checkNote
       };
-      const { data: res } = await this.$axios({
-        url: `https://test.ruixincommunity.cn/admin/appointment/check/${this.orderId}`,
-        method: "put",
-        params: data
-      });
-      if (res.code !== 200) {
-        return this.$message({
-          type: "error",
-          message: "审批提交失败",
-          center: true
+      checkOrder(this.orderId, data)
+        .then(result => {
+          const res = result.data;
+          if (res.data !== 200) {
+            return reqError("审批提交失败");
+          }
+          // 成功, 再次请求数据
+          this.reuseGetOrderDetail();
+          return reqSuccess("审批提交成功");
+        })
+        .catch(err => {
+          console.log(err);
+          return reqError("网络故障");
         });
-      }
-      // 审批成功后再次获取数据
-      this.getOrderInfo();
-      return this.$message({
-        type: "success",
-        message: "审批提交成功",
-        center: true
-      });
     },
     // 处理拒绝申请
     handleBtnReject() {
       this.status = "reject";
       let userInfo = JSON.parse(window.sessionStorage.getItem("userInfo"));
       this.conductor = userInfo.username;
-      this.checkOrder();
+      this.reuseCheckOrder();
     },
     // 处理同意申请
     handleBtnReceive() {
       this.status = "receive";
       let userInfo = JSON.parse(window.sessionStorage.getItem("userInfo"));
       this.conductor = userInfo.username;
-      this.checkOrder();
+      this.reuseCheckOrder();
     }
   }
 };

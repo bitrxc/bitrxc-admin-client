@@ -4,8 +4,9 @@ const Home = () => import("@/views/Home.vue");
 const Login = () => import("@/views/Login.vue");
 const Register = () => import("@/views/Register.vue");
 /* 预约管理 */
-const OrderList = () => import("@/views/appointment/OrderList.vue"); // 预约列表
-const OrderDetails = () => import("@/views/appointment/OrderDetails.vue"); // 预约审批
+const OrderList = () => import("@/views/order/OrderList.vue"); // 预约列表
+const OrderDetails = () => import("@/views/order/OrderDetails.vue"); // 预约审批
+
 /* 管理员管理 */
 const UserList = () => import("@/views/admin/UserList.vue"); // 管理员列表
 const AuthorizationList = () => import("@/views/role/AuthorizationList.vue");

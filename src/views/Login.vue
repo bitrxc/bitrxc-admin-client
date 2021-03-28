@@ -42,9 +42,9 @@
               重置
             </el-button>
           </el-form-item>
-          <router-link to="register">
+          <!-- <router-link to="register">
             <div style="margin-top: 20px">注册</div>
-          </router-link>
+          </router-link> -->
         </el-form>
       </el-col>
     </el-row>

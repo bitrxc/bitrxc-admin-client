@@ -83,30 +83,30 @@ export default {
       },
       tableData: [
         {
-          name: "李俊霖",
-          email: "1808150553@qq.com",
-          phone: "15910921962",
+          name: "张三",
+          email: "123456789@qq.com",
+          phone: "1234567890",
           role: "超级管理员",
           state: true
         },
         {
-          name: "李俊霖",
-          email: "1808150553@qq.com",
-          phone: "15910921962",
+          name: "张三",
+          email: "123456789@qq.com",
+          phone: "1234567890",
           role: "超级管理员",
           state: true
         },
         {
-          name: "李俊霖",
-          email: "1808150553@qq.com",
-          phone: "15910921962",
+          name: "张三",
+          email: "123456789@qq.com",
+          phone: "1234567890",
           role: "超级管理员",
           state: true
         },
         {
-          name: "李俊霖",
-          email: "1808150553@qq.com",
-          phone: "15910921962",
+          name: "张三",
+          email: "123456789@qq.com",
+          phone: "1234567890",
           role: "超级管理员",
           state: true
         }

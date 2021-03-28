@@ -91,8 +91,8 @@
 <script>
 import LayCard from "@/components/layCard/LayCard";
 import LayBtnsContainer from "@/components/layBtnsContainer/LayBtnsContainer.vue";
-import { reqSuccess, reqError } from "../../utils/tips";
-import { getOrderDetail, checkOrder } from "../../network/order";
+import { reqSuccess, reqError } from "@/utils/tips";
+import { getOrderDetail, checkOrder } from "@/network/order";
 export default {
   name: "OrderDetails",
   components: {

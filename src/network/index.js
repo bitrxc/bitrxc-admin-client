@@ -17,5 +17,17 @@ export function request(config) {
       console.log(err);
     }
   );
+
+  instance.interceptors.response.use(
+    result => {
+      // 每次请求均更新 token
+      const res = result.data;
+      window.sessionStorage.set("token", res.data.token);
+      return res;
+    },
+    err => {
+      console.log(err);
+    }
+  );
   return instance(config);
 }

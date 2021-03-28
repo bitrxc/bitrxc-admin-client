@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const Home = () => import("@/views/Home.vue");
 const Login = () => import("@/views/Login.vue");
-const Register = () => import("@/views/Register.vue");
+// const Register = () => import("@/views/Register.vue");
 /* 预约管理 */
 const OrderList = () => import("@/views/order/OrderList.vue"); // 预约列表
 const OrderDetails = () => import("@/views/order/OrderDetails.vue"); // 预约审批
@@ -22,7 +22,7 @@ const PersonalDeatils = () => import("@/views/person/PersonalDeatils.vue");
 const routes = [
   { path: "/", redirect: "/home" },
   { path: "/login", name: "Login", component: Login },
-  { path: "/register", name: "Register", component: Register },
+  // { path: "/register", name: "Register", component: Register },
   {
     path: "/home",
     name: "Home",
@@ -68,7 +68,6 @@ const router = createRouter({
 });
 
 // 挂载路由导航守卫
-
 router.beforeEach((to, from, next) => {
   if (to.path === "/login") {
     return next();

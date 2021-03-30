@@ -89,6 +89,7 @@ export default {
         loginRequest(this.loginForm)
           .then(result => {
             // 可以发送网络请求
+            console.log(result);
             const res = result.data;
 
             if (res.code !== 200) {

@@ -117,11 +117,12 @@ export default {
       getOrderList(correntCurrent, this.limit, this.value)
         .then(result => {
           // 可以发送网络请求
+          console.log(result);
           const res = result.data;
-          if (res.data !== 200) {
-            return reqError("无法获取数据");
-          }
           console.log(res);
+          if (res.code !== 200) {
+            return reqError(res.message.toString());
+          }
           this.totalPage = res.data.totalPage;
           this.totalElements = res.data.totalElements;
           this.tableData = res.data.items;

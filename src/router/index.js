@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const Home = () => import("@/views/Home.vue");
 const Login = () => import("@/views/Login.vue");
 // const Register = () => import("@/views/Register.vue");
+
 /* 预约管理 */
 const OrderList = () => import("@/views/order/OrderList.vue"); // 预约列表
 const OrderDetails = () => import("@/views/order/OrderDetails.vue"); // 预约审批
@@ -19,6 +20,8 @@ const RoomDetails = () => import("@/views/room/RoomDetails.vue"); // 房间详�
 const OrderCharts = () => import("@/views/statistics/OrderCharts.vue");
 const PersonalDeatils = () => import("@/views/person/PersonalDeatils.vue");
 
+/* 404 */
+const NotFound = () => import("@/views/NotFound.vue");
 const routes = [
   { path: "/", redirect: "/home" },
   { path: "/login", name: "Login", component: Login },
@@ -57,7 +60,8 @@ const routes = [
         path: "/personalDetails",
         name: "PersonalDetails",
         component: PersonalDeatils
-      }
+      },
+      { path: "/notFound", name: "NotFound", component: NotFound }
     ]
   }
 ];

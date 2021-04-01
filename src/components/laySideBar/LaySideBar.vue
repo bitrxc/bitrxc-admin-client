@@ -16,6 +16,18 @@
         <i class="el-icon-house"></i>
         <span>房间管理</span>
       </el-menu-item>
+      <el-menu-item index="/notFound">
+        <i class="el-icon-user"></i>
+        <span>用户管理</span>
+      </el-menu-item>
+      <el-menu-item index="/notFound">
+        <i class="el-icon-view"></i>
+        <span>新闻管理</span>
+      </el-menu-item>
+      <el-menu-item index="/notFound">
+        <i class="el-icon-pie-chart"></i>
+        <span>数据统计</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -30,7 +42,6 @@ export default {
   },
   mounted() {
     this.emitter.on("toggle-sidebar", isOpen => {
-      console.log(isOpen);
       this.isSidebarOpen = isOpen;
     });
   }

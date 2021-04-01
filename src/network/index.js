@@ -18,15 +18,5 @@ export function request(config) {
     }
   );
 
-  instance.interceptors.response.use(
-    result => {
-      // 每次请求均更新 token
-      window.sessionStorage.setItem("token", result.data.data.token);
-      return result;
-    },
-    err => {
-      console.log(err);
-    }
-  );
   return instance(config);
 }

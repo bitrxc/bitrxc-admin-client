@@ -97,8 +97,9 @@ export default {
             }
 
             // 保存 token 到 sessionStorage
-            window.sessionStorage.setItem("token", res.data.token);
-            window.sessionStorage.setItem(
+            console.log(res.data.token);
+            sessionStorage.setItem("token", res.data.token);
+            sessionStorage.setItem(
               "userInfo",
               JSON.stringify(res.data.userInfo)
             );

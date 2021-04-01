@@ -1,83 +1,62 @@
 <template>
   <div class="room-list">
-    <!-- 面包屑导航 -->
-    <el-breadcrumb class="breadcrumb">
-      <el-breadcrumb-item>房间管理</el-breadcrumb-item>
-      <el-breadcrumb-item>房间列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    <el-input type="text" v-model="searchValue" clearable @clear="handleClear">
+      <template #append>
+        <el-button icon="el-icon-search" @click="handleBtnSearch"></el-button>
+      </template>
+    </el-input>
 
-    <!-- 卡片视图区域 -->
-    <el-card class="card">
-      <el-input
-        type="text"
-        v-model="searchValue"
-        clearable
-        @clear="handleClear"
-      >
-        <template #append>
-          <el-button icon="el-icon-search" @click="handleBtnSearch"></el-button>
+    <!-- 用户列表 -->
+    <el-table class="custom-table" :data="tableData" height="580" border stripe>
+      <el-table-column type="index"></el-table-column>
+      <el-table-column prop="id" label="房间编号"></el-table-column>
+      <el-table-column prop="name" label="房间姓名"></el-table-column>
+      <el-table-column prop="image" label="房间图片"></el-table-column>
+      <el-table-column prop="description" label="描述"></el-table-column>
+      <el-table-column label="操作" width="120">
+        <template #default="scope">
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            circle
+            @click="handelBtnClick(scope.row.id)"
+          >
+          </el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            @click="handleBtnDeleteRoomItem(scope.row.id, scope.row.index)"
+          >
+          </el-button>
         </template>
-      </el-input>
+      </el-table-column>
+    </el-table>
 
-      <!-- 用户列表 -->
-      <el-table
-        class="role-table"
-        :data="tableData"
-        style="width: 100%"
-        height="380"
-        border
-        stripe
+    <!-- 分页区域 -->
+    <div class="paging">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :total="totalElements"
+        :current-page="current"
+        :page-sizes="[10, 20, 40]"
+        :page-size="limit"
+        layout="total, sizes, prev, pager, next, jumper"
+        small
+        background
       >
-        <el-table-column type="index"></el-table-column>
-        <el-table-column prop="id" label="房间编号"></el-table-column>
-        <el-table-column prop="name" label="房间姓名"></el-table-column>
-        <el-table-column prop="image" label="房间图片"></el-table-column>
-        <el-table-column prop="description" label="描述"></el-table-column>
-        <el-table-column label="操作" width="180">
-          <!-- 编辑按钮 -->
-          <template #default="scope">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              circle
-              @click="handelBtnClick(scope.row.id)"
-            >
-            </el-button>
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              circle
-              @click="handleBtnDeleteRoomItem(scope.row.id, scope.row.index)"
-            >
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <!-- 分页区域 -->
-      <div class="paging">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="current"
-          :page-sizes="[5, 10, 20]"
-          :page-size="limit"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="totalElements"
-          background
-        >
-        </el-pagination>
-        <el-button type="success" @click="dialogAddRoomVisible = true">
-          添加房间
-        </el-button>
-      </div>
-    </el-card>
+      </el-pagination>
+      <el-button type="success" @click="dialogAddRoomVisible = true">
+        添加
+      </el-button>
+    </div>
 
     <!-- 弹窗区域 -->
     <el-dialog
       title="添加房间"
       v-model="dialogAddRoomVisible"
-      v-bind:before-close="handleClose"
+      :before-close="handleClose"
     >
       <el-form v-bind:model="addRoomForm">
         <el-form-item prop="name">
@@ -131,7 +110,7 @@ export default {
       totalPage: null,
       totalElements: null,
       current: 1,
-      limit: 5,
+      limit: 10,
       // 与弹窗相关的数据
       dialogAddRoomVisible: false,
       addRoomForm: {
@@ -155,7 +134,7 @@ export default {
           }
           this.totalPage = res.data.totalPage;
           this.totalElements = res.data.totalElements;
-          this.tableData = res.data.items;
+          this.tableData = res.data.rooms;
         })
         .catch(err => {
           console.log(err);
@@ -172,9 +151,9 @@ export default {
           reqSuccess("添加房间成功");
           this.tableData.push(this.addRoomForm);
           // 清空添加的表单，以备下次添加
-          this.addRoomForm.roomName = "";
-          this.addRoomForm.roomDescription = "";
-          this.addRoomForm.roomImgUrl = "";
+          this.addRoomForm.name = "";
+          this.addRoomForm.description = "";
+          this.addRoomForm.image = "";
         })
         .catch(err => {
           console.log(err);
@@ -269,25 +248,37 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.room-list {
-  .breadcrumb {
-    margin-top: 10px;
-    margin-bottom: 30px;
+<style scoped>
+.custom-table {
+  width: 100%;
+}
+.paging {
+  padding: 5px;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  /* 手机屏幕时, 不显示总页数, 前一个、后一个按钮 */
+  .paging >>> .el-pagination {
+    padding: 0;
   }
-
-  .card {
-    .role-table {
-      margin: 20px 0;
-    }
-
-    .paging {
-      display: flex;
-      display: -webkit-flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      font-size: 13px;
-    }
+  body .paging >>> .el-pagination__total {
+    display: none;
+  }
+  body .paging >>> .btn-prev,
+  body .paging >>> .el-pager,
+  body .paging >>> .btn-next {
+    display: none;
+  }
+  .paging >>> .el-pagination__jump {
+    margin: 0;
+  }
+  .paging .el-button {
+    margin: 10px 7px;
   }
 }
 </style>

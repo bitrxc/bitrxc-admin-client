@@ -1,28 +1,25 @@
 <template>
   <div class="room-details">
     <!-- 面包屑导航 -->
-    <el-breadcrumb class="breadcrumb">
+    <el-breadcrumb class="custom-breadcurmb">
       <el-breadcrumb-item>房间管理</el-breadcrumb-item>
       <el-breadcrumb-item>房间详情</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <!-- 卡片视图区域 -->
-    <el-card class="card">
-      <!-- 房间列表 -->
-      <el-table
-        class="room-table"
-        :data="tableData"
-        style="width: 100%"
-        height="100"
-        border
-        stripe
-      >
-        <el-table-column prop="id" label="房间编号"></el-table-column>
-        <el-table-column prop="name" label="房间名字"></el-table-column>
-        <el-table-column prop="iamge" label="房间照片"></el-table-column>
-        <el-table-column prop="description" label="描述"></el-table-column>
-      </el-table>
-    </el-card>
+    <table>
+      <tr>
+        <td><div>房间编号</div></td>
+        <td>{{ tableData.tmp }}</td>
+      </tr>
+      <tr>
+        <td>房间描述</td>
+        <td>{{ tableData.tmp }}</td>
+      </tr>
+      <tr>
+        <td>房间图片</td>
+        <td>{{ tableData.tmpe }}</td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -34,17 +31,18 @@ export default {
   data() {
     return {
       roomId: this.$route.query.roomId,
-      tableData: []
+      tableData: {}
     };
   },
   created() {
-    this.getRoomInfo();
+    this.reuseGetRoomDetail();
   },
   methods: {
     reuseGetRoomDetail(roomId) {
       getRoomDetail(roomId)
         .then(result => {
           const res = result.data;
+          console.log(res);
           if (res.code !== 200) {
             return reqError("获取数据失败");
           }
@@ -59,16 +57,23 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.room-details {
-  .breadcrumb {
-    margin-top: 10px;
-    margin-bottom: 30px;
-  }
-  .card {
-    .room-table {
-      margin: 20px 0;
-    }
-  }
+<style scoped>
+.custom-breadcurmb {
+  padding: 5px;
+  padding-bottom: 10px;
+}
+table {
+  width: 100%;
+}
+table tr {
+  border: 1px solid #ccc;
+  background: #eeefff;
+}
+table td {
+  padding: 5px 7px;
+  color: #666;
+}
+table td div {
+  width: 100px;
 }
 </style>

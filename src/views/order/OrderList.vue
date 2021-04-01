@@ -1,8 +1,8 @@
 <template>
   <div class="order-list">
     <!-- 用户列表 -->
-    <el-table class="custom-table" :data="tableData" height="700" border stripe>
-      <el-table-column type="index"></el-table-column>
+    <el-table class="custom-table" :data="tableData" height="620" border stripe>
+      <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="id" label="预约编号"></el-table-column>
       <el-table-column prop="roomId" label="房间编号"></el-table-column>
       <el-table-column prop="launcher" label="预约人" width="300">
@@ -11,8 +11,11 @@
       <el-table-column prop="dealDate" label="处理时间"></el-table-column>
       <el-table-column prop="status" label="房间状态">
         <template #default="scope">
-          <el-tag v-if="scope.row.status === 'new'" type="success">
-            {{ scope.row.status }}
+          <el-tag v-if="scope.row.status === 'receive'" type="success">
+            已批准
+          </el-tag>
+          <el-tag v-else-if="scope.row.status === 'signed'" type="danger">
+            已签到
           </el-tag>
           <el-tag v-else type="info">
             {{ scope.row.status }}
@@ -22,14 +25,7 @@
       <el-table-column label="操作" width="180">
         <!-- 审批按钮 -->
         <template #default="scope">
-          <el-button
-            v-if="scope.row.status === 'new'"
-            type="primary"
-            @click="handelBtnClick(scope.row.id)"
-          >
-            审批
-          </el-button>
-          <el-button v-else type="info" @click="handelBtnClick(scope.row.id)">
+          <el-button type="info" @click="handelBtnClick(scope.row.id)">
             审批
           </el-button>
         </template>
@@ -41,17 +37,18 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
+        :total="totalElements"
         :current-page="current"
         :page-sizes="[10, 20, 40]"
         :page-size="limit"
-        layout="total, sizes, prev, next, jumper"
-        :total="totalElements"
+        layout="total, sizes, prev, pager, next, jumper"
+        small
         background
       >
       </el-pagination>
       <!-- 房间状态, 自定义分页 -->
-      <div>
-        <span class="custom-span">房间状态</span>
+      <div class="custom-pagination">
+        <div class="custom-span"><span>房间状态</span></div>
         <el-select
           id="custom-select"
           v-model="value"
@@ -86,10 +83,14 @@ export default {
       current: 1,
       limit: 10,
       options: [
-        { value: "executing", label: "executing" },
-        { value: "receive", label: "receive" },
-        { value: "reject", label: "reject" },
-        { value: "new", label: "new" }
+        { value: "new", label: "待审核" },
+        { value: "receive", label: "已批准" },
+        { value: "signed", label: "已签到" },
+        { value: "illegal", label: "未签退" },
+        { value: "finished", label: "已签退" },
+        { value: "missed", label: "爽约" },
+        { value: "reject", label: "已驳回" },
+        { value: "cancel", label: "用户撤回" }
       ],
       value: ""
     };
@@ -147,5 +148,49 @@ export default {
 </script>
 
 <style scoped>
-@import "../../assets/css/reuseLayout.css";
+.custom-table {
+  width: 100%;
+}
+.paging {
+  padding: 5px;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.paging .custom-pagination {
+  padding: 5px;
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+}
+.paging .custom-span {
+  height: 28px;
+  font-size: 15px;
+  line-height: 28px;
+  padding: 5px 8px;
+  color: #606266;
+}
+/* 样式穿透 */
+.paging >>> #custom-select {
+  height: 28px;
+  line-height: 28px;
+}
+@media screen and (max-width: 768px) {
+  /* 手机屏幕时, 不显示总页数, 前一个、后一个按钮 */
+  .paging >>> .el-pagination {
+    padding: 0;
+  }
+  body .paging >>> .el-pagination__total {
+    display: none;
+  }
+  body .paging >>> .btn-prev,
+  body .paging >>> .el-pager,
+  body .paging >>> .btn-next {
+    display: none;
+  }
+  .paging >>> .el-pagination__jump {
+    margin: 0;
+  }
+}
 </style>

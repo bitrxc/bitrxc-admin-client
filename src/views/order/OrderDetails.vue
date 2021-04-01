@@ -1,90 +1,87 @@
 <template>
   <div class="order-details">
     <!-- 面包屑导航 -->
-    <el-breadcrumb class="breadcrumb">
+    <el-breadcrumb class="custom-breadcurmb">
       <el-breadcrumb-item>预约管理</el-breadcrumb-item>
       <el-breadcrumb-item>预约详情</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <!-- 卡片视图区域 -->
-    <el-card class="card">
-      <!-- 预约状态: 前半部分 -->
-      <el-table
-        class="order-table"
-        :data="tableData"
-        style="width: 100%"
-        height="120"
-        border
-        stripe
-      >
-        <el-table-column prop="id" label="预约编号"></el-table-column>
-        <el-table-column prop="launcher" label="预约人"></el-table-column>
-        <el-table-column prop="roomId" label="房间编号"></el-table-column>
-        <el-table-column prop="status" label="房间状态">
-          <template #default="scope">
-            <el-tag v-if="scope.row.status === 'new'" type="success">
-              {{ scope.row.status }}
-            </el-tag>
-            <el-tag v-else type="info">
-              {{ scope.row.status }}
-            </el-tag>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <!-- 预约状态: 后半部分 -->
-      <el-table
-        class="order-table"
-        :data="tableData"
-        style="width: 100%"
-        height="120"
-        border
-        stripe
-      >
-        <el-table-column prop="execDate" label="预约执行日期"></el-table-column>
-        <el-table-column prop="launchTime" label="预约时间段"></el-table-column>
-        <el-table-column prop="conductor" label="审批人"></el-table-column>
-        <el-table-column prop="checkDate" label="审批时间"></el-table-column>
-      </el-table>
-
-      <lay-card>
-        <template v-slot:default>预约发起人的理由: {{ userNote }}</template>
-      </lay-card>
-
-      <el-input
-        class="textarea"
-        type="textarea"
-        :rows="4"
-        placeholder="请输入审批意见"
-        v-model="checkNote"
-      >
-      </el-input>
-
-      <lay-btns-container v-if="status === 'reject' || status === 'receive'">
-        <template v-slot:left>
-          <el-button type="danger" disabled>
-            拒绝
-          </el-button>
+    <!-- 预约状态: 前半部分 -->
+    <el-table
+      class="order-table"
+      :data="tableData"
+      style="width: 100%"
+      height="120"
+      border
+      stripe
+    >
+      <el-table-column prop="id" label="预约编号"></el-table-column>
+      <el-table-column prop="launcher" label="预约人"></el-table-column>
+      <el-table-column prop="roomId" label="房间编号"></el-table-column>
+      <el-table-column prop="status" label="房间状态">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status === 'new'" type="success">
+            {{ scope.row.status }}
+          </el-tag>
+          <el-tag v-else type="info">
+            {{ scope.row.status }}
+          </el-tag>
         </template>
-        <template v-slot:right>
-          <el-button type="success" disabled>
-            同意
-          </el-button>
-        </template>
-      </lay-btns-container>
-      <lay-btns-container v-else>
-        <template v-slot:left>
-          <el-button type="danger" @click="handleBtnReject">
-            拒绝
-          </el-button>
-        </template>
-        <template v-slot:right>
-          <el-button type="success" @click="handleBtnReceive">
-            同意
-          </el-button>
-        </template>
-      </lay-btns-container>
-    </el-card>
+      </el-table-column>
+    </el-table>
+
+    <!-- 预约状态: 后半部分 -->
+    <el-table
+      class="order-table"
+      :data="tableData"
+      style="width: 100%"
+      height="120"
+      border
+      stripe
+    >
+      <el-table-column prop="execDate" label="预约执行日期"></el-table-column>
+      <el-table-column prop="launchTime" label="预约时间段"></el-table-column>
+      <el-table-column prop="conductor" label="审批人"></el-table-column>
+      <el-table-column prop="checkDate" label="审批时间"></el-table-column>
+    </el-table>
+
+    <lay-card>
+      <template v-slot:default>预约发起人的理由: {{ userNote }}</template>
+    </lay-card>
+
+    <el-input
+      class="textarea"
+      type="textarea"
+      :rows="4"
+      placeholder="请输入审批意见"
+      v-model="checkNote"
+    >
+    </el-input>
+
+    <lay-btns-container v-if="status === 'reject' || status === 'receive'">
+      <template v-slot:left>
+        <el-button type="danger" disabled>
+          拒绝
+        </el-button>
+      </template>
+      <template v-slot:right>
+        <el-button type="success" disabled>
+          同意
+        </el-button>
+      </template>
+    </lay-btns-container>
+    <lay-btns-container v-else>
+      <template v-slot:left>
+        <el-button type="danger" @click="handleBtnReject">
+          拒绝
+        </el-button>
+      </template>
+      <template v-slot:right>
+        <el-button type="success" @click="handleBtnReceive">
+          同意
+        </el-button>
+      </template>
+    </lay-btns-container>
   </div>
 </template>
 
@@ -173,16 +170,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.order-details {
-  .breadcrumb {
-    margin-top: 10px;
-    margin-bottom: 30px;
-  }
-  .card {
-    .order-table {
-      margin: 20px 0;
-    }
-  }
+<style scoped>
+.custom-breadcurmb {
+  padding: 5px;
+  padding-bottom: 10px;
 }
 </style>

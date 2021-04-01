@@ -26,8 +26,10 @@ export default {
   display: -webkit-flex;
   padding: 20px;
   margin: 10px 0 20px;
-  background-color: #fffffa;
+  background-color: #fffffe;
   border: 1px solid #dcdfe6;
   font-size: 13px;
+  color: #909399;
+  font-weight: bold;
 }
 </style>

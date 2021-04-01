@@ -1,88 +1,74 @@
 <template>
   <div class="order-list">
-    <!-- 面包屑导航 -->
-    <el-breadcrumb class="breadcrumb">
-      <el-breadcrumb-item>预约管理</el-breadcrumb-item>
-      <el-breadcrumb-item>预约列表</el-breadcrumb-item>
-    </el-breadcrumb>
-
-    <!-- 卡片视图区域 -->
-    <el-card class="card">
-      <!-- 用户列表 -->
-      <el-table
-        class="role-table"
-        :data="tableData"
-        style="width: 100%"
-        height="380"
-        border
-        stripe
-      >
-        <el-table-column type="index"></el-table-column>
-        <el-table-column prop="id" label="预约编号"></el-table-column>
-        <el-table-column prop="roomId" label="房间编号"></el-table-column>
-        <el-table-column prop="launcher" label="预约人"></el-table-column>
-        <el-table-column prop="launchTime" label="预约时间"></el-table-column>
-        <el-table-column prop="dealDate" label="处理时间"></el-table-column>
-        <el-table-column prop="status" label="房间状态">
-          <template #default="scope">
-            <el-tag v-if="scope.row.status === 'new'" type="success">
-              {{ scope.row.status }}
-            </el-tag>
-            <el-tag v-else type="info">
-              {{ scope.row.status }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="180">
-          <!-- 审批按钮 -->
-          <template #default="scope">
-            <el-button
-              v-if="scope.row.status === 'new'"
-              type="primary"
-              @click="handelBtnClick(scope.row.id)"
-            >
-              审批
-            </el-button>
-            <el-button v-else type="info" @click="handelBtnClick(scope.row.id)">
-              审批
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <!-- 分页区域 -->
-      <div class="paging">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="current"
-          :page-sizes="[5, 10, 20]"
-          :page-size="limit"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="totalElements"
-          background
-        >
-        </el-pagination>
-        <!-- 房间状态, 自定义分页 -->
-        <div>
-          <span style="margin: 0 5px;">房间状态</span>
-          <el-select
-            v-model="value"
-            placeholder="请选择"
-            clearable
-            @change="handleValueChange"
+    <!-- 用户列表 -->
+    <el-table class="custom-table" :data="tableData" height="700" border stripe>
+      <el-table-column type="index"></el-table-column>
+      <el-table-column prop="id" label="预约编号"></el-table-column>
+      <el-table-column prop="roomId" label="房间编号"></el-table-column>
+      <el-table-column prop="launcher" label="预约人" width="300">
+      </el-table-column>
+      <el-table-column prop="launchTime" label="预约时间"></el-table-column>
+      <el-table-column prop="dealDate" label="处理时间"></el-table-column>
+      <el-table-column prop="status" label="房间状态">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status === 'new'" type="success">
+            {{ scope.row.status }}
+          </el-tag>
+          <el-tag v-else type="info">
+            {{ scope.row.status }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="180">
+        <!-- 审批按钮 -->
+        <template #default="scope">
+          <el-button
+            v-if="scope.row.status === 'new'"
+            type="primary"
+            @click="handelBtnClick(scope.row.id)"
           >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </div>
+            审批
+          </el-button>
+          <el-button v-else type="info" @click="handelBtnClick(scope.row.id)">
+            审批
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 分页区域 -->
+    <div class="paging">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="current"
+        :page-sizes="[10, 20, 40]"
+        :page-size="limit"
+        layout="total, sizes, prev, next, jumper"
+        :total="totalElements"
+        background
+      >
+      </el-pagination>
+      <!-- 房间状态, 自定义分页 -->
+      <div>
+        <span class="custom-span">房间状态</span>
+        <el-select
+          id="custom-select"
+          v-model="value"
+          placeholder="请选择"
+          clearable
+          @change="handleValueChange"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
       </div>
-    </el-card>
+    </div>
   </div>
 </template>
 
@@ -98,7 +84,7 @@ export default {
       totalPage: null,
       totalElements: null,
       current: 1,
-      limit: 5,
+      limit: 10,
       options: [
         { value: "executing", label: "executing" },
         { value: "receive", label: "receive" },
@@ -117,9 +103,7 @@ export default {
       getOrderList(correntCurrent, this.limit, this.value)
         .then(result => {
           // 可以发送网络请求
-          console.log(result);
           const res = result.data;
-          console.log(res);
           if (res.code !== 200) {
             return reqError(res.message.toString());
           }
@@ -162,25 +146,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.order-list {
-  .breadcrumb {
-    margin-top: 10px;
-    margin-bottom: 30px;
-  }
-
-  .card {
-    .role-table {
-      margin: 20px 0;
-    }
-
-    .paging {
-      display: flex;
-      display: -webkit-flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      font-size: 13px;
-    }
-  }
-}
+<style scoped>
+@import "../../assets/css/reuseLayout.css";
 </style>

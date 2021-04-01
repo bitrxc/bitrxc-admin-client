@@ -1,73 +1,50 @@
 <template>
-  <el-menu
-    background-color="#24292e"
-    text-color="#ffffff"
-    active-text-color="#0dbc79"
-    unique-opened
-    :collapse="isCollapse"
-    :collapse-transition="false"
-    router
-  >
-    <el-submenu index="/orderList">
-      <template #title>
-        <i class="el-icon-location"></i>
+  <div class="lay-sidebar">
+    <el-menu
+      background-color="#333"
+      text-color="#fff"
+      active-text-color=""
+      :collapse="isSidebarOpen"
+      :collapse-transition="false"
+      router
+    >
+      <el-menu-item index="/orderList" id="first-menu-item">
+        <i class="el-icon-alarm-clock"></i>
         <span>预约管理</span>
-      </template>
-      <el-menu-item-group>
-        <el-menu-item index="/orderList">预约列表</el-menu-item>
-      </el-menu-item-group>
-    </el-submenu>
-    <!-- <el-submenu index="/userList">
-      <template #title>
-        <i class="el-icon-location"></i>
-        <span>管理员管理</span>
-      </template>
-      <el-menu-item-group>
-        <el-menu-item index="/userList">管理员列表</el-menu-item>
-      </el-menu-item-group>
-    </el-submenu> -->
-    <!-- <el-submenu index="/roleList">
-      <template #title>
-        <i class="el-icon-location"></i>
-        <span>权限说明</span>
-      </template>
-      <el-menu-item-group>
-        <el-menu-item index="/roleList">角色列表</el-menu-item>
-        <el-menu-item index="/authorizationList">权限列表</el-menu-item>
-      </el-menu-item-group>
-    </el-submenu> -->
-    <!-- <el-submenu index="/classification">
-      <template #title>
-        <i class="el-icon-location"></i>
+      </el-menu-item>
+      <el-menu-item index="/roomList">
+        <i class="el-icon-house"></i>
         <span>房间管理</span>
-      </template>
-      <el-menu-item-group>
-        <el-menu-item index="/roomList">房间列表</el-menu-item>
-      </el-menu-item-group>
-    </el-submenu> -->
-    <!-- <el-submenu index="/orderCharts">
-      <template #title>
-        <i class="el-icon-location"></i>
-        <span>数据统计</span>
-      </template>
-      <el-menu-item-group>
-        <el-menu-item index="/orderCharts">预约统计</el-menu-item>
-      </el-menu-item-group>
-    </el-submenu> -->
-    <!-- <el-submenu index="/personalDetails">
-      <template #title>
-        <i class="el-icon-location"></i>
-        <span>个人信息管理</span>
-      </template>
-      <el-menu-item-group>
-        <el-menu-item index="/personalDetails">个人信息</el-menu-item>
-      </el-menu-item-group>
-    </el-submenu> -->
-  </el-menu>
+      </el-menu-item>
+    </el-menu>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "LaySideBar"
+  name: "LaySidebar",
+  data() {
+    return {
+      isSidebarOpen: false
+    };
+  },
+  mounted() {
+    this.emitter.on("toggle-sidebar", isOpen => {
+      console.log(isOpen);
+      this.isSidebarOpen = isOpen;
+    });
+  }
 };
 </script>
+
+<style scoped>
+.class-sidebar {
+  position: fixed;
+}
+#first-menu-item {
+  margin-top: 65px;
+}
+.el-menu {
+  border: none;
+}
+</style>

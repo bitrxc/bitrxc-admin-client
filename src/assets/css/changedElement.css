@@ -1,30 +1,9 @@
-/* 重置 Element Plus 卡片的阴影 */
-.is-always-shadow {
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* 重置卡片的背景颜色 */
-.el-card {
-  background-color: #fefefe !important;
-}
-
 /* 重置消息弹窗的宽度 */
 .el-message {
   width: 200px !important;
 }
 
-/* 重置消磁弹窗框的宽度 */
+/* 重置消息弹窗框的宽度 */
 .el-message-box {
   width: 200px !important;
-}
-
-/* 消除二级带单与一级菜单的分割线 */
-.el-menu-item-group__title {
-  display: none !important;
-}
-
-/* 重置输入框文本域的颜色 */
-.el-textarea__inner {
-  background-color: #fffffa !important;
 }

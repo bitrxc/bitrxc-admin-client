@@ -16,6 +16,6 @@ export default {
   display: flex;
   display: -webkit-flex;
   justify-content: flex-end;
-  padding: 15px;
+  padding: 5px 15px;
 }
 </style>

@@ -12,13 +12,13 @@
       <el-table-column prop="status" label="房间状态">
         <template #default="scope">
           <el-tag v-if="scope.row.status === 'receive'" type="success">
-            已批准
+            {{ correctedStatus(scope.row.status) }}
           </el-tag>
           <el-tag v-else-if="scope.row.status === 'signed'" type="danger">
-            已签到
+            {{ correctedStatus(scope.row.status) }}
           </el-tag>
           <el-tag v-else type="info">
-            {{ scope.row.status }}
+            {{ correctedStatus(scope.row.status) }}
           </el-tag>
         </template>
       </el-table-column>
@@ -70,8 +70,10 @@
 </template>
 
 <script>
-import { getOrderList } from "../../network/order";
-import { reqError } from "../../utils/tips";
+import { getOrderList } from "@/network/order";
+import { reqError } from "@/utils/tips";
+import { correctStatus } from "@/utils/status.js";
+
 export default {
   name: "OrderList",
   data() {
@@ -142,6 +144,10 @@ export default {
       this.current = 1;
       this.value = newValue;
       this.reuseGetOrderList();
+    },
+    // 修改 status 从英文变为中文
+    correctedStatus(status) {
+      return correctStatus(status);
     }
   }
 };

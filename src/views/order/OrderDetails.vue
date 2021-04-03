@@ -8,7 +8,7 @@
 
     <table>
       <tr>
-        <td><div>预约编号</div></td>
+        <td>预约编号</td>
         <td>{{ tableData.id }}</td>
       </tr>
       <tr>
@@ -21,15 +21,18 @@
       </tr>
       <tr>
         <td>房间状态</td>
-        <td>{{ tableData.status }}</td>
+        <td>{{ correctedStatus(tableData.status) }}</td>
       </tr>
       <tr>
         <td>预约执行日期</td>
-        <td>{{ tableData.launchDate }}</td>
+        <td>
+          {{ tableData.execDate }}
+          {{ correctedLaunchTime(tableData.launchTime) }}
+        </td>
       </tr>
       <tr>
-        <td>预约时间段</td>
-        <td>{{ tableData.launchTime }}</td>
+        <td>发起预约的时间</td>
+        <td>{{ correctedLaunchDate(tableData.launchDate) }}</td>
       </tr>
       <tr>
         <td>审批人</td>
@@ -44,7 +47,7 @@
     <lay-card>
       <template v-slot:title>预约发起人的理由:</template>
       <template v-slot:content>
-        {{ userNote }}
+        {{ tableData.userNote }}
       </template>
     </lay-card>
 
@@ -70,17 +73,29 @@
         确认
       </el-button>
     </div>
+    <lay-btns-container>
+      <template v-slot:left>
+        <el-button type="info" @click="goBack">
+          返回
+        </el-button>
+      </template>
+    </lay-btns-container>
   </div>
 </template>
 
 <script>
-import LayCard from "@/components/layCard/LayCard";
-import { reqSuccess, reqError } from "@/utils/tips";
-import { getOrderDetail, checkOrder } from "@/network/order";
+import LayCard from "@/components/layCard/LayCard.vue";
+import LayBtnsContainer from "@/components/layBtnsContainer/LayBtnsContainer.vue";
+import { reqSuccess, reqError } from "@/utils/tips.js";
+import { getOrderDetail, checkOrder } from "@/network/order.js";
+import { correctLaunchTime, correctLaunchDate } from "@/utils/time.js";
+import { correctStatus } from "@/utils/status.js";
+
 export default {
   name: "OrderDetails",
   components: {
-    LayCard
+    LayCard,
+    LayBtnsContainer
   },
   data() {
     return {
@@ -158,6 +173,22 @@ export default {
       let userInfo = JSON.parse(window.sessionStorage.getItem("userInfo"));
       this.conductor = userInfo.username;
       this.reuseCheckOrder();
+    },
+    // 返回上一页
+    goBack() {
+      this.$router.go(-1);
+    },
+    // 将预约时间从 id 转变为具体时间
+    correctedLaunchTime(id) {
+      return correctLaunchTime(id);
+    },
+    // 将预约发起时间从时间戳转变为具体时间
+    correctedLaunchDate(launchDate) {
+      return correctLaunchDate(launchDate);
+    },
+    // 将英文状态名变为中文状态名
+    correctedStatus(status) {
+      return correctStatus(status);
     }
   }
 };
@@ -172,7 +203,7 @@ export default {
   display: flex;
   display: -webkit-flex;
   justify-content: flex-end;
-  padding: 15px;
+  padding: 5px;
 }
 .approval-box > .el-button {
   margin: 0 10px;
@@ -188,8 +219,5 @@ table tr {
 table td {
   padding: 5px 7px;
   color: #666;
-}
-table td div {
-  width: 100px;
 }
 </style>

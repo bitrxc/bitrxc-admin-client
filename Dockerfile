@@ -2,8 +2,9 @@
 FROM node:14.16 AS build-env
 WORKDIR /usr/src/app
 
-COPY . .
+COPY package*.json ./
 RUN npm install
+COPY . .
 RUN npm run build
 
 # Serve

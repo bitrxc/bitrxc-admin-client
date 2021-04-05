@@ -1,23 +1,24 @@
 <template>
   <div>
-    <!-- <img src="@/assets/img/NoBug.png" /> -->
-    <lay-upload-img></lay-upload-img>
+    <img src="@/assets/img/NoBug.png" />
+    <!-- <lay-upload-img></lay-upload-img> -->
   </div>
 </template>
 
 <script>
-import LayUploadImg from "@/components/layUploadImg/LayUploadImg.vue";
+// import LayUploadImg from "@/components/layUploadImg/LayUploadImg.vue";
 
 export default {
-  name: "NotFound",
-  components: {
-    LayUploadImg
-  }
+  name: "NotFound"
+  // components: {
+  //   LayUploadImg
+  // }
 };
 </script>
 
 <style scoped>
 img {
+  width: 100%;
   height: 100%;
 }
 @media screen and (max-width: 768px) {

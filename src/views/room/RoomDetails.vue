@@ -8,7 +8,7 @@
 
     <table>
       <tr>
-        <td><div>房间编号</div></td>
+        <td>房间编号</td>
         <td>{{ tableData.id }}</td>
       </tr>
       <tr>
@@ -21,7 +21,9 @@
       </tr>
       <tr>
         <td>房间图片</td>
-        <td>{{ tableData.images }}</td>
+        <td>
+          <img :src="tableData.images" />
+        </td>
       </tr>
     </table>
 
@@ -108,10 +110,14 @@ export default {
       getRoomDetail(this.roomId)
         .then(result => {
           const res = result.data;
+          console.log("-----------------获取房间详情---------------", res);
           if (res.code !== 200) {
             return reqError(res.message);
           }
           this.tableData = res.data.roomInfo;
+          this.updateRoomForm.name = this.tableData.name;
+          this.updateRoomForm.description = this.tableData.description;
+          this.updateRoomForm.image = this.tableData.image;
         })
         .catch(err => {
           console.log(err);
@@ -172,5 +178,13 @@ table tr {
 table td {
   padding: 5px 7px;
   color: #666;
+}
+table td img {
+  width: 500px;
+}
+@media screen and (max-width: 768px) {
+  table td img {
+    width: 220px;
+  }
 }
 </style>

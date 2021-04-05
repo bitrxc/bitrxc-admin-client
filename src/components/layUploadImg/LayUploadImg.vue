@@ -1,9 +1,5 @@
 <template>
-  <el-upload
-    class="upload-demo"
-    drag
-    action="https://test.ruixincommunity.cn/admin/upload/image/room/2"
-  >
+  <el-upload class="upload-demo" drag :action="uploadApi" :on-success="success">
     <i class="el-icon-upload"></i>
     <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     <template #tip>
@@ -16,7 +12,17 @@
 
 <script>
 export default {
-  name: "LayUploadImg"
+  name: "LayUploadImg",
+  data() {
+    return {
+      uploadApi: "https://api.bitrxc.com/admin/image/room/1"
+    };
+  },
+  methods: {
+    success() {
+      alert("上传成功");
+    }
+  }
 };
 </script>
 

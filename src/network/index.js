@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function request(config) {
   const instance = axios.create({
-    baseURL: "https://test.ruixincommunity.cn/admin",
+    baseURL: process.env.VUE_APP_BASE_API,
     timeout: 5000
   });
 

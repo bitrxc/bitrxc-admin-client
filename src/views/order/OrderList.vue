@@ -178,24 +178,22 @@ export default {
   color: #606266;
 }
 /* 样式穿透 */
-.paging >>> #custom-select {
+.paging ::v-deep #custom-select {
   height: 28px;
   line-height: 28px;
 }
 @media screen and (max-width: 768px) {
   /* 手机屏幕时, 不显示总页数, 前一个、后一个按钮 */
-  .paging >>> .el-pagination {
+  .paging ::v-deep(.el-pagination) {
     padding: 0;
   }
-  body .paging >>> .el-pagination__total {
+  body .paging ::v-deep(.el-pagination__total),
+  body .paging ::v-deep(.btn-prev),
+  body .paging ::v-deep(.el-pager),
+  body .paging ::v-deep(.btn-next) {
     display: none;
   }
-  body .paging >>> .btn-prev,
-  body .paging >>> .el-pager,
-  body .paging >>> .btn-next {
-    display: none;
-  }
-  .paging >>> .el-pagination__jump {
+  .paging ::v-deep(.el-pagination__jump) {
     margin: 0;
   }
 }

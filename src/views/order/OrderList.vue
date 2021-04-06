@@ -178,7 +178,7 @@ export default {
   color: #606266;
 }
 /* 样式穿透 */
-.paging ::v-deep #custom-select {
+.paging ::v-deep(#custom-select) {
   height: 28px;
   line-height: 28px;
 }

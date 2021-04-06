@@ -12,13 +12,13 @@
       <el-table-column prop="status" label="房间状态">
         <template #default="scope">
           <el-tag v-if="scope.row.status === 'receive'" type="success">
-            已批准
+            {{ correctedStatus(scope.row.status) }}
           </el-tag>
           <el-tag v-else-if="scope.row.status === 'signed'" type="danger">
-            已签到
+            {{ correctedStatus(scope.row.status) }}
           </el-tag>
           <el-tag v-else type="info">
-            {{ scope.row.status }}
+            {{ correctedStatus(scope.row.status) }}
           </el-tag>
         </template>
       </el-table-column>
@@ -70,8 +70,10 @@
 </template>
 
 <script>
-import { getOrderList } from "../../network/order";
-import { reqError } from "../../utils/tips";
+import { getOrderList } from "@/network/order";
+import { reqError } from "@/utils/tips";
+import { correctStatus } from "@/utils/status.js";
+
 export default {
   name: "OrderList",
   data() {
@@ -142,6 +144,10 @@ export default {
       this.current = 1;
       this.value = newValue;
       this.reuseGetOrderList();
+    },
+    // 修改 status 从英文变为中文
+    correctedStatus(status) {
+      return correctStatus(status);
     }
   }
 };
@@ -172,24 +178,22 @@ export default {
   color: #606266;
 }
 /* 样式穿透 */
-.paging >>> #custom-select {
+.paging ::v-deep #custom-select {
   height: 28px;
   line-height: 28px;
 }
 @media screen and (max-width: 768px) {
   /* 手机屏幕时, 不显示总页数, 前一个、后一个按钮 */
-  .paging >>> .el-pagination {
+  .paging ::v-deep(.el-pagination) {
     padding: 0;
   }
-  body .paging >>> .el-pagination__total {
+  body .paging ::v-deep(.el-pagination__total),
+  body .paging ::v-deep(.btn-prev),
+  body .paging ::v-deep(.el-pager),
+  body .paging ::v-deep(.btn-next) {
     display: none;
   }
-  body .paging >>> .btn-prev,
-  body .paging >>> .el-pager,
-  body .paging >>> .btn-next {
-    display: none;
-  }
-  .paging >>> .el-pagination__jump {
+  .paging ::v-deep(.el-pagination__jump) {
     margin: 0;
   }
 }

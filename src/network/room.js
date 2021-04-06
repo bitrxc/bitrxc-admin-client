@@ -43,3 +43,12 @@ export function searchRooms(nameLike) {
     }
   });
 }
+
+// 修改房间
+export function updateRoom(data) {
+  return request({
+    url: `/room`,
+    method: "put",
+    data: data
+  });
+}

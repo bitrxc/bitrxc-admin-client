@@ -58,10 +58,10 @@ export default {
   name: "Login",
   data() {
     return {
-      titleTips: "睿信书院管理系统",
+      titleTips: "北京理工大学睿信社区管理系统",
       loginForm: {
-        username: "admin",
-        password: "admin"
+        username: "",
+        password: ""
       },
       // 这是表单的验证规则对象
       loginFormRules: {
@@ -89,7 +89,6 @@ export default {
         loginRequest(this.loginForm)
           .then(result => {
             // 可以发送网络请求
-            console.log(result);
             const res = result.data;
 
             if (res.code !== 200) {
@@ -142,7 +141,7 @@ export default {
 
     .title-tips {
       margin-top: 29px;
-      font-size: 26px;
+      font-size: 16px;
       font-weight: 400;
       color: rgba(14, 18, 26, 1);
 

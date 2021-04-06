@@ -149,7 +149,7 @@ export default {
             return reqError("添加房间失败");
           }
           reqSuccess("添加房间成功");
-          this.tableData.push(this.addRoomForm);
+          this.reuseGetRoomList();
           // 清空添加的表单，以备下次添加
           this.addRoomForm.name = "";
           this.addRoomForm.description = "";
@@ -179,6 +179,7 @@ export default {
     reuseSearchRooms() {
       searchRooms(this.searchValue)
         .then(result => {
+          console.log(result);
           const res = result.data;
           if (res.code !== 200) {
             return reqError("获取数据失败");
@@ -263,18 +264,16 @@ export default {
 
 @media screen and (max-width: 768px) {
   /* 手机屏幕时, 不显示总页数, 前一个、后一个按钮 */
-  .paging >>> .el-pagination {
+  .paging ::v-deep(.el-pagination) {
     padding: 0;
   }
-  body .paging >>> .el-pagination__total {
+  body .paging ::v-deep(.el-pagination__total),
+  body .paging ::v-deep(.btn-prev),
+  body .paging ::v-deep(.el-pager),
+  body .paging ::v-deep(.btn-next) {
     display: none;
   }
-  body .paging >>> .btn-prev,
-  body .paging >>> .el-pager,
-  body .paging >>> .btn-next {
-    display: none;
-  }
-  .paging >>> .el-pagination__jump {
+  .paging ::v-deep(.el-pagination__jump) {
     margin: 0;
   }
   .paging .el-button {

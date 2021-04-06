@@ -73,6 +73,7 @@ const router = createRouter({
 
 // 挂载路由导航守卫
 router.beforeEach((to, from, next) => {
+  document.title = "北京理工大学睿信社区管理系统";
   if (to.path === "/login") {
     return next();
   }

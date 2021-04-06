@@ -110,7 +110,6 @@ export default {
       getRoomDetail(this.roomId)
         .then(result => {
           const res = result.data;
-          console.log("-----------------获取房间详情---------------", res);
           if (res.code !== 200) {
             return reqError(res.message);
           }

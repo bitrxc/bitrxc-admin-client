@@ -60,8 +60,8 @@ export default {
     return {
       titleTips: "北京理工大学睿信社区管理系统",
       loginForm: {
-        username: "admin",
-        password: "admin"
+        username: "",
+        password: ""
       },
       // 这是表单的验证规则对象
       loginFormRules: {
@@ -89,7 +89,6 @@ export default {
         loginRequest(this.loginForm)
           .then(result => {
             // 可以发送网络请求
-            console.log(result);
             const res = result.data;
 
             if (res.code !== 200) {

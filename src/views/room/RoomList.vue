@@ -129,7 +129,6 @@ export default {
       getRoomList(correctCurrent, this.limit)
         .then(result => {
           const res = result.data;
-          console.log("------------获取房间列表----------：", res);
           if (res.code !== 200) {
             return reqError("获取数据失败");
           }

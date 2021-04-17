@@ -55,7 +55,7 @@
       class="textarea"
       type="textarea"
       :rows="4"
-      placeholder="请输入审批意见"
+      placeholder="已签退/爽约/已驳回需要输入审批意见"
       v-model="checkNote"
     >
     </el-input>
@@ -66,6 +66,7 @@
           :key="item.value"
           :label="item.label"
           :value="item.value"
+          :disabled="item.disabled"
         >
         </el-option>
       </el-select>
@@ -89,7 +90,7 @@ import LayBtnsContainer from "@/components/layBtnsContainer/LayBtnsContainer.vue
 import { reqSuccess, reqError } from "@/utils/tips.js";
 import { getOrderDetail, checkOrder } from "@/network/order.js";
 import { correctLaunchTime, correctLaunchDate } from "@/utils/time.js";
-import { correctStatus } from "@/utils/status.js";
+import { correctStatus, getOptions } from "@/utils/status.js";
 
 export default {
   name: "OrderDetails",
@@ -108,16 +109,7 @@ export default {
       checkNote: "",
       checkDate: null,
       dialogApprovalVisible: false,
-      options: [
-        { value: "new", label: "待审核" },
-        { value: "receive", label: "已批准" },
-        { value: "signed", label: "已签到" },
-        { value: "illegal", label: "未签退" },
-        { value: "finished", label: "已签退" },
-        { value: "missed", label: "爽约" },
-        { value: "reject", label: "已驳回" },
-        { value: "cancel", label: "用户撤回" }
-      ],
+      options: [],
       value: ""
     };
   },
@@ -129,11 +121,13 @@ export default {
       getOrderDetail(this.orderId)
         .then(result => {
           const res = result.data;
-          console.log(res);
           if (res.code !== 200) {
             return reqError("获取数据失败");
           }
           this.tableData = res.data.appointment;
+          // 获取状态, 然后修改 option 的值
+          const status = res.data.appointment.status;
+          this.options = getOptions(status);
         })
         .catch(err => {
           console.log(err);
@@ -141,8 +135,14 @@ export default {
         });
     },
     reuseCheckOrder() {
-      if (this.checkNote === "") {
-        return reqError("请填写审批意见");
+      if (
+        this.value === "finished" ||
+        this.value === "missed" ||
+        this.value === "reject"
+      ) {
+        if (this.checkNote === "") {
+          return reqError("请填写审批意见");
+        }
       }
       if (this.value === "") {
         return reqError("请选择修改状态");
@@ -155,7 +155,6 @@ export default {
       checkOrder(this.orderId, data)
         .then(result => {
           const res = result.data;
-          console.log(res);
           if (res.code !== 200) {
             return reqError(res.message);
           }
@@ -212,12 +211,15 @@ export default {
 table {
   width: 100%;
 }
-table tr {
-  border: 1px solid #ccc;
-  background: #eeefff;
+table tr:nth-child(even) {
+  background-color: #fff;
+}
+table tr:nth-child(odd) {
+  background-color: #fafafa;
 }
 table td {
-  padding: 5px 7px;
+  padding: 15px;
   color: #666;
+  border: 1px solid #e6e6e6;
 }
 </style>

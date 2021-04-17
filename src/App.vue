@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style lang="scss">
-@import "./assets/css/normalize.css";
-@import "./assets/css/changedElement.css";
+<style>
+@import url(./assets/css/normalize.css);
+@import url(./assets/css/changedElement.css);
 </style>

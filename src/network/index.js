@@ -2,8 +2,8 @@ import axios from "axios";
 
 export function request(config) {
   const instance = axios.create({
-    baseURL: process.env.VUE_APP_BASE_API,
-    timeout: 5000
+    baseURL: process.env.VUE_APP_BASE_API
+    // timeout: 5000
   });
 
   instance.interceptors.request.use(

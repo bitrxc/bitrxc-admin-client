@@ -12,7 +12,7 @@
         <i class="el-icon-alarm-clock"></i>
         <span>预约管理</span>
       </el-menu-item>
-      <el-menu-item index="/roomList">
+      <el-menu-item index="/notFound">
         <i class="el-icon-house"></i>
         <span>房间管理</span>
       </el-menu-item>

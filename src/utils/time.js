@@ -1,32 +1,62 @@
 /**
- * 后端传递过来的 launchTime(预约执行时间段) 是一个 id,
+ * 后端传递过来的 (预约执行时间段) 是一个 id,
  * 需要前端按照一定规则解析为相应的时间
  * @param {Number} id
  * @returns
  */
-export function correctLaunchTime(id) {
+
+export function correctTimeBegin(id) {
   let res = null;
   switch (id) {
     case 1:
-      res = "07:00:00-08:00:00";
+      res = "08:00:00";
       break;
     case 2:
-      res = "08:00:00-09:00:00";
+      res = "10:00:00";
       break;
     case 3:
-      res = "09:00:00-10:00:00";
+      res = "13:00:00";
       break;
     case 4:
-      res = "13:00:00-14:00:00";
+      res = "15:00:00";
       break;
     case 5:
-      res = "14:00:00-15:00:00";
+      res = "18:00:00";
       break;
     case 6:
-      res = "21:00:00-22:00:00";
+      res = "21:00:00";
       break;
     default:
       res = "error";
+      break;
+  }
+  return res;
+}
+
+export function correctTimeEnd(id) {
+  let res = null;
+  switch (id) {
+    case 1:
+      res = "10:00:00";
+      break;
+    case 2:
+      res = "12:00:00";
+      break;
+    case 3:
+      res = "15:00:00";
+      break;
+    case 4:
+      res = "18:00:00";
+      break;
+    case 5:
+      res = "21:00:00";
+      break;
+    case 6:
+      res = "22:00:00";
+      break;
+    default:
+      res = "error";
+      break;
   }
   return res;
 }

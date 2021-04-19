@@ -22,7 +22,11 @@
       <el-table-column prop="launchTime" label="预约时间">
         <template #default="scope">
           <el-tag>
-            {{ correctedLaunchTime(scope.row.launchTime) }}
+            {{ correctedTimeBegin(scope.row.begin) }}
+          </el-tag>
+          -
+          <el-tag>
+            {{ correctedTimeEnd(scope.row.end) }}
           </el-tag>
         </template>
       </el-table-column>
@@ -30,10 +34,10 @@
       <el-table-column prop="status" label="房间状态">
         <template #default="scope">
           <el-tag v-if="scope.row.status === 'receive'" type="success">
-            {{ correctedStatus(scope.row.status) }}
+            {{ correctedStatus(scope.row.status).begin }}
           </el-tag>
           <el-tag v-else-if="scope.row.status === 'signed'" type="danger">
-            {{ correctedStatus(scope.row.status) }}
+            {{ correctedStatus(scope.row.status).end }}
           </el-tag>
           <el-tag v-else type="info">
             {{ correctedStatus(scope.row.status) }}
@@ -87,10 +91,11 @@
 </template>
 
 <script>
-import { getOrderList, searchOrders } from "@/network/order";
-import { reqError } from "@/utils/tips";
+import { getOrderList, searchOrders } from "@/network/order.js";
+import { reqError } from "@/utils/tips.js";
 import { correctStatus } from "@/utils/status.js";
-import { correctLaunchTime } from "@/utils/time.js";
+import { correctTimeBegin, correctTimeEnd } from "@/utils/time.js";
+import { getScheduleArray } from "@/network/utils.js";
 
 export default {
   name: "OrderList",
@@ -114,11 +119,15 @@ export default {
         { value: "cancel", label: "用户撤回" }
       ],
       value: "",
-      searchValue: "" // 搜索框的值
+      searchValue: ""
     };
   },
   created() {
     this.reuseGetOrderList();
+    getScheduleArray().then(res => {
+      const schduleArray = res.data.data;
+      sessionStorage.setItem("scheduleArray", JSON.stringify(schduleArray));
+    });
   },
   methods: {
     reuseGetOrderList() {
@@ -127,7 +136,6 @@ export default {
         .then(result => {
           // 可以发送网络请求
           const res = result.data;
-          console.log(res);
           if (res.code !== 200) {
             return reqError(res.message.toString());
           }
@@ -186,8 +194,11 @@ export default {
       this.reuseGetOrderList();
     },
     // 将预约时间从 id 转变为具体时间
-    correctedLaunchTime(id) {
-      return correctLaunchTime(id);
+    correctedTimeBegin(id) {
+      return correctTimeBegin(id);
+    },
+    correctedTimeEnd(id) {
+      return correctTimeEnd(id);
     }
   }
 };

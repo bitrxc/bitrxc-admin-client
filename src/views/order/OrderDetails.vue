@@ -26,8 +26,17 @@
       <tr>
         <td>预约执行日期</td>
         <td>
-          {{ tableData.execDate }}
-          {{ correctedLaunchTime(tableData.launchTime) }}
+          <el-tag>
+            {{ tableData.execDate }}
+          </el-tag>
+          -
+          <el-tag>
+            {{ correctedTimeBegin(tableData.begin) }}
+          </el-tag>
+          -
+          <el-tag>
+            {{ correctedTimeEnd(tableData.end) }}
+          </el-tag>
         </td>
       </tr>
       <tr>
@@ -89,7 +98,11 @@ import LayCard from "@/components/layCard/LayCard.vue";
 import LayBtnsContainer from "@/components/layBtnsContainer/LayBtnsContainer.vue";
 import { reqSuccess, reqError } from "@/utils/tips.js";
 import { getOrderDetail, checkOrder } from "@/network/order.js";
-import { correctLaunchTime, correctLaunchDate } from "@/utils/time.js";
+import {
+  correctTimeBegin,
+  correctTimeEnd,
+  correctLaunchDate
+} from "@/utils/time.js";
 import { correctStatus, getOptions } from "@/utils/status.js";
 
 export default {
@@ -178,8 +191,11 @@ export default {
       this.$router.go(-1);
     },
     // 将预约时间从 id 转变为具体时间
-    correctedLaunchTime(id) {
-      return correctLaunchTime(id);
+    correctedTimeBegin(id) {
+      return correctTimeBegin(id);
+    },
+    correctedTimeEnd(id) {
+      return correctTimeEnd(id);
     },
     // 将预约发起时间从时间戳转变为具体时间
     correctedLaunchDate(launchDate) {

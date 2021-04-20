@@ -1,6 +1,13 @@
 <template>
   <div class="room-list">
-    <el-input type="text" v-model="searchValue" clearable @clear="handleClear">
+    <!-- 搜索区域 -->
+    <el-input
+      type="text"
+      v-model="searchValue"
+      clearable
+      @clear="handleClear"
+      placeholder="请输入房间名字"
+    >
       <template #append>
         <el-button icon="el-icon-search" @click="handleBtnSearch"></el-button>
       </template>

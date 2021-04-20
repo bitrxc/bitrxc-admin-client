@@ -30,3 +30,11 @@ export function checkOrder(orderId, data) {
     params: data
   });
 }
+
+// 根据序号搜索预约记录
+export function searchOrders(correctCurrent, limit, schId) {
+  return request({
+    url: `/appointment/${correctCurrent}/${limit}/${schId}`,
+    method: "get"
+  });
+}

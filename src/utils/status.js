@@ -37,3 +37,42 @@ export function correctStatus(status) {
   }
   return res;
 }
+
+/**
+ * 后端传入状态, 有一些状态不能修改为其他字段
+ * @param {String} status
+ * @returns 
+ */
+export function getOptions(status) {
+  let options = [];
+  switch(status) {
+    case "new":
+      options = [
+        { value: "receive", label: "已批准" },
+        { value: "reject", label: "已驳回" }
+      ];
+      break;
+    case "receive":
+      options = [
+        { value: "signed", label: "已签到" },
+        { value: "missed", label: "爽约" }
+      ];
+      break;
+    case "signed":
+      options = [
+        { value: "illegal", label: "未签退" },
+        { value: "finished", label: "已签退" }
+      ];
+      break;
+    case "illegal":
+      options = [{ value: "finished", label: "已签退" }];
+      break;
+    case "missed":
+      options = [{ value: "signed", label: "已签到" }];
+      break;
+    default:
+      // 剩下的已签退(finished)、管理员驳回(reject)、用户撤回(cancel) 这三种状态不能够再修改
+      options = [{ value: null, label: "无法修改", disabled: true }]
+  }
+  return options;
+}

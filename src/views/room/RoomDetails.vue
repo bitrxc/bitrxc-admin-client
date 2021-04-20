@@ -170,13 +170,16 @@ export default {
 table {
   width: 100%;
 }
-table tr {
-  border: 1px solid #ccc;
-  background: #eeefff;
+table tr:nth-child(even) {
+  background-color: #fff;
+}
+table tr:nth-child(odd) {
+  background-color: #fafafa;
 }
 table td {
-  padding: 5px 7px;
+  padding: 15px;
   color: #666;
+  border: 1px solid #e6e6e6;
 }
 table td img {
   width: 500px;

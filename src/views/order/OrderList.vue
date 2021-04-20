@@ -1,21 +1,43 @@
 <template>
   <div class="order-list">
+    <!-- 搜索区域 -->
+    <el-input
+      type="text"
+      v-model="searchValue"
+      clearable
+      @clear="handleClear"
+      placeholder="请输入预约者的学号"
+    >
+      <template #append>
+        <el-button icon="el-icon-search" @click="handleBtnSearch"></el-button>
+      </template>
+    </el-input>
+
     <!-- 用户列表 -->
-    <el-table class="custom-table" :data="tableData" height="620" border stripe>
-      <el-table-column type="index" width="50"></el-table-column>
+    <el-table class="custom-table" :data="tableData" height="580" border stripe>
+      <el-table-column type="index"></el-table-column>
       <el-table-column prop="id" label="预约编号"></el-table-column>
-      <el-table-column prop="roomId" label="房间编号"></el-table-column>
-      <el-table-column prop="launcher" label="预约人" width="300">
+      <el-table-column prop="roomName" label="房间编号"></el-table-column>
+      <el-table-column prop="username" label="预约人"></el-table-column>
+      <el-table-column prop="launchTime" label="预约时间">
+        <template #default="scope">
+          <el-tag>
+            {{ correctedTimeBegin(scope.row.begin) }}
+          </el-tag>
+          -
+          <el-tag>
+            {{ correctedTimeEnd(scope.row.end) }}
+          </el-tag>
+        </template>
       </el-table-column>
-      <el-table-column prop="launchTime" label="预约时间"></el-table-column>
       <el-table-column prop="dealDate" label="处理时间"></el-table-column>
       <el-table-column prop="status" label="房间状态">
         <template #default="scope">
           <el-tag v-if="scope.row.status === 'receive'" type="success">
-            {{ correctedStatus(scope.row.status) }}
+            {{ correctedStatus(scope.row.status).begin }}
           </el-tag>
           <el-tag v-else-if="scope.row.status === 'signed'" type="danger">
-            {{ correctedStatus(scope.row.status) }}
+            {{ correctedStatus(scope.row.status).end }}
           </el-tag>
           <el-tag v-else type="info">
             {{ correctedStatus(scope.row.status) }}
@@ -53,7 +75,6 @@
           id="custom-select"
           v-model="value"
           placeholder="请选择"
-          clearable
           @change="handleValueChange"
         >
           <el-option
@@ -70,9 +91,11 @@
 </template>
 
 <script>
-import { getOrderList } from "@/network/order";
-import { reqError } from "@/utils/tips";
+import { getOrderList, searchOrders } from "@/network/order.js";
+import { reqError } from "@/utils/tips.js";
 import { correctStatus } from "@/utils/status.js";
+import { correctTimeBegin, correctTimeEnd } from "@/utils/time.js";
+import { getScheduleArray } from "@/network/utils.js";
 
 export default {
   name: "OrderList",
@@ -85,6 +108,7 @@ export default {
       current: 1,
       limit: 10,
       options: [
+        { value: "", label: "全部" },
         { value: "new", label: "待审核" },
         { value: "receive", label: "已批准" },
         { value: "signed", label: "已签到" },
@@ -94,11 +118,16 @@ export default {
         { value: "reject", label: "已驳回" },
         { value: "cancel", label: "用户撤回" }
       ],
-      value: ""
+      value: "",
+      searchValue: ""
     };
   },
   created() {
     this.reuseGetOrderList();
+    getScheduleArray().then(res => {
+      const schduleArray = res.data.data;
+      sessionStorage.setItem("scheduleArray", JSON.stringify(schduleArray));
+    });
   },
   methods: {
     reuseGetOrderList() {
@@ -148,6 +177,28 @@ export default {
     // 修改 status 从英文变为中文
     correctedStatus(status) {
       return correctStatus(status);
+    },
+    // 搜索
+    handleBtnSearch() {
+      console.log("搜索按钮被点击了");
+      let correntCurrent = this.current - 1;
+      searchOrders(correntCurrent, this.limit, this.searchValue).then(
+        result => {
+          const res = result.data;
+          this.tableData = res.data.items;
+        }
+      );
+    },
+    // 清空搜索时触发
+    handleClear() {
+      this.reuseGetOrderList();
+    },
+    // 将预约时间从 id 转变为具体时间
+    correctedTimeBegin(id) {
+      return correctTimeBegin(id);
+    },
+    correctedTimeEnd(id) {
+      return correctTimeEnd(id);
     }
   }
 };

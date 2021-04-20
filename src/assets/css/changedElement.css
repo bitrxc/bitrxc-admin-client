@@ -7,3 +7,12 @@
 .el-message-box {
   width: 200px !important;
 }
+
+/* 解决 Google 表头和表格的不匹配的问题 */
+th.gutter{
+  display: table-cell !important;
+}
+
+colgroup.gutter{
+  display: table-cell !important;
+}

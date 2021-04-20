@@ -96,7 +96,6 @@ export default {
             }
 
             // 保存 token 到 sessionStorage
-            console.log(res.data.token);
             sessionStorage.setItem("token", res.data.token);
             sessionStorage.setItem(
               "userInfo",

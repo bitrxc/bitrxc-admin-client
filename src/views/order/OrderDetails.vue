@@ -149,7 +149,7 @@ export default {
     },
     reuseCheckOrder() {
       if (
-        this.value === "finished" ||
+        this.value === "finish" ||
         this.value === "missed" ||
         this.value === "reject"
       ) {

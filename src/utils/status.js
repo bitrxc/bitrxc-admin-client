@@ -61,11 +61,11 @@ export function getOptions(status) {
     case "signed":
       options = [
         { value: "illegal", label: "未签退" },
-        { value: "finished", label: "已签退" }
+        { value: "finish", label: "已签退" }
       ];
       break;
     case "illegal":
-      options = [{ value: "finished", label: "已签退" }];
+      options = [{ value: "finish", label: "已签退" }];
       break;
     case "missed":
       options = [{ value: "signed", label: "已签到" }];

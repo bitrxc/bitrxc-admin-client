@@ -34,7 +34,6 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="dealDate" label="处理时间"></el-table-column>
       <el-table-column prop="status" label="预约状态">
         <template #default="scope">
           <el-tag v-if="scope.row.status === 'receive'" type="success">

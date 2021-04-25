@@ -16,7 +16,11 @@
     <!-- 用户列表 -->
     <el-table class="custom-table" :data="tableData" height="580" border stripe>
       <el-table-column type="index"></el-table-column>
-      <el-table-column prop="id" label="预约编号"></el-table-column>
+      <el-table-column prop="launchDate" label="预约创建时间">
+        <template #default="scope">
+          {{ correctedLaunchDate(scope.row.launchDate) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="roomName" label="房间编号"></el-table-column>
       <el-table-column prop="username" label="预约人"></el-table-column>
       <el-table-column prop="launchTime" label="预约时间">
@@ -31,7 +35,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="dealDate" label="处理时间"></el-table-column>
-      <el-table-column prop="status" label="房间状态">
+      <el-table-column prop="status" label="预约状态">
         <template #default="scope">
           <el-tag v-if="scope.row.status === 'receive'" type="success">
             {{ correctedStatus(scope.row.status) }}
@@ -94,7 +98,11 @@
 import { getOrderList, searchOrders } from "@/network/order.js";
 import { reqError } from "@/utils/tips.js";
 import { correctStatus } from "@/utils/status.js";
-import { correctTimeBegin, correctTimeEnd } from "@/utils/time.js";
+import {
+  correctTimeBegin,
+  correctTimeEnd,
+  correctLaunchDate
+} from "@/utils/time.js";
 import { getScheduleArray } from "@/network/utils.js";
 
 export default {
@@ -199,6 +207,10 @@ export default {
     },
     correctedTimeEnd(id) {
       return correctTimeEnd(id);
+    },
+    // 将预约发起时间从时间戳转变为具体时间
+    correctedLaunchDate(launchDate) {
+      return correctLaunchDate(launchDate);
     }
   }
 };

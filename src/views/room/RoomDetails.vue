@@ -68,7 +68,7 @@
         <el-form-item prop="image">
           <el-input
             placeholder="请输入房间图片的URL"
-            v-model="updateRoomForm.image"
+            v-model="updateRoomForm.images"
             type="text"
           >
           </el-input>
@@ -97,7 +97,7 @@ export default {
       updateRoomForm: {
         name: "",
         description: "",
-        image: ""
+        images: ""
       },
       dialogUpdateRoomVisible: false
     };
@@ -116,7 +116,7 @@ export default {
           this.tableData = res.data.roomInfo;
           this.updateRoomForm.name = this.tableData.name;
           this.updateRoomForm.description = this.tableData.description;
-          this.updateRoomForm.image = this.tableData.image;
+          this.updateRoomForm.images = this.tableData.images;
         })
         .catch(err => {
           console.log(err);
@@ -177,7 +177,7 @@ table tr:nth-child(odd) {
   background-color: #fafafa;
 }
 table td {
-  padding: 15px;
+  padding: 8px;
   color: #666;
   border: 1px solid #e6e6e6;
 }

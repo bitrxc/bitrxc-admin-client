@@ -13,7 +13,7 @@
       </tr>
       <tr>
         <td>预约人</td>
-        <td>{{ tableData.launcher }}</td>
+        <td>{{ tableData.username }}</td>
       </tr>
       <tr>
         <td>房间编号</td>
@@ -134,6 +134,7 @@ export default {
       getOrderDetail(this.orderId)
         .then(result => {
           const res = result.data;
+          console.log(res);
           if (res.code !== 200) {
             return reqError("获取数据失败");
           }
@@ -234,7 +235,7 @@ table tr:nth-child(odd) {
   background-color: #fafafa;
 }
 table td {
-  padding: 15px;
+  padding: 7px;
   color: #666;
   border: 1px solid #e6e6e6;
 }

@@ -23,8 +23,12 @@
       </el-table-column>
       <el-table-column prop="roomName" label="房间编号"></el-table-column>
       <el-table-column prop="username" label="预约人"></el-table-column>
-      <el-table-column prop="launchTime" label="预约时间">
+      <el-table-column prop="launchTime" label="预约时间" width="300">
         <template #default="scope">
+          <el-tag>
+            {{ scope.row.execDate }}
+          </el-tag>
+          -
           <el-tag>
             {{ correctedTimeBegin(scope.row.begin) }}
           </el-tag>
@@ -102,7 +106,7 @@ import {
   correctTimeEnd,
   correctLaunchDate
 } from "@/utils/time.js";
-import { getScheduleArray } from "@/network/utils.js";
+import { reqSuccess } from "../../utils/tips";
 
 export default {
   name: "OrderList",
@@ -131,10 +135,6 @@ export default {
   },
   created() {
     this.reuseGetOrderList();
-    getScheduleArray().then(res => {
-      const schduleArray = res.data.data;
-      sessionStorage.setItem("scheduleArray", JSON.stringify(schduleArray));
-    });
   },
   methods: {
     reuseGetOrderList() {
@@ -149,6 +149,11 @@ export default {
           this.totalPage = res.data.totalPage;
           this.totalElements = res.data.totalElements;
           this.tableData = res.data.items;
+
+          reqSuccess("每隔 5 分钟自动刷新一次");
+          setTimeout(() => {
+            this.reuseGetOrderList();
+          }, 5 * 60 * 1000);
         })
         .catch(err => {
           console.log(err);

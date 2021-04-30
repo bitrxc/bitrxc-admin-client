@@ -20,7 +20,7 @@
         <td>{{ tableData.roomId }}</td>
       </tr>
       <tr>
-        <td>房间状态</td>
+        <td>预约状态</td>
         <td>{{ correctedStatus(tableData.status) }}</td>
       </tr>
       <tr>

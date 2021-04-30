@@ -16,11 +16,19 @@
     <!-- 用户列表 -->
     <el-table class="custom-table" :data="tableData" height="580" border stripe>
       <el-table-column type="index"></el-table-column>
-      <el-table-column prop="id" label="预约编号"></el-table-column>
+      <el-table-column prop="launchDate" label="预约创建时间">
+        <template #default="scope">
+          {{ correctedLaunchDate(scope.row.launchDate) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="roomName" label="房间编号"></el-table-column>
       <el-table-column prop="username" label="预约人"></el-table-column>
-      <el-table-column prop="launchTime" label="预约时间">
+      <el-table-column prop="launchTime" label="预约时间" width="300">
         <template #default="scope">
+          <el-tag>
+            {{ scope.row.execDate }}
+          </el-tag>
+          -
           <el-tag>
             {{ correctedTimeBegin(scope.row.begin) }}
           </el-tag>
@@ -30,14 +38,13 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="dealDate" label="处理时间"></el-table-column>
-      <el-table-column prop="status" label="房间状态">
+      <el-table-column prop="status" label="预约状态">
         <template #default="scope">
           <el-tag v-if="scope.row.status === 'receive'" type="success">
-            {{ correctedStatus(scope.row.status).begin }}
+            {{ correctedStatus(scope.row.status) }}
           </el-tag>
           <el-tag v-else-if="scope.row.status === 'signed'" type="danger">
-            {{ correctedStatus(scope.row.status).end }}
+            {{ correctedStatus(scope.row.status) }}
           </el-tag>
           <el-tag v-else type="info">
             {{ correctedStatus(scope.row.status) }}
@@ -94,8 +101,12 @@
 import { getOrderList, searchOrders } from "@/network/order.js";
 import { reqError } from "@/utils/tips.js";
 import { correctStatus } from "@/utils/status.js";
-import { correctTimeBegin, correctTimeEnd } from "@/utils/time.js";
-import { getScheduleArray } from "@/network/utils.js";
+import {
+  correctTimeBegin,
+  correctTimeEnd,
+  correctLaunchDate
+} from "@/utils/time.js";
+import { reqSuccess } from "../../utils/tips";
 
 export default {
   name: "OrderList",
@@ -113,7 +124,7 @@ export default {
         { value: "receive", label: "已批准" },
         { value: "signed", label: "已签到" },
         { value: "illegal", label: "未签退" },
-        { value: "finished", label: "已签退" },
+        { value: "finish", label: "已签退" },
         { value: "missed", label: "爽约" },
         { value: "reject", label: "已驳回" },
         { value: "cancel", label: "用户撤回" }
@@ -124,10 +135,6 @@ export default {
   },
   created() {
     this.reuseGetOrderList();
-    getScheduleArray().then(res => {
-      const schduleArray = res.data.data;
-      sessionStorage.setItem("scheduleArray", JSON.stringify(schduleArray));
-    });
   },
   methods: {
     reuseGetOrderList() {
@@ -142,6 +149,11 @@ export default {
           this.totalPage = res.data.totalPage;
           this.totalElements = res.data.totalElements;
           this.tableData = res.data.items;
+
+          reqSuccess("每隔 5 分钟自动刷新一次");
+          setTimeout(() => {
+            this.reuseGetOrderList();
+          }, 5 * 60 * 1000);
         })
         .catch(err => {
           console.log(err);
@@ -199,6 +211,10 @@ export default {
     },
     correctedTimeEnd(id) {
       return correctTimeEnd(id);
+    },
+    // 将预约发起时间从时间戳转变为具体时间
+    correctedLaunchDate(launchDate) {
+      return correctLaunchDate(launchDate);
     }
   }
 };

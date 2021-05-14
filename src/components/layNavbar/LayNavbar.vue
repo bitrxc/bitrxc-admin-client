@@ -5,7 +5,7 @@
       <i class="el-icon-s-operation"></i>
       <span>睿信管理后台</span>
     </div>
-    <el-button @click="logout">退出</el-button>
+    <el-button type="info" @click="logout">退出登录</el-button>
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
       this.emitter.emit("toggle-sidebar", this.isSidebarOpen);
     },
     logout() {
-      window.sessionStorage.clear();
+      window.localStorage.clear();
       this.$router.replace("/login");
     }
   }

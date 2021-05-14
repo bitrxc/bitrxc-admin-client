@@ -1,67 +1,46 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-const Home = () => import("@/views/Home.vue");
-const Login = () => import("@/views/Login.vue");
-// const Register = () => import("@/views/Register.vue");
-
-/* 预约管理 */
-const OrderList = () => import("@/views/order/OrderList.vue"); // 预约列表
-const OrderDetails = () => import("@/views/order/OrderDetails.vue"); // 预约审批
-
-/* 管理员管理 */
-const UserList = () => import("@/views/admin/UserList.vue"); // 管理员列表
-const AuthorizationList = () => import("@/views/role/AuthorizationList.vue");
-const RoleList = () => import("@/views/role/RoleList.vue");
-
-/* 房间管理 */
-const RoomList = () => import("@/views/room/RoomList.vue"); // 房间列表
-const RoomDetails = () => import("@/views/room/RoomDetails.vue"); // 房间详情
-
-const OrderCharts = () => import("@/views/statistics/OrderCharts.vue");
-const PersonalDeatils = () => import("@/views/person/PersonalDeatils.vue");
-
-/* 404 */
-const NotFound = () => import("@/views/NotFound.vue");
 const routes = [
-  { path: "/", redirect: "/home" },
-  { path: "/login", name: "Login", component: Login },
-  // { path: "/register", name: "Register", component: Register },
+  {
+    path: "/",
+    redirect: "/home"
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/Login.vue")
+  },
   {
     path: "/home",
     name: "Home",
-    component: Home,
+    component: () => import("@/views/Home.vue"),
     redirect: "/orderList",
     children: [
-      { path: "/orderList", name: "OrderList", component: OrderList },
-      { path: "/orderDetails", name: "OrderDetails", component: OrderDetails },
-      { path: "/userList", name: "UserList", component: UserList },
-      { path: "/roleList", name: "RoleList", component: RoleList },
       {
-        path: "/authorizationList",
-        name: "AuthorizationList",
-        component: AuthorizationList
+        path: "/orderList",
+        name: "OrderList",
+        component: () => import("@/views/order/OrderList.vue")
+      },
+      {
+        path: "/orderDetails",
+        name: "OrderDetails",
+        component: () => import("@/views/order/OrderDetails.vue")
       },
       {
         path: "/roomList",
         name: "RoomList",
-        component: RoomList
+        component: () => import("@/views/room/RoomList.vue")
       },
       {
         path: "/roomDetails",
         name: "RoomDetails",
-        component: RoomDetails
+        component: () => import("@/views/room/RoomDetails.vue")
       },
       {
-        path: "/orderCharts",
-        name: "OrderCharts",
-        component: OrderCharts
-      },
-      {
-        path: "/personalDetails",
-        name: "PersonalDetails",
-        component: PersonalDeatils
-      },
-      { path: "/notFound", name: "NotFound", component: NotFound }
+        path: "/notFound",
+        name: "NotFound",
+        component: () => import("@/views/NotFound.vue")
+      }
     ]
   }
 ];
@@ -74,17 +53,25 @@ const router = createRouter({
 // 挂载路由导航守卫
 router.beforeEach((to, from, next) => {
   document.title = "北京理工大学睿信社区管理系统";
-  if (to.path === "/login") {
-    return next();
-  }
-
   // 获取 token
-  const tokenStr = window.sessionStorage.getItem("token");
-  if (!tokenStr) {
-    return next("/login");
-  }
+  const tokenObj = JSON.parse(window.localStorage.getItem("token"));
 
-  next();
+  // 如果有 token 说明该用户已经登录
+  if (tokenObj) {
+    // 在已登录的情况下, 访问登录页会被重定向到首页
+    if (to.path === "/login") {
+      next({ path: "/" });
+    } else {
+      next();
+    }
+  } else {
+    // 没有登录的话, 访问任何页面都重定向到登录页
+    if (to.path === "/login") {
+      next();
+    } else {
+      next({ path: "/login" });
+    }
+  }
 });
 
 export default router;

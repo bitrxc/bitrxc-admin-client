@@ -14,7 +14,7 @@
     </el-input>
 
     <!-- 用户列表 -->
-    <el-table class="custom-table" :data="tableData" height="580" border stripe>
+    <el-table class="custom-table" :data="tableData" height="550" border stripe>
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="launchDate" label="预约创建时间">
         <template #default="scope">
@@ -75,6 +75,7 @@
         background
       >
       </el-pagination>
+
       <!-- 房间状态, 自定义分页 -->
       <div class="custom-pagination">
         <div class="custom-span"><span>房间状态</span></div>
@@ -225,10 +226,10 @@ export default {
   width: 100%;
 }
 .paging {
-  padding: 5px;
   display: flex;
   display: -webkit-flex;
   justify-content: space-between;
+  align-content: center;
   flex-wrap: wrap;
 }
 .paging .custom-pagination {

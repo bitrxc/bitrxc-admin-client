@@ -75,6 +75,7 @@
         background
       >
       </el-pagination>
+
       <!-- 房间状态, 自定义分页 -->
       <div class="custom-pagination">
         <div class="custom-span"><span>房间状态</span></div>
@@ -225,10 +226,10 @@ export default {
   width: 100%;
 }
 .paging {
-  padding: 5px;
   display: flex;
   display: -webkit-flex;
   justify-content: space-between;
+  align-content: center;
   flex-wrap: wrap;
 }
 .paging .custom-pagination {

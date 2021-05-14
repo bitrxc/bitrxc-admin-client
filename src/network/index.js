@@ -4,14 +4,15 @@ import router from "@/router/index.js";
 export function request(config) {
   const instance = axios.create({
     baseURL: process.env.VUE_APP_BASE_API
-    // timeout: 5000
   });
 
   instance.interceptors.request.use(
     config => {
-      // 如果此时有 token , 就给请求头加上
-      const tokenStr = JSON.parse(window.localStorage.getItem("token")).token;
-      config.headers.token = tokenStr;
+      const tokenObj = JSON.parse(window.localStorage.getItem("token"));
+      // 如果有 token 则加上
+      if (tokenObj) {
+        config.headers.token = tokenObj.token;
+      }
       return config;
     },
     err => {

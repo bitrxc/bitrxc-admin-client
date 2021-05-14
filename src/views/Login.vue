@@ -96,11 +96,11 @@ export default {
             }
 
             // 保存 token 到 sessionStorage
-            sessionStorage.setItem("token", res.data.token);
-            sessionStorage.setItem(
-              "userInfo",
-              JSON.stringify(res.data.userInfo)
+            localStorage.setItem(
+              "token",
+              JSON.stringify({ token: res.data.token })
             );
+            localStorage.setItem("userInfo", JSON.stringify(res.data.userInfo));
 
             reqSuccess("登录成功");
             this.$router.push("/home");

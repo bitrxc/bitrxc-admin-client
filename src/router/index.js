@@ -79,8 +79,9 @@ router.beforeEach((to, from, next) => {
   }
 
   // 获取 token
-  const tokenStr = window.sessionStorage.getItem("token");
-  if (!tokenStr) {
+  const tokenObj = JSON.parse(window.localStorage.getItem("token"));
+  console.log(tokenObj);
+  if (!tokenObj) {
     return next("/login");
   }
 

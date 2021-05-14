@@ -23,7 +23,6 @@ export default {
       this.emitter.emit("toggle-sidebar", this.isSidebarOpen);
     },
     logout() {
-      window.sessionStorage.clear();
       this.$router.replace("/login");
     }
   }

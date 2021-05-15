@@ -95,7 +95,7 @@ export default {
               return reqError("用户名或密码错误");
             }
 
-            // 保存 token 到 sessionStorage
+            // 保存 token 到 localStorage
             localStorage.setItem(
               "token",
               JSON.stringify({ token: res.data.token })

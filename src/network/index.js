@@ -23,8 +23,10 @@ export function request(config) {
   instance.interceptors.response.use(result => {
     const res = result.data;
     // 401 代表登录过期
-    if (res.code === 401) {
-      router.push("/login");
+    if (res.code === 201) {
+      // 清除 token
+      window.localStorage.clear();
+      router.replace({ path: "/login" });
     }
     return result;
   });

@@ -183,7 +183,7 @@ export default {
     },
     // 处理申请
     handleBtnApproval() {
-      let userInfo = JSON.parse(window.sessionStorage.getItem("userInfo"));
+      let userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
       this.conductor = userInfo.username;
       this.reuseCheckOrder();
     },

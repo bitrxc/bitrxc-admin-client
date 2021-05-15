@@ -149,8 +149,8 @@ export default {
 
     return {
       userInfo: {
-        oldEmail: JSON.parse(window.sessionStorage.getItem("userInfo")).email,
-        oldPhone: JSON.parse(window.sessionStorage.getItem("userInfo")).mobile
+        oldEmail: JSON.parse(window.localStorage.getItem("userInfo")).email,
+        oldPhone: JSON.parse(window.localStorage.getItem("userInfo")).mobile
       },
       // 控制弹窗的变量
       dialogPasswordVisible: false,

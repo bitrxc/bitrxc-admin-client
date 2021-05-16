@@ -23,6 +23,7 @@
       </el-table-column>
       <el-table-column prop="roomName" label="房间编号"></el-table-column>
       <el-table-column prop="username" label="预约人"></el-table-column>
+      <el-table-column prop="schoolId" label="预约人学号"></el-table-column>
       <el-table-column prop="launchTime" label="预约时间" width="300">
         <template #default="scope">
           <el-tag>

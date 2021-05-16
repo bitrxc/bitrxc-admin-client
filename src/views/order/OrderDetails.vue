@@ -16,6 +16,10 @@
         <td>{{ tableData.username }}</td>
       </tr>
       <tr>
+        <td>预约人学号</td>
+        <td>{{ tableData.schoolId }}</td>
+      </tr>
+      <tr>
         <td>房间编号</td>
         <td>{{ tableData.roomId }}</td>
       </tr>

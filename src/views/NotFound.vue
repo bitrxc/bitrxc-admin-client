@@ -1,18 +1,12 @@
 <template>
   <div>
     <img src="@/assets/img/NoBug.png" />
-    <!-- <lay-upload-img></lay-upload-img> -->
   </div>
 </template>
 
 <script>
-// import LayUploadImg from "@/components/layUploadImg/LayUploadImg.vue";
-
 export default {
   name: "NotFound"
-  // components: {
-  //   LayUploadImg
-  // }
 };
 </script>
 

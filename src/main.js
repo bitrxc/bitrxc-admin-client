@@ -1,6 +1,4 @@
 import { createApp } from "vue";
-// 去除 elemen-plus 警告
-import "default-passive-events";
 import ElementPlus from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
 // 确保 element-plus 分页组件显示中文

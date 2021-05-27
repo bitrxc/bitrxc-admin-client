@@ -14,7 +14,13 @@
     </el-input>
 
     <!-- 用户列表 -->
-    <el-table class="custom-table" :data="tableData" height="550" border stripe>
+    <el-table
+      class="custom-table"
+      :data="tableData"
+      height="85vh"
+      border
+      stripe
+    >
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="launchDate" label="预约创建时间">
         <template #default="scope">
@@ -109,7 +115,6 @@ import {
   correctLaunchDate
 } from "@/utils/time.js";
 import { reqSuccess } from "../../utils/tips";
-
 export default {
   name: "OrderList",
   data() {

@@ -1,11 +1,5 @@
 <template>
   <div class="order-details">
-    <!-- 面包屑导航 -->
-    <el-breadcrumb class="custom-breadcurmb">
-      <el-breadcrumb-item>预约管理</el-breadcrumb-item>
-      <el-breadcrumb-item>预约详情</el-breadcrumb-item>
-    </el-breadcrumb>
-
     <table>
       <tr>
         <td>预约编号</td>
@@ -20,8 +14,8 @@
         <td>{{ tableData.schoolId }}</td>
       </tr>
       <tr>
-        <td>房间编号</td>
-        <td>{{ tableData.roomId }}</td>
+        <td>房间</td>
+        <td>{{ tableData.roomName }}</td>
       </tr>
       <tr>
         <td>预约状态</td>
@@ -215,10 +209,6 @@ export default {
 </script>
 
 <style scoped>
-.custom-breadcurmb {
-  padding: 5px;
-  padding-bottom: 10px;
-}
 .approval-box {
   display: flex;
   display: -webkit-flex;

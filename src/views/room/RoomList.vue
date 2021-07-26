@@ -14,7 +14,7 @@
     </el-input>
 
     <!-- 用户列表 -->
-    <el-table class="custom-table" :data="tableData" height="580" border stripe>
+    <el-table class="custom-table" :data="tableData" border stripe>
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="id" label="房间编号"></el-table-column>
       <el-table-column prop="name" label="房间姓名"></el-table-column>

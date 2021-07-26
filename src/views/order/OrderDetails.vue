@@ -51,12 +51,7 @@
       </tr>
     </table>
 
-    <lay-card>
-      <template v-slot:title>预约发起人的理由:</template>
-      <template v-slot:content>
-        {{ tableData.userNote }}
-      </template>
-    </lay-card>
+    <div>预约发起人的理由:{{ tableData.userNote }}</div>
 
     <el-input
       class="textarea"
@@ -92,7 +87,6 @@
 </template>
 
 <script>
-import LayCard from "@/components/layCard/LayCard.vue";
 import LayBtnsContainer from "@/components/layBtnsContainer/LayBtnsContainer.vue";
 import { reqSuccess, reqError } from "@/utils/tips.js";
 import { getOrderDetail, checkOrder } from "@/network/order.js";
@@ -106,7 +100,6 @@ import { correctStatus, getOptions } from "@/utils/status.js";
 export default {
   name: "OrderDetails",
   components: {
-    LayCard,
     LayBtnsContainer
   },
   data() {

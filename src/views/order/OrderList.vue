@@ -14,13 +14,7 @@
     </el-input>
 
     <!-- 用户列表 -->
-    <el-table
-      class="custom-table"
-      :data="tableData"
-      height="85vh"
-      border
-      stripe
-    >
+    <el-table class="custom-table" :data="tableData" border stripe>
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="launchDate" label="预约创建时间">
         <template #default="scope">

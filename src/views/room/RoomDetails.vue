@@ -65,7 +65,7 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item prop="image">
+        <el-form-item prop="images">
           <el-input
             placeholder="请输入房间图片的URL"
             v-model="updateRoomForm.images"

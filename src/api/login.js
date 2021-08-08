@@ -1,10 +1,6 @@
-/**
- *
- */
 import { request } from "./index";
 
-// 登录函数
-export function loginRequest(loginForm) {
+export function login(loginForm) {
   return request({
     url: "/login",
     method: "post",

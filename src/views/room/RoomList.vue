@@ -104,7 +104,7 @@ import {
   addRoomItem,
   deleteRoomItem,
   searchRooms
-} from "../../network/room";
+} from "../../api/room";
 import { reqSuccess, reqError, reqInfo } from "../../utils/tips";
 
 export default {

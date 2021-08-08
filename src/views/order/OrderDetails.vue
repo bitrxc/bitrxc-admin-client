@@ -89,7 +89,7 @@
 <script>
 import LayBtnsContainer from "@/components/layBtnsContainer/LayBtnsContainer.vue";
 import { reqSuccess, reqError } from "@/utils/tips.js";
-import { getOrderDetail, checkOrder } from "@/network/order.js";
+import { getOrderDetail, checkOrder } from "@/api/order.js";
 import {
   correctTimeBegin,
   correctTimeEnd,

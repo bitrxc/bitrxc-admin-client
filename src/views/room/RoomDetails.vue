@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { getRoomDetail, updateRoom } from "../../network/room";
+import { getRoomDetail, updateRoom } from "../../api/room";
 import { reqError, reqSuccess } from "../../utils/tips";
 import LayBtnsContainer from "@/components/layBtnsContainer/LayBtnsContainer.vue";
 export default {

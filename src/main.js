@@ -1,16 +1,16 @@
 import { createApp } from "vue";
-import ElementPlus from "element-plus";
-import "element-plus/lib/theme-chalk/index.css";
-import Antd from "ant-design-vue";
-import "ant-design-vue/dist/antd.css";
-// 确保 element-plus 分页组件显示中文
-import locale from "element-plus/lib/locale/lang/zh-cn";
+import { Button, Input, Layout, Menu } from "ant-design-vue";
+import "ant-design-vue/lib/button/style/css";
+import "ant-design-vue/lib/input/style/css";
+import "ant-design-vue/lib/layout/style/css";
+import "ant-design-vue/lib/menu/style/css";
 import App from "@/App.vue";
 import router from "@/router";
 
 const app = createApp(App);
-app.use(ElementPlus, { locale });
-app.config.productionTip = false;
-app.use(Antd);
+app.use(Button);
+app.use(Input);
+app.use(Layout);
 app.use(router);
+app.use(Menu);
 app.mount("#app");

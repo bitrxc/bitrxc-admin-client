@@ -1,76 +1,46 @@
 <template>
-  <a-layout>
-    <a-layout-sider
-      breakpoint="lg"
-      collapsed-width="0"
-      @collapse="onCollapse"
-      @breakpoint="onBreakpoint"
-    >
-      <div class="logo" />
-      <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
-        <a-menu-item key="1">
-          <user-outlined />
-          <span class="nav-text">预约管理</span>
-        </a-menu-item>
-      </a-menu>
-    </a-layout-sider>
-    <a-layout>
-      <a-layout-header :style="{ background: '#fff', padding: 0 }">
-        <navbar></navbar>
-      </a-layout-header>
-      <a-layout-content :style="{ margin: '24px 16px 0' }">
-        <div
-          :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
-        >
-          <router-view />
-        </div>
-      </a-layout-content>
-    </a-layout>
-  </a-layout>
+  <div class="home">
+    <aside>
+      <sider></sider>
+    </aside>
+    <main>
+      <router-view />
+    </main>
+  </div>
 </template>
+
 <script>
-import { UserOutlined } from "@ant-design/icons-vue";
-import { defineComponent, ref } from "vue";
-import Navbar from "@/components/navbar/Navbar.vue";
-export default defineComponent({
+import Sider from "@/components/sider/Sider.vue";
+export default {
   components: {
-    UserOutlined,
-    Navbar
-  },
-
-  setup() {
-    const onCollapse = (collapsed, type) => {
-      console.log(collapsed, type);
-    };
-
-    const onBreakpoint = broken => {
-      console.log(broken);
-    };
-
-    return {
-      selectedKeys: ref(["4"]),
-      onCollapse,
-      onBreakpoint
-    };
+    Sider
   }
-});
+};
 </script>
-<style>
-#components-layout-demo-responsive .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-}
 
-.site-layout-sub-header-background {
-  background: #fff;
+<style scoped>
+.home {
+  display: flex;
+  min-height: 100vh;
 }
-
-.site-layout-background {
-  background: #fff;
+.home aside {
+  width: 200px;
+  padding: 64px 0;
+  background: url("../assets/img/background.png") repeat;
 }
-
-[data-theme="dark"] .site-layout-sub-header-background {
-  background: #141414;
+@media screen and (max-width: 992px) {
+  .home aside {
+    display: none;
+  }
+}
+.home main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.home main header {
+  height: 64px;
+  padding: 0 60px;
+  border-bottom: 2px solid #ccc;
 }
 </style>

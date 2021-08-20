@@ -3,17 +3,23 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    redirect: "/home"
+    redirect: "/home/"
+  },
+  {
+    path: "/home/",
+    component: () => import("@/views/Home.vue"),
+    redirect: "/home/oList",
+    children: [
+      {
+        path: "oList",
+        component: () => import("@/views/OList.vue")
+      }
+    ]
   },
   {
     path: "/login",
     name: "Login",
-    component: () => import("@/views/Login.vue")
-  },
-  {
-    path: "/home",
-    name: "Home",
-    component: () => import("@/views/Home.vue")
+    component: () => import("@/views/login/Login.vue")
   }
   //   redirect: "/orderList",
   //   children: [

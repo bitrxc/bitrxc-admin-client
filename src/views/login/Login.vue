@@ -19,25 +19,25 @@
     <section>
       <div id="form">
         <div>管理员登入</div>
-        <a-input
+        <el-input
           placeholder="请输入用户名"
-          v-model:value="loginData.username"
-          class="b-input"
+          v-model="loginData.username"
+          class="input"
         >
           <template #prefix>
-            <user-outlined type="user" style="color: rgba(0, 0, 0, 0.25)" />
+            <i class="el-icon-user"></i>
           </template>
-        </a-input>
-        <a-input
+        </el-input>
+        <el-input
           type="password"
           placeholder="请输入密码"
-          v-model:value="loginData.password"
-          class="b-input"
+          v-model="loginData.password"
+          class="input"
         >
           <template #prefix>
-            <lock-outlined style="color: rgba(0, 0, 0, 0.25)" />
+            <i class="el-icon-lock"></i>
           </template>
-        </a-input>
+        </el-input>
         <button @click="handleLogin">登录</button>
       </div>
     </section>
@@ -46,12 +46,8 @@
 
 <script>
 import { login } from "@/api/login.js";
-import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 export default {
-  components: {
-    UserOutlined,
-    LockOutlined
-  },
+  components: {},
   data() {
     return {
       loginData: {
@@ -62,10 +58,20 @@ export default {
   },
   methods: {
     async handleLogin() {
-      const res = await login(this.loginData);
-      const token = res.data.data.token;
-      window.localStorage.setItem("token", token);
-      this.$router.replace("/");
+      try {
+        window.localStorage.clear();
+        const res = await login(this.loginData);
+        if (res.data.code === 200) {
+          console.log(res.data.token);
+          window.localStorage.setItem("token", res.data.data.token);
+          this.$message.success("登录成功");
+          this.$router.replace("/");
+        } else {
+          this.$message.error("用户名或密码错误");
+        }
+      } catch (e) {
+        this.$message.error("网络错误");
+      }
     }
   }
 };
@@ -75,7 +81,6 @@ export default {
 main {
   display: flex;
   height: 100vh;
-  background: url("../assets/img/background.png") repeat;
 }
 
 /* aside 部分 */
@@ -86,6 +91,8 @@ main aside {
   justify-content: space-between;
   padding: 60px;
   color: #fff;
+
+  background: url("../../assets/img/background.png") repeat;
 }
 main aside div:first-child {
   font-size: 25px;
@@ -126,17 +133,16 @@ main section #form {
   transform: translate(-50%, -50%);
   text-align: center;
 }
-main section #form div {
+main section #form > div {
   float: right;
   margin: 50px 0;
   color: #078aae;
   font-size: 25px;
   font-weight: bold;
 }
-main section #form .b-input {
+main section #form .input {
+  font-size: 16px;
   margin: 10px 0;
-  border: none;
-  border-bottom: 1px solid #ccc;
 }
 main section #form button {
   width: 100px;

@@ -6,24 +6,25 @@ export function request(config) {
     baseURL: process.env.VUE_APP_BASE_API
   });
 
-  // instance.interceptors.request.use(
-  //   config => {
-  //     const tokenObj = JSON.parse(window.localStorage.getItem("token"));
-  //     // 如果有 token 则加上
-  //     if (tokenObj) {
-  //       config.headers.token = tokenObj.token;
-  //     }
-  //     return config;
-  //   },
-  //   err => {
-  //     console.log(err);
-  //   }
-  // );
+  instance.interceptors.request.use(
+    config => {
+      const token = window.localStorage.getItem("token");
+      // 如果有 token 则加上
+      if (token != "") {
+        config.headers.token = token;
+        console.log("token", token);
+      }
+      return config;
+    },
+    err => {
+      console.log(err);
+    }
+  );
 
   // instance.interceptors.response.use(result => {
   //   const res = result.data;
   //   // 401 代表登录过期
-  //   if (res.code === 201) {
+  //   if (res.code === 401) {
   //     // 清除 token
   //     window.localStorage.clear();
   //     router.replace({ path: "/login" });

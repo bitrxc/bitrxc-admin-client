@@ -10,10 +10,10 @@
     <section>
       <div id="form">
         <div>管理员登入</div>
-        <el-input placeholder="请输入用户名"  v-model="loginData.username"  class="input">
+        <el-input placeholder="请输入用户名"  v-model="userForm.username"  class="input">
           <template #prefix><i class="el-icon-user"></i></template>
         </el-input>
-        <el-input type="password" placeholder="请输入密码"  v-model="loginData.password"  class="input">
+        <el-input type="password" placeholder="请输入密码"  v-model="userForm.password"  class="input">
           <template #prefix><i class="el-icon-lock"></i></template>
         </el-input>
         <button @click="handleLogin">登录</button>
@@ -23,14 +23,25 @@
 </template>
 
 <script>
+import { reactive, getCurrentInstance } from 'vue'
+
 export default {
   components: {},
-  data () {
+  setup () {
+    const { proxy } = getCurrentInstance()
+    const userForm = reactive({
+      username: '',
+      password: ''
+    })
+
+    const handleLogin = async () => {
+      const res = await proxy.$api.login(userForm)
+      console.log(res)
+    }
+
     return {
-      loginData: {
-        username: '',
-        password: ''
-      }
+      userForm,
+      handleLogin
     }
   }
 }

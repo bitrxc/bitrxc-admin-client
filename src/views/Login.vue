@@ -45,36 +45,17 @@
 </template>
 
 <script>
-import { login } from "@/api/login.js";
 export default {
   components: {},
-  data() {
+  data () {
     return {
       loginData: {
-        username: "",
-        password: ""
-      }
-    };
-  },
-  methods: {
-    async handleLogin() {
-      try {
-        window.localStorage.clear();
-        const res = await login(this.loginData);
-        if (res.data.code === 200) {
-          console.log(res.data.token);
-          window.localStorage.setItem("token", res.data.data.token);
-          this.$message.success("登录成功");
-          this.$router.replace("/");
-        } else {
-          this.$message.error("用户名或密码错误");
-        }
-      } catch (e) {
-        this.$message.error("网络错误");
+        username: '',
+        password: ''
       }
     }
   }
-};
+}
 </script>
 
 <style>
@@ -92,7 +73,7 @@ main aside {
   padding: 60px;
   color: #fff;
 
-  background: url("../../assets/img/background.png") repeat;
+  background: url("../assets/img/background.png") repeat;
 }
 main aside div:first-child {
   font-size: 25px;

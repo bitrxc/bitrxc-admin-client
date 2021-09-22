@@ -5,7 +5,21 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    redirect: '/appointmentList',
+    meta: {
+      title: '主页'
+    },
+    children: [
+      {
+        path: '/appointmentList',
+        name: 'AppointmentList',
+        component: () => import('../views/AppointmentList.vue'),
+        meta: {
+          title: '订单管理'
+        }
+      }
+    ]
   },
   {
     path: '/login',

@@ -8,16 +8,22 @@
       </div>
     </aside>
     <section>
-      <div id="form">
-        <div>管理员登入</div>
-        <el-input placeholder="请输入用户名"  v-model="userForm.username"  class="input">
-          <template #prefix><i class="el-icon-user"></i></template>
-        </el-input>
-        <el-input type="password" placeholder="请输入密码"  v-model="userForm.password"  class="input">
-          <template #prefix><i class="el-icon-lock"></i></template>
-        </el-input>
-        <button @click="handleLogin">登录</button>
-      </div>
+      <el-form :model="userForm">
+        <div class="tips">管理员登入</div>
+        <el-form-item prop="username">
+          <el-input placeholder="请输入用户名"  v-model="userForm.username"  class="input">
+            <template #prefix><i class="el-icon-user"></i></template>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input type="password" placeholder="请输入密码"  v-model="userForm.password"  class="input">
+            <template #prefix><i class="el-icon-lock"></i></template>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="handleLogin">登录</el-button>
+        </el-form-item>
+      </el-form>
     </section>
   </main>
 </template>
@@ -36,7 +42,9 @@ export default {
 
     const handleLogin = async () => {
       const res = await proxy.$api.login(userForm)
-      console.log(res)
+      proxy.$store.commit('saveUserInfo', res)
+      proxy.$router.push('/')
+      proxy.$message.success('登录成功')
     }
 
     return {
@@ -47,10 +55,11 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 main {
   display: flex;
   height: 100vh;
+  cursor: pointer;
   aside {
     display: none;
 
@@ -84,37 +93,19 @@ main {
     position: relative;
     width: 100%;
     background-color: #fff;
-
-    #form {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-
-      div {
-        float: right;
-        margin: 50px 0;
-        color: #4e97b9;
-        font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .el-form {
+      .tips {
+        margin-bottom: 40px;
+        font-size: 20px !important;
         font-weight: bold;
+        color: #4e97b9;
       }
-
-      .input {
-        font-size: 16px;
-        margin: 10px 0;
-      }
-
-      button {
-        width: 100px;
-        height: 40px;
-        margin: 50px;
-        border: none;
-        border-radius: 20px;
-        outline: none;
-        color: #fff;
-        font-size: 20px;
+      .el-button {
         background-color: #4e97b9;
+        color: #fff;
       }
     }
   }

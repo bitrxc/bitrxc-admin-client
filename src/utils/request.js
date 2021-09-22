@@ -4,6 +4,8 @@
 import axios from 'axios'
 import config from '../config'
 import router from '../router'
+import store from '../store'
+
 import { ElMessage } from 'element-plus'
 
 const TOKEN_INVALID = 'token 验证失败, 请重新登录'
@@ -16,10 +18,9 @@ const service = axios.create({
 
 // 请求拦截
 service.interceptors.request.use(req => {
-  // TO DO
   const headers = req.headers
-  if (!headers.Authorization) {
-    headers.Authorization = 'TEMP TOKEN'
+  if (!headers.token) {
+    headers.token = store.getters.token
   }
   return req
 })
@@ -27,7 +28,7 @@ service.interceptors.request.use(req => {
 // 响应拦截
 service.interceptors.response.use(res => {
   if (res.status === 200) {
-    const { code, data, msg } = res.data
+    const { code, data, message } = res.data
     if (code === 401) {
       ElMessage.error(TOKEN_INVALID)
       router.push('/login')
@@ -36,8 +37,7 @@ service.interceptors.response.use(res => {
     if (code === 200) {
       return data
     }
-    ElMessage.error(msg)
-    throw Error(msg)
+    ElMessage.error(message)
   } else {
     ElMessage.error(NETWORK_ERROR)
   }

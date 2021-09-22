@@ -8,5 +8,5 @@ import api from './api/index.js'
 
 const app = createApp(App)
 app.config.globalProperties.$api = api
-app.use(ElementPlus, { size: 'samll' })
+app.use(ElementPlus, { size: 'mini' })
 app.use(store).use(router).mount('#app')

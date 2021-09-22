@@ -1,6 +1,10 @@
 <template>
   <div class="basic-layout">
-    <div :class="['nav-side', unfold ? 'unfold' : '']"></div>
+    <div :class="['nav-side', unfold ? 'unfold' : '']">
+      <ul>
+        <li @click="changeMenu">预约管理</li>
+      </ul>
+    </div>
     <div :class="['main-page', unfold ? 'unfold' : '']">
       <div class="top-menu">
         <div class="left">
@@ -34,10 +38,11 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .basic-layout {
   height: 100vh;
   .nav-side {
+    cursor: pointer;
     position: fixed;
     height: 100%;
     width: 0;
@@ -45,6 +50,23 @@ export default {
     transition: width .5s;
     &.unfold {
       width: 100px;
+    }
+    ul {
+      display: none;
+      &.unfold {
+        display: block;
+      }
+      li {
+        list-style-type: none;
+        height: 50px;
+        line-height: 50px;
+        color: #fff;
+        text-align: center;
+      }
+      li:hover {
+        background-color: #eef0f3;
+        color: #4e97b9;
+      }
     }
   }
   .main-page {
@@ -84,7 +106,6 @@ export default {
     .wrapper {
       min-height: calc(100vh - 100px);
       margin: 20px;
-      background-color: #fff;
     }
   }
 }

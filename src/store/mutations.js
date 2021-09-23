@@ -8,5 +8,13 @@ export default {
   saveRoomList (state, roomList) {
     state.roomList = roomList
     storage.setItem('roomList', roomList)
+  },
+  saveBeginTimes (state, beginTimes) {
+    state.beginTimes = beginTimes
+    storage.setItem('beginTimes', beginTimes)
+  },
+  saveEndTimes (state, endTimes) {
+    state.endTimes = endTimes
+    storage.setItem('endTimes', endTimes)
   }
 }

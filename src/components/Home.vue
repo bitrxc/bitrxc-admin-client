@@ -15,7 +15,7 @@
           <span>睿信社区管理系统后台</span>
         </div>
         <div class="right">
-          <el-button size="small">登出</el-button>
+          <el-button size="small" @click="handleLogout">登出</el-button>
         </div>
       </div>
       <div class="wrapper">
@@ -26,16 +26,23 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 export default {
   name: 'Home',
   setup () {
+    const { proxy } = getCurrentInstance()
     const unfoldUrl = ref(require('../assets/img/unfold.png'))
     const unfold = ref(false)
 
+    const handleLogout = () => {
+      proxy.$store.commit('saveUserInfo', {})
+      proxy.$router.replace('/login')
+    }
+
     return {
       unfoldUrl,
-      unfold
+      unfold,
+      handleLogout
     }
   }
 }

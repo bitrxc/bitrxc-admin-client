@@ -49,6 +49,11 @@ export default {
       // 获取房间信息保存到 vuex
       const { rooms } = await proxy.$api.roomList()
       proxy.$store.commit('saveRoomList', rooms)
+
+      // 获取时间列表信息保存到 vuex
+      const { beginTimes, endTimes } = await proxy.$api.timeList()
+      proxy.$store.commit('saveBeginTimes', beginTimes)
+      proxy.$store.commit('saveEndTimes', endTimes)
     }
 
     return {

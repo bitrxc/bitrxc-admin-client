@@ -1,5 +1,5 @@
 <template>
-  <div class="order-list-container">
+  <div class="app-list-container">
     <div class="select-menu">
       <div class="left">
         <el-input placeholder="请输入学号" style="max-width: 200px" v-model="stuId" />
@@ -26,7 +26,9 @@
       >
       </el-table-column>
       <el-table-column label="操作">
-        <el-button type="text">审批</el-button>
+        <template #default="scope">
+          <el-button type="text" @click="handleExamine(scope.row)">审批</el-button>
+        </template>
       </el-table-column>
     </el-table>
     <div class="pager">
@@ -92,19 +94,30 @@ export default {
       pageCount.value = totalPages
     }
 
+    // 改变页码
     const currentChange = async (current) => {
       searchForm.current = current - 1
       getAppointmentList()
     }
 
+    // 根据学号搜索订单
     const handleSearch = async () => {
       searchForm.schoolId = stuId
       getAppointmentList()
     }
 
+    // 选择审批状态之后更新订单列表
     const handleSelectStatus = async () => {
       searchForm.status = status
       getAppointmentList()
+    }
+
+    // 点击审批打开新窗口
+    const handleExamine = (row) => {
+      const newWindowPath = proxy.$router.resolve({
+        path: `/appointmentItem/${row.id}`
+      })
+      window.open(newWindowPath.href, '_target')
     }
 
     return {
@@ -117,14 +130,15 @@ export default {
       statusOptions,
       currentChange,
       handleSearch,
-      handleSelectStatus
+      handleSelectStatus,
+      handleExamine
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.order-list-container {
+.app-list-container {
   .select-menu {
     height: 50px;
     margin-bottom: 20px;

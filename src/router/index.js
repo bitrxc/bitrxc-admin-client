@@ -12,11 +12,27 @@ const routes = [
     },
     children: [
       {
-        path: '/appointmentList',
+        path: 'appointmentList',
         name: 'AppointmentList',
         component: () => import('../views/AppointmentList.vue'),
         meta: {
-          title: '订单管理'
+          title: '订单列表'
+        }
+      },
+      {
+        path: 'appointmentItem/:id',
+        name: 'AppointmentItem',
+        component: () => import('../views/AppointmentItem.vue'),
+        meta: {
+          title: '订单详情'
+        }
+      },
+      {
+        path: 'managerList',
+        name: 'ManagerList',
+        component: () => import('../views/ManagerList.vue'),
+        meta: {
+          title: '管理员列表'
         }
       }
     ]
@@ -24,12 +40,12 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    component: () => import('../views/Login.vue')
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes
 })
 

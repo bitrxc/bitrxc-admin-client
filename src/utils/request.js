@@ -18,9 +18,9 @@ const service = axios.create({
 
 // 请求拦截
 service.interceptors.request.use(req => {
-  const headers = req.headers
-  if (!headers.token) {
-    headers.token = store.getters.token
+  const token = store.getters.token || ''
+  if (token) {
+    req.headers.token = token
   }
   return req
 })
@@ -38,6 +38,7 @@ service.interceptors.response.use(res => {
       return data
     }
     ElMessage.error(message)
+    throw Error(message)
   } else {
     ElMessage.error(NETWORK_ERROR)
   }

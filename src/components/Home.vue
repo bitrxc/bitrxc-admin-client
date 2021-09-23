@@ -1,8 +1,9 @@
 <template>
   <div class="basic-layout">
     <div :class="['nav-side', unfold ? 'unfold' : '']">
-      <ul>
-        <li @click="changeMenu">预约管理</li>
+      <ul :class="[unfold ? 'unfold' : '']">
+        <li @click="$router.push('/appointmentList')">订单列表</li>
+        <li @click="$router.push('/managerList')">管理员列表</li>
       </ul>
     </div>
     <div :class="['main-page', unfold ? 'unfold' : '']">
@@ -104,7 +105,7 @@ export default {
       }
     }
     .wrapper {
-      min-height: calc(100vh - 100px);
+      height: calc(100vh - 100px);
       margin: 20px;
     }
   }

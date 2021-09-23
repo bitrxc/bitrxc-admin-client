@@ -4,7 +4,7 @@ import getters from './getters.js'
 import mutations from './mutations.js'
 
 const state = {
-  userInfo: '' || storage.getItem('userInfo')
+  userInfo: storage.getItem('userInfo') || {}
 }
 
 export default createStore({

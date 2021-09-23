@@ -13,7 +13,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button type="text">修改</el-button>
+          <el-button type="text" @click="handleEdit(scope.row)">修改</el-button>
           <el-button type="text" @click="handleManagerDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -112,6 +112,12 @@ export default {
     }
 
     // 修改管理员信息
+    const handleEdit = (row) => {
+      const newWindowPath = proxy.$router.resolve({
+        path: `/managerItem/${row.id}`
+      })
+      window.open(newWindowPath.href, '_target')
+    }
 
     // 删除管理员
     const handleManagerDelete = async (row) => {
@@ -131,7 +137,8 @@ export default {
       currentChange,
       handleExamine,
       handleManagerAdd,
-      handleManagerDelete
+      handleManagerDelete,
+      handleEdit
     }
   }
 }

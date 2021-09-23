@@ -5,21 +5,24 @@ export default {
     return request({
       url: '/managers',
       method: 'get',
-      data: params
+      data: params,
+      mock: false
     })
   },
   managerAdd (params) {
     return request({
       url: '/managers',
       method: 'post',
-      data: params
+      data: params,
+      mock: false
     })
   },
   managerDelete (params) {
     const { id } = params
     return request({
       url: `/managers/${id}`,
-      method: 'delete'
+      method: 'delete',
+      mock: false
     })
   }
 }

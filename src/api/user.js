@@ -5,7 +5,8 @@ export default {
     return request({
       url: '/login',
       method: 'post',
-      data: params
+      data: params,
+      mock: false
     })
   }
 }

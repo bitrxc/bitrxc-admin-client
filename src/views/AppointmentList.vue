@@ -17,7 +17,7 @@
         </el-select>
       </div>
     </div>
-    <el-table :data="appointmentList">
+    <el-table :data="appointmentList" stripe>
       <el-table-column
         v-for="item in columns"
         :key="item.prop"

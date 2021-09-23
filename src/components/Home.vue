@@ -4,6 +4,8 @@
       <ul :class="[unfold ? 'unfold' : '']">
         <li @click="$router.push('/appointmentList')">订单列表</li>
         <li @click="$router.push('/managerList')">管理员列表</li>
+        <li @click="$router.push('/adminAppoint')">管理员预约</li>
+        <li @click="$router.push('/roomList')">房间列表</li>
       </ul>
     </div>
     <div :class="['main-page', unfold ? 'unfold' : '']">
@@ -50,7 +52,7 @@ export default {
     background-image: linear-gradient(rgb(76, 150, 185), rgb(167, 171, 172));
     transition: width .5s;
     &.unfold {
-      width: 100px;
+      width: 150px;
     }
     ul {
       display: none;
@@ -76,7 +78,7 @@ export default {
     background-color: #eef0f3;
     transition: margin-left .5s;
     &.unfold {
-      margin-left: 100px;
+      margin-left: 150px;
     }
     .top-menu {
       height: 40px;

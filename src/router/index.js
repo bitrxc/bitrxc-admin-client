@@ -34,6 +34,38 @@ const routes = [
         meta: {
           title: '管理员列表'
         }
+      },
+      {
+        path: 'managerItem/:id',
+        name: 'ManagerItem',
+        component: () => import('../views/ManagerItem.vue'),
+        meta: {
+          title: '管理员详情'
+        }
+      },
+      {
+        path: 'roomList',
+        name: 'RoomList',
+        component: () => import('../views/RoomList.vue'),
+        meta: {
+          title: '房间列表'
+        }
+      },
+      {
+        path: 'roomItem/:id',
+        name: 'RoomItem',
+        component: () => import('../views/RoomItem.vue'),
+        meta: {
+          title: '房间详情'
+        }
+      },
+      {
+        path: 'adminAppoint',
+        name: 'AdminAppoint',
+        component: () => import('../views/AdminAppoint.vue'),
+        meta: {
+          title: '管理员预约'
+        }
       }
     ]
   },

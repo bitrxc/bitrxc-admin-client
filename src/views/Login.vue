@@ -45,6 +45,10 @@ export default {
       proxy.$store.commit('saveUserInfo', res)
       proxy.$router.push('/')
       proxy.$message.success('登录成功')
+
+      // 获取房间信息保存到 vuex
+      const { rooms } = await proxy.$api.roomList()
+      proxy.$store.commit('saveRoomList', rooms)
     }
 
     return {

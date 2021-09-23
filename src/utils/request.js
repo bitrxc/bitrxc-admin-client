@@ -38,7 +38,7 @@ service.interceptors.response.use(res => {
       return data
     }
     ElMessage.error(message)
-    throw Error(message)
+    // throw Error(message)
   } else {
     ElMessage.error(NETWORK_ERROR)
   }
@@ -59,7 +59,7 @@ function request (options) {
   if (config.env === 'production') {
     service.defaults.baseURL = config.baseApi
   } else {
-    service.defaults.baseApi = config.mock ? config.mockApi : config.baseApi
+    service.defaults.baseURL = config.mock ? config.mockApi : config.baseApi
   }
   return service(options)
 }

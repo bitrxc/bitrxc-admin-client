@@ -1,5 +1,5 @@
 <template>
-  <div class="app-item-container">
+  <div class="manager-item-container">
     <div class="description">
       <el-descriptions title="订单详情" border size="small">
         <el-descriptions-item :label="labels.username">{{ appItem.username }}</el-descriptions-item>
@@ -107,12 +107,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.app-item-container {
+.manager-item-container {
   height: 100%;
   max-width: 900px;
   .description {
     padding: 20px;
-    background-color: #fff;
+    background-color: red;
   }
   .operation-menu {
     margin-top: 20px;

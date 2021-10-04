@@ -23,6 +23,7 @@
         :key="item.prop"
         :label="item.label"
         :prop="item.prop"
+        :formatter="item.formatter"
       >
       </el-table-column>
       <el-table-column label="操作">
@@ -43,10 +44,13 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, getCurrentInstance, watch } from 'vue'
+import { reactive, ref, onMounted, getCurrentInstance, watch, onBeforeUnmount } from 'vue'
 
 export default {
   setup () {
+    const { proxy } = getCurrentInstance()
+    const beginTimes = proxy.$store.getters.beginTimes
+    const endTimes = proxy.$store.getters.endTimes
     const stuId = ref('')
     const status = ref('')
     const appointmentList = ref([])
@@ -60,12 +64,30 @@ export default {
       { label: '学号', prop: 'schoolId' },
       { label: '房间名字', prop: 'roomName' },
       { label: '预定日期', prop: 'execDate' },
-      { label: '开始时间', prop: 'begin' },
-      { label: '结束时间', prop: 'end' },
-      { label: '订单状态', prop: 'status' },
+      {
+        label: '开始时间',
+        prop: 'begin',
+        formatter (row) {
+          return beginTimes[row.begin]
+        }
+      },
+      {
+        label: '结束时间',
+        prop: 'end',
+        formatter (row) {
+          return endTimes[row.end]
+        }
+      },
+      {
+        label: '订单状态',
+        prop: 'status',
+        formatter (row) {
+          return statusMap[row.status]
+        }
+      },
       { label: '下单时间', prop: 'launchDate' }
     ])
-    const statusOptions = ref([
+    const statusOptions = [
       { value: '', label: '全部' },
       { value: 'new', label: '待审核' },
       { value: 'receive', label: '已批准' },
@@ -75,11 +97,24 @@ export default {
       { value: 'missed', label: '爽约' },
       { value: 'reject', label: '已驳回' },
       { value: 'cancel', label: '用户撤回' }
-    ])
-    const { proxy } = getCurrentInstance()
+    ]
+    const statusMap = {}
+    statusOptions.forEach(item => {
+      statusMap[item.value] = item.label
+    })
 
+    // ajax 轮询实时更新订单
+    const timeRef = ref(0)
     onMounted(() => {
       getAppointmentList()
+      timeRef.value = setInterval(() => {
+        getAppointmentList()
+      }, 1000 * 30)
+    })
+
+    // 组件销毁前，清除定时器，避免内存泄漏
+    onBeforeUnmount(() => {
+      clearInterval(timeRef.value)
     })
 
     watch(stuId, (stuId) => {

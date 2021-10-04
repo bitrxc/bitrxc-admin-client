@@ -6,7 +6,7 @@ export default {
       url: '/room',
       method: 'post',
       data: params,
-      mock: true
+      mock: false
     })
   },
   roomDelete (params) {
@@ -14,7 +14,7 @@ export default {
     return request({
       url: `/room/${id}`,
       method: 'delete',
-      mock: true
+      mock: false
     })
   },
   roomUpdate (params) {
@@ -22,7 +22,7 @@ export default {
       url: '/room',
       method: 'put',
       data: params,
-      mock: true
+      mock: false
     })
   },
   roomItem (params) {
@@ -30,19 +30,26 @@ export default {
     return request({
       url: `/room/${id}`,
       method: 'get',
-      mock: true
+      mock: false
     })
   },
   roomItemByName (namelike) {
     return request({
       url: `/room/${namelike}`,
       method: 'get',
-      mock: true
+      mock: false
     })
   },
   roomList () {
     return request({
       url: '/room',
+      method: 'get',
+      mock: false
+    })
+  },
+  roomFreeTime () {
+    return request({
+      url: '/room/free',
       method: 'get',
       mock: true
     })

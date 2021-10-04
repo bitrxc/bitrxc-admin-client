@@ -4,7 +4,8 @@ export default {
   roleList () {
     return request({
       url: '/managers/roles',
-      method: 'get'
+      method: 'get',
+      mock: false
     })
   }
 }

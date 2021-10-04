@@ -2,9 +2,10 @@
   <div class="basic-layout">
     <div :class="['nav-side', unfold ? 'unfold' : '']">
       <ul :class="[unfold ? 'unfold' : '']">
+        <li @click="$router.push('/welcome')">欢迎页</li>
         <li @click="$router.push('/appointmentList')">订单列表</li>
+        <li @click="$router.push('/orderRoomList')">活动室预约</li>
         <li @click="$router.push('/managerList')">管理员列表</li>
-        <li @click="$router.push('/adminAppoint')">管理员预约</li>
         <li @click="$router.push('/roomList')">房间列表</li>
       </ul>
     </div>
@@ -32,10 +33,10 @@ export default {
   setup () {
     const { proxy } = getCurrentInstance()
     const unfoldUrl = ref(require('../assets/img/unfold.png'))
-    const unfold = ref(false)
+    const unfold = ref(true)
 
     const handleLogout = () => {
-      proxy.$store.commit('saveUserInfo', {})
+      proxy.$store.commit('clear')
       proxy.$router.replace('/login')
     }
 
@@ -50,7 +51,6 @@ export default {
 
 <style lang="less" scoped>
 .basic-layout {
-  height: 100vh;
   .nav-side {
     cursor: pointer;
     position: fixed;
@@ -80,7 +80,6 @@ export default {
     }
   }
   .main-page {
-    height: 100%;
     margin-left: 0;
     background-color: #eef0f3;
     transition: margin-left .5s;
@@ -114,7 +113,7 @@ export default {
       }
     }
     .wrapper {
-      height: calc(100vh - 100px);
+      min-height: calc(100vh - 80px);
       margin: 20px;
     }
   }

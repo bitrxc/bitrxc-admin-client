@@ -1,14 +1,14 @@
 <template>
-  <div class="manager-item-container">
+  <div class="app-item-container">
     <div class="description">
       <el-descriptions title="订单详情" border size="small">
         <el-descriptions-item :label="labels.username">{{ appItem.username }}</el-descriptions-item>
         <el-descriptions-item :label="labels.schoolId">{{ appItem.schoolId }}</el-descriptions-item>
         <el-descriptions-item :label="labels.roomName">{{ appItem.roomName }}</el-descriptions-item>
         <el-descriptions-item :label="labels.execDate">{{ appItem.execDate }}</el-descriptions-item>
-        <el-descriptions-item :label="labels.begin">{{ appItem.begin }}</el-descriptions-item>
-        <el-descriptions-item :label="labels.end">{{ appItem.end }}</el-descriptions-item>
-        <el-descriptions-item :label="labels.status">{{ appItem.status }}</el-descriptions-item>
+        <el-descriptions-item :label="labels.begin">{{ beginTimes[appItem.begin] }}</el-descriptions-item>
+        <el-descriptions-item :label="labels.end">{{ endTimes[appItem.end] }}</el-descriptions-item>
+        <el-descriptions-item :label="labels.status">{{ statusMap[appItem.status] }}</el-descriptions-item>
         <el-descriptions-item :label="labels.launchDate">{{ appItem.launchDate }}</el-descriptions-item>
         <el-descriptions-item :label="labels.conductor">{{ appItem.conductor }}</el-descriptions-item>
         <el-descriptions-item :label="labels.userNote">{{ appItem.userNote }}</el-descriptions-item>
@@ -48,6 +48,8 @@ import { reactive, ref, onMounted, getCurrentInstance } from 'vue'
 export default {
   setup () {
     const { proxy } = getCurrentInstance()
+    const beginTimes = proxy.$store.getters.beginTimes
+    const endTimes = proxy.$store.getters.endTimes
     const appItem = ref({})
     const appForm = reactive({
       id: proxy.$route.params.id,
@@ -70,7 +72,7 @@ export default {
       userNote: '原因'
     })
 
-    const statusOptions = ref([
+    const statusOptions = [
       { value: 'new', label: '待审核' },
       { value: 'receive', label: '已批准' },
       { value: 'signed', label: '已签到' },
@@ -79,8 +81,11 @@ export default {
       { value: 'missed', label: '爽约' },
       { value: 'reject', label: '已驳回' },
       { value: 'cancel', label: '用户撤回' }
-    ])
-
+    ]
+    const statusMap = {}
+    statusOptions.forEach(item => {
+      statusMap[item.value] = item.label
+    })
     onMounted(() => {
       getAppointmentItem()
     })
@@ -100,6 +105,9 @@ export default {
       statusOptions,
       appItem,
       appForm,
+      beginTimes,
+      endTimes,
+      statusMap,
       handleCheck
     }
   }
@@ -107,12 +115,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.manager-item-container {
+.app-item-container {
   height: 100%;
   max-width: 900px;
   .description {
     padding: 20px;
-    background-color: red;
+    background-color: #fff;
   }
   .operation-menu {
     margin-top: 20px;

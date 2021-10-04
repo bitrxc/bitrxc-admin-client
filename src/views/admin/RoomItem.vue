@@ -18,7 +18,7 @@
           <el-input v-model="roomItem.name" />
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="roomItem.description" />
+          <el-input v-model="roomItem.description" type="textarea" />
         </el-form-item>
         <el-form-item label="图片">
           <el-input v-model="roomItem.images" />
@@ -35,12 +35,12 @@
 </template>
 
 <script>
-import { ref, onMounted, getCurrentInstance } from 'vue'
+import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
 
 export default {
   setup () {
     const { proxy } = getCurrentInstance()
-    const roomItem = ref({})
+    const roomItem = reactive({})
     const roomItemVisible = ref(false)
 
     const labels = ref({
@@ -56,11 +56,19 @@ export default {
 
     const getRoomItem = async () => {
       const { roomInfo } = await proxy.$api.roomItem({ id: proxy.$route.params.id })
-      roomItem.value = roomInfo
+      Object.assign(roomItem, roomInfo)
     }
 
     const handleRoomUpdate = async () => {
-
+      // 后端历史遗留问题
+      // 后端返回给前端的图片，字符名称叫做 images
+      // 前端要修改时，字段名称却应该是 image
+      roomItem.image = roomItem.images
+      delete roomItem.images
+      await proxy.$api.roomUpdate(roomItem)
+      proxy.$message.success('修改成功')
+      roomItemVisible.value = false
+      getRoomItem()
     }
 
     return {

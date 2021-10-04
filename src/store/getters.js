@@ -8,6 +8,9 @@ export default {
   roomList (state) {
     return state.roomList
   },
+  roleList (state) {
+    return state.roleList
+  },
   beginTimes (state) {
     return state.beginTimes
   },

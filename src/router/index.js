@@ -6,15 +6,22 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    redirect: '/appointmentList',
+    redirect: '/welcome',
     meta: {
       title: '主页'
     },
     children: [
       {
+        path: 'welcome',
+        component: () => import('../views/Welcome.vue'),
+        meta: {
+          title: '欢迎页'
+        }
+      },
+      {
         path: 'appointmentList',
         name: 'AppointmentList',
-        component: () => import('../views/AppointmentList.vue'),
+        component: () => import('../views/admin/AppointmentList.vue'),
         meta: {
           title: '订单列表'
         }
@@ -22,7 +29,7 @@ const routes = [
       {
         path: 'appointmentItem/:id',
         name: 'AppointmentItem',
-        component: () => import('../views/AppointmentItem.vue'),
+        component: () => import('../views/admin/AppointmentItem.vue'),
         meta: {
           title: '订单详情'
         }
@@ -30,23 +37,15 @@ const routes = [
       {
         path: 'managerList',
         name: 'ManagerList',
-        component: () => import('../views/ManagerList.vue'),
+        component: () => import('../views/admin/ManagerList.vue'),
         meta: {
           title: '管理员列表'
         }
       },
       {
-        path: 'managerItem/:id',
-        name: 'ManagerItem',
-        component: () => import('../views/ManagerItem.vue'),
-        meta: {
-          title: '管理员详情'
-        }
-      },
-      {
         path: 'roomList',
         name: 'RoomList',
-        component: () => import('../views/RoomList.vue'),
+        component: () => import('../views/admin/RoomList.vue'),
         meta: {
           title: '房间列表'
         }
@@ -54,15 +53,23 @@ const routes = [
       {
         path: 'roomItem/:id',
         name: 'RoomItem',
-        component: () => import('../views/RoomItem.vue'),
+        component: () => import('../views/admin/RoomItem.vue'),
         meta: {
           title: '房间详情'
         }
       },
       {
-        path: 'adminAppoint',
-        name: 'AdminAppoint',
-        component: () => import('../views/AdminAppoint.vue'),
+        path: 'orderRoomList',
+        name: 'orderRoomList',
+        component: () => import('../views/order/OrderRoomList.vue'),
+        meta: {
+          title: '管理员预约'
+        }
+      },
+      {
+        path: 'orderRoomItem/:id',
+        name: 'orderRoomItem',
+        component: () => import('../views/order/OrderRoomItem.vue'),
         meta: {
           title: '管理员预约'
         }

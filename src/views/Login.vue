@@ -16,7 +16,7 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" placeholder="请输入密码"  v-model="userForm.password"  class="input">
+          <el-input type="password" placeholder="请输入密码"  v-model="userForm.password"  class="input" @keyup.enter="handleLogin">
             <template #prefix><i class="el-icon-lock"></i></template>
           </el-input>
         </el-form-item>
@@ -54,6 +54,10 @@ export default {
       const { beginTimes, endTimes } = await proxy.$api.timeList()
       proxy.$store.commit('saveBeginTimes', beginTimes)
       proxy.$store.commit('saveEndTimes', endTimes)
+
+      // 获取角色列表信息保存到 vuex
+      const { roles } = await proxy.$api.roleList()
+      proxy.$store.commit('saveRoleList', roles)
     }
 
     return {

@@ -6,8 +6,9 @@ import mutations from './mutations.js'
 const state = {
   userInfo: storage.getItem('userInfo') || {},
   roomList: storage.getItem('roomList') || [],
-  beginTimes: storage.getItem('beginTimes') || [],
-  endTimes: storage.getItem('endTimes') || []
+  roleList: storage.getItem('roleList') || [],
+  beginTimes: storage.getItem('beginTimes') || {},
+  endTimes: storage.getItem('endTimes') || {}
 }
 
 export default createStore({

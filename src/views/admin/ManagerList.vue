@@ -9,6 +9,7 @@
         :key="item.prop"
         :label="item.label"
         :prop="item.prop"
+        :formatter="item.formatter"
       >
       </el-table-column>
       <el-table-column label="操作">
@@ -42,6 +43,21 @@
           <el-input v-model="managerForm.mobile" />
         </el-form-item>
       </el-form>
+
+      <el-dialog title="修改管理员" v-model="updateFormVisible">
+        <el-form :model="managerForm">
+          <el-form-item label="名字">
+            <el-input v-model="managerForm.username" />
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input v-model="managerForm.email" />
+          </el-form-item>
+          <el-form-item label="手机">
+            <el-input v-model="managerForm.mobile" />
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="managerFormVisible = false">取 消</el-button>
@@ -73,7 +89,14 @@ export default {
     const columns = ref([
       { label: '姓名', prop: 'username' },
       { label: '邮箱', prop: 'email' },
-      { label: '手机', prop: 'mobile' }
+      { label: '手机', prop: 'mobile' },
+      {
+        label: '角色',
+        prop: 'roleList',
+        formatter (row) {
+          return row.roleList[0].roleName
+        }
+      }
     ])
 
     const { proxy } = getCurrentInstance()

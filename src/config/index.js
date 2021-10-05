@@ -9,7 +9,7 @@ const EnvConfig = {
     mockApi: 'http://rap2api.taobao.org/app/mock/291194/api/admin'
   },
   production: {
-    baseApi: '/api/admin',
+    baseApi: '/api',
     mockApi: 'http://rap2api.taobao.org/app/mock/291194/api/admin'
   }
 }

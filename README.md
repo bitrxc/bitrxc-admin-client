@@ -1,8 +1,29 @@
 # bitrxc-admin-client
 
-[![Build Status](https://jenkins.hyperzsb.tech/buildStatus/icon?job=bitrxc-admin-client-dev)](https://jenkins.hyperzsb.tech/job/bitrxc-admin-client-dev/)
+## Project setup
+```
+npm install
+```
 
-**BIT Ruixin Community - bitrxc**
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-Web application client for bitrxc's administrators
+### Compiles and minifies for production
+```
+npm run build
+```
 
+### Run your unit tests
+```
+npm run test:unit
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

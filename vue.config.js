@@ -1,21 +1,17 @@
-const compressionPlugin = require("compression-webpack-plugin");
 module.exports = {
-  publicPath: "/",
-  outputDir: "dist",
-  indexPath: "index.html",
-  devServer: {
-    port: 9000
+  // 开发环境时启动 source-map
+  configureWebpack: {
+    devtool: process.env.NODE_ENV === 'development' ? 'source-map' : undefined
   },
-  // 配置 gzip 压缩
-  configureWebpack: () => {
-    return {
-      plugins: [
-        new compressionPlugin({
-          test: /\.js$|\.html$|\.css/,
-          threshold: 10240, // 超过 10kb 则打包为 gzip
-          deleteOriginalAssets: false // 是否删除源文件
-        })
-      ]
-    };
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'https://api-dev.bitrxc.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
   }
-};
+}

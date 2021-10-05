@@ -1,36 +1,21 @@
-import axios from "axios";
-// import router from "@/router/index.js";
+import request from '../utils/request.js'
+import userFunctions from './user.js'
+import appointmentFunctions from './appointment.js'
+import roleFunctions from './role.js'
+import managerFunctions from './manager.js'
+import roomFunctions from './room.js'
 
-export function request(config) {
-  const instance = axios.create({
-    baseURL: process.env.VUE_APP_BASE_API
-  });
-
-  instance.interceptors.request.use(
-    config => {
-      const token = window.localStorage.getItem("token");
-      // 如果有 token 则加上
-      if (token != "") {
-        config.headers.token = token;
-        console.log("token", token);
-      }
-      return config;
-    },
-    err => {
-      console.log(err);
-    }
-  );
-
-  // instance.interceptors.response.use(result => {
-  //   const res = result.data;
-  //   // 401 代表登录过期
-  //   if (res.code === 401) {
-  //     // 清除 token
-  //     window.localStorage.clear();
-  //     router.replace({ path: "/login" });
-  //   }
-  //   return result;
-  // });
-
-  return instance(config);
+export default {
+  ...userFunctions,
+  ...appointmentFunctions,
+  ...roleFunctions,
+  ...managerFunctions,
+  ...roomFunctions,
+  timeList () {
+    return request({
+      url: '/timelist',
+      method: 'get',
+      mock: true
+    })
+  }
 }

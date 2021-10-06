@@ -49,7 +49,7 @@ export default {
   },
   roomFreeTime () {
     return request({
-      url: '/room/free',
+      url: '/room/free/time',
       method: 'get',
       mock: true
     })

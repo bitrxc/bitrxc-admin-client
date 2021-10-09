@@ -12,7 +12,7 @@ export default {
   saveBeginTimes (state, beginTimes) {
     const obj = {}
     beginTimes.forEach(item => {
-      obj[item.id] = item.time
+      obj[item.id] = item.beginTime
     })
     state.beginTimes = obj
     storage.setItem('beginTimes', obj)
@@ -20,7 +20,7 @@ export default {
   saveEndTimes (state, endTimes) {
     const obj = {}
     endTimes.forEach(item => {
-      obj[item.id] = item.time
+      obj[item.id] = item.endTime
     })
     state.endTimes = obj
     storage.setItem('endTimes', obj)

@@ -47,11 +47,19 @@ export default {
       mock: false
     })
   },
-  roomFreeTime () {
+  /**
+   * 获取某个房间的可用时段
+   *
+   * @template T
+   * @param {{roomId:string,conductor:string,date:string}} params
+   * @returns {AxiosPromise<T>}
+   */
+  roomFreeTime (params) {
     return request({
-      url: '/room/free/time',
+      url: '/appointment/availablePeriod',
       method: 'get',
-      mock: true
+      data: params,
+      mock: false
     })
   }
 }

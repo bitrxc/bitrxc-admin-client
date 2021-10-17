@@ -74,7 +74,7 @@ import { reactive, ref, onMounted, getCurrentInstance } from 'vue'
 export default {
   setup () {
     const managerFormVisible = ref(false)
-    const managerForm = ref({
+    const managerForm = reactive({
       username: '',
       password: '',
       email: '',
@@ -92,10 +92,10 @@ export default {
       { label: '手机', prop: 'mobile' },
       {
         label: '角色',
-        prop: 'roleList',
-        formatter (row) {
-          return row.roleList[0].roleName
-        }
+        prop: 'roleList'
+        // formatter (row) {
+        //   return row.roleList[0].roleName
+        // }
       }
     ])
 

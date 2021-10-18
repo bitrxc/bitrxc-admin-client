@@ -47,11 +47,12 @@ export default {
       mock: false
     })
   },
-  roomFreeTime () {
+  roomFreeTime (params) {
     return request({
-      url: '/room/free/time',
+      url: '/appointment/availablePeriod',
       method: 'get',
-      mock: true
+      data: params,
+      mock: false
     })
   }
 }

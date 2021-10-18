@@ -65,6 +65,7 @@
         </span>
       </template>
     </el-dialog>
+    <button @click="test">测试分配</button>
   </div>
 </template>
 
@@ -149,6 +150,9 @@ export default {
       getManagerList()
     }
 
+    const test = async () => {
+      await proxy.$api.test()
+    }
     return {
       managerForm,
       managerFormVisible,
@@ -161,7 +165,8 @@ export default {
       handleExamine,
       handleManagerAdd,
       handleManagerDelete,
-      handleEdit
+      handleEdit,
+      test
     }
   }
 }

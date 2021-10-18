@@ -85,6 +85,15 @@
 <script>
 import { getCurrentInstance, onMounted, ref } from '@vue/runtime-core'
 // import { reactive, ref, onMounted, getCurrentInstance } from 'vue'
+const formatNowTime = () => {
+  const d = new Date()
+  const year = d.getFullYear()
+  let month = d.getMonth() + 1
+  month = month < 10 ? ('0' + month) : month
+  let day = d.getDate()
+  day = day < 10 ? ('0' + day) : day
+  return year + '-' + month + '-' + day
+}
 
 export default {
   setup () {
@@ -107,7 +116,11 @@ export default {
 
     const getOneDayTime = async () => {
       const arr = []
-      const { busyTime, freeTime, myTime, passTime } = await proxy.$api.roomFreeTime()
+      const { busyTime, freeTime, myTime, passTime } = await proxy.$api.roomFreeTime({
+        roomId: proxy.$route.params.id,
+        conductor: proxy.$store.getters.username,
+        date: formatNowTime()
+      })
       busyTime.forEach(item => {
         item.status = 'busy'
         item.color = '#c0c0c0'

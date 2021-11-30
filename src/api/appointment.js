@@ -44,7 +44,7 @@ export default {
       url: '/appointment/appoint',
       method: 'post',
       data: params,
-      mock: true
+      mock: false
     })
   }
 }

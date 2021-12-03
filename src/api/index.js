@@ -13,9 +13,9 @@ export default {
   ...roomFunctions,
   timeList () {
     return request({
-      url: '/timelist',
+      url: '/appointment/allTime',
       method: 'get',
-      mock: true
+      mock: false
     })
   },
   test () {

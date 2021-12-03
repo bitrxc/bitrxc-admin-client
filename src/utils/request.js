@@ -45,8 +45,9 @@ service.interceptors.response.use(res => {
 })
 
 /**
- * 请求的核心哈数
- * @params {Object} params
+ * 请求的核心函数
+ * @params {AxiosRequestConfig} options
+ * @returns AxiosPromise
  */
 function request (options) {
   options.method = options.method || 'get'

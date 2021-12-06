@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/components/Home.vue'
 
+/** @type {import("vue-router").RouteRecordRaw[]} */
 const routes = [
   {
     path: '/',
@@ -40,6 +41,14 @@ const routes = [
         component: () => import('../views/admin/ManagerList.vue'),
         meta: {
           title: '管理员列表'
+        }
+      },
+      {
+        path: 'managerItem/:id',
+        name: 'ManagerItem',
+        component: () => import('../views/admin/ManagerItem.vue'),
+        meta: {
+          title: '变更管理员信息'
         }
       },
       {

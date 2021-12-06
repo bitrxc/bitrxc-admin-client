@@ -44,20 +44,6 @@
         </el-form-item>
       </el-form>
 
-      <el-dialog title="修改管理员" v-model="updateFormVisible">
-        <el-form :model="managerForm">
-          <el-form-item label="名字">
-            <el-input v-model="managerForm.username" />
-          </el-form-item>
-          <el-form-item label="邮箱">
-            <el-input v-model="managerForm.email" />
-          </el-form-item>
-          <el-form-item label="手机">
-            <el-input v-model="managerForm.mobile" />
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="managerFormVisible = false">取 消</el-button>
@@ -65,7 +51,6 @@
         </span>
       </template>
     </el-dialog>
-    <button @click="test">测试分配</button>
   </div>
 </template>
 
@@ -137,8 +122,10 @@ export default {
       getManagerList()
     }
 
-    // 修改管理员信息
-    const handleEdit = (row) => {
+    /**
+     *  在新窗口中修改管理员信息
+     */
+    const handleEdit = async (row) => {
       const newWindowPath = proxy.$router.resolve({
         path: `/managerItem/${row.id}`
       })

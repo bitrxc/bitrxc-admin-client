@@ -17,12 +17,5 @@ export default {
       method: 'get',
       mock: false
     })
-  },
-  test () {
-    return request({
-      url: 'managers/1/roles',
-      method: 'post',
-      data: [1, 2]
-    })
   }
 }

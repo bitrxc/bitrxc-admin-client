@@ -56,7 +56,7 @@ export default {
     })
 
     const getRoomItem = async () => {
-      const { roomInfo } = await proxy.$api.roomItem({ roomId: proxy.$route.params.id })
+      const { roomInfo } = await proxy.$api.roomItem({ id: proxy.$route.params.id })
       Object.assign(roomItem, roomInfo)
     }
 

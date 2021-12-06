@@ -5,10 +5,17 @@
 export type Room = {}
 
 export type Admin = {
+    id?:number,
     username:string,
+    password:string,
+    email:string,
+    phone:string
 }
 
-export type Role = {}
+export type Role = {
+    id:number,
+    roleName:string
+}
 
 /** json web token 字符串 */
 export type Token = string

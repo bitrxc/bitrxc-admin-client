@@ -100,6 +100,7 @@ export default {
       }
     ])
 
+    /** @type {{proxy:import("../../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
     const { proxy } = getCurrentInstance()
 
     onMounted(() => {
@@ -118,7 +119,8 @@ export default {
       getManagerList()
     }
 
-    // 点击审批打开新窗口
+    /** 点击审批打开新窗口
+     * @deprecated 界面内没有其他路由控件，请使用侧边栏路由 */
     const handleExamine = (row) => {
       const newWindowPath = proxy.$router.resolve({
         path: `/appointmentItem/${row.id}`

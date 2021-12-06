@@ -17,12 +17,14 @@
 
 <script>
 export default {
+  /** @this {import("../../main").LocalComponentInstance} 访问 app 实例上挂载的各插件 */
   data () {
     return {
       roomList: this.$store.getters.roomList
     }
   },
   methods: {
+    /** @this {import("../../main").LocalComponentInstance} 访问 app 实例上挂载的各插件 */
     handleRoomClick (id) {
       const newWindowPath = this.$router.resolve({
         path: `/orderRoomItem/${id}`

@@ -26,6 +26,7 @@ import { getCurrentInstance, ref } from '@vue/runtime-core'
 import { ElMessageBox } from 'element-plus'
 export default {
   setup () {
+    /** @type {{proxy:import("../../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
     const { proxy } = getCurrentInstance()
     const value = ref(new Date())
     const selectedTime = ref(1)

@@ -31,6 +31,7 @@ import { ref, getCurrentInstance } from 'vue'
 export default {
   name: 'Home',
   setup () {
+    /** @type {{proxy:import("../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
     const { proxy } = getCurrentInstance()
     const unfoldUrl = ref(require('../assets/img/unfold.png'))
     const unfold = ref(true)

@@ -60,6 +60,7 @@ export default {
       { label: '描述', prop: 'description', width: '' }
     ])
 
+    /** @type {{proxy:import("../../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
     const { proxy } = getCurrentInstance()
 
     onMounted(() => {

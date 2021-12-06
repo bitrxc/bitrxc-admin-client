@@ -39,6 +39,7 @@ import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
 
 export default {
   setup () {
+    /** @type {{proxy:import("../../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
     const { proxy } = getCurrentInstance()
     const roomItem = reactive({})
     const roomItemVisible = ref(false)

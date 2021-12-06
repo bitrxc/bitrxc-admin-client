@@ -48,6 +48,7 @@ import { reactive, ref, onMounted, getCurrentInstance, watch, onBeforeUnmount } 
 
 export default {
   setup () {
+    /** @type {{proxy:import("../../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
     const { proxy } = getCurrentInstance()
     const beginTimes = proxy.$store.getters.beginTimes
     const endTimes = proxy.$store.getters.endTimes

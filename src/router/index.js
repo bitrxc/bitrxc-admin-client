@@ -1,90 +1,100 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from '@/components/Home.vue'
 
-const Home = () => import("@/views/Home.vue");
-const Login = () => import("@/views/Login.vue");
-// const Register = () => import("@/views/Register.vue");
-
-/* 预约管理 */
-const OrderList = () => import("@/views/order/OrderList.vue"); // 预约列表
-const OrderDetails = () => import("@/views/order/OrderDetails.vue"); // 预约审批
-
-/* 管理员管理 */
-const UserList = () => import("@/views/admin/UserList.vue"); // 管理员列表
-const AuthorizationList = () => import("@/views/role/AuthorizationList.vue");
-const RoleList = () => import("@/views/role/RoleList.vue");
-
-/* 房间管理 */
-const RoomList = () => import("@/views/room/RoomList.vue"); // 房间列表
-const RoomDetails = () => import("@/views/room/RoomDetails.vue"); // 房间详情
-
-const OrderCharts = () => import("@/views/statistics/OrderCharts.vue");
-const PersonalDeatils = () => import("@/views/person/PersonalDeatils.vue");
-
-/* 404 */
-const NotFound = () => import("@/views/NotFound.vue");
+/** @type {import("vue-router").RouteRecordRaw[]} */
 const routes = [
-  { path: "/", redirect: "/home" },
-  { path: "/login", name: "Login", component: Login },
-  // { path: "/register", name: "Register", component: Register },
   {
-    path: "/home",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home,
-    redirect: "/orderList",
+    redirect: '/welcome',
+    meta: {
+      title: '主页'
+    },
     children: [
-      { path: "/orderList", name: "OrderList", component: OrderList },
-      { path: "/orderDetails", name: "OrderDetails", component: OrderDetails },
-      { path: "/userList", name: "UserList", component: UserList },
-      { path: "/roleList", name: "RoleList", component: RoleList },
       {
-        path: "/authorizationList",
-        name: "AuthorizationList",
-        component: AuthorizationList
+        path: 'welcome',
+        component: () => import('../views/Welcome.vue'),
+        meta: {
+          title: '欢迎页'
+        }
       },
       {
-        path: "/roomList",
-        name: "RoomList",
-        component: RoomList
+        path: 'appointmentList',
+        name: 'AppointmentList',
+        component: () => import('../views/admin/AppointmentList.vue'),
+        meta: {
+          title: '订单列表'
+        }
       },
       {
-        path: "/roomDetails",
-        name: "RoomDetails",
-        component: RoomDetails
+        path: 'appointmentItem/:id',
+        name: 'AppointmentItem',
+        component: () => import('../views/admin/AppointmentItem.vue'),
+        meta: {
+          title: '订单详情'
+        }
       },
       {
-        path: "/orderCharts",
-        name: "OrderCharts",
-        component: OrderCharts
+        path: 'managerList',
+        name: 'ManagerList',
+        component: () => import('../views/admin/ManagerList.vue'),
+        meta: {
+          title: '管理员列表'
+        }
       },
       {
-        path: "/personalDetails",
-        name: "PersonalDetails",
-        component: PersonalDeatils
+        path: 'managerItem/:id',
+        name: 'ManagerItem',
+        component: () => import('../views/admin/ManagerItem.vue'),
+        meta: {
+          title: '变更管理员信息'
+        }
       },
-      { path: "/notFound", name: "NotFound", component: NotFound }
+      {
+        path: 'roomList',
+        name: 'RoomList',
+        component: () => import('../views/admin/RoomList.vue'),
+        meta: {
+          title: '房间列表'
+        }
+      },
+      {
+        path: 'roomItem/:id',
+        name: 'RoomItem',
+        component: () => import('../views/admin/RoomItem.vue'),
+        meta: {
+          title: '房间详情'
+        }
+      },
+      {
+        path: 'orderRoomList',
+        name: 'orderRoomList',
+        component: () => import('../views/order/OrderRoomList.vue'),
+        meta: {
+          title: '管理员预约'
+        }
+      },
+      {
+        path: 'orderRoomItem/:id',
+        name: 'orderRoomItem',
+        component: () => import('../views/order/OrderRoomItem.vue'),
+        meta: {
+          title: '管理员预约'
+        }
+      }
     ]
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
   }
-];
+]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes
-});
+})
 
-// 挂载路由导航守卫
-router.beforeEach((to, from, next) => {
-  document.title = "北京理工大学睿信社区管理系统";
-  if (to.path === "/login") {
-    return next();
-  }
-
-  // 获取 token
-  const tokenStr = window.sessionStorage.getItem("token");
-  if (!tokenStr) {
-    return next("/login");
-  }
-
-  next();
-});
-
-export default router;
+export default router

@@ -1,9 +1,0 @@
-/* 重置消息弹窗的宽度 */
-.el-message {
-  width: 200px !important;
-}
-
-/* 重置消息弹窗框的宽度 */
-.el-message-box {
-  width: 200px !important;
-}

@@ -11,6 +11,12 @@
       <li>活动室预约 —— 管理员批量预约活动室</li>
       <li>房间列表 —— 修改房间信息</li>
     </ul>
+    <figure>
+      <img src="../../public/feedbackQrcode.png" />
+      <figcaption>
+        <a href="https://shimo.im/forms/VMAPVQEQBnIRE0qg/fill?channel=frontpage">反馈问题</a>
+      </figcaption>
+    </figure>
     <p>
       睿信社区管理后台的代码: <a href="https://github.com/Hyperzsb/bitrxc-admin-client">https://github.com/Hyperzsb/bitrxc-admin-client</a>
     </p>

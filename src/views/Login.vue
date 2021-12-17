@@ -1,166 +1,137 @@
 <template>
-  <div class="login-container">
-    <el-row>
-      <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
-        <!-- 显示背景图片 -->
-        <div style="color: transparent">占位符</div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-        <el-form
-          class="login-form"
-          v-bind:model="loginForm"
-          v-bind:rules="loginFormRules"
-          ref="loginFormRef"
-        >
-          <div class="title">Hello</div>
-          <div class="title-tips">{{ titleTips }}</div>
-          <el-form-item class="form-item" prop="username">
-            <el-input
-              placeholder="请输入用户名"
-              type="text"
-              prefix-icon="el-icon-user"
-              v-model="loginForm.username"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item class="form-item" prop="password">
-            <el-input
-              placeholder="请输入密码"
-              type="password"
-              prefix-icon="el-icon-lock"
-              v-model="loginForm.password"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button class="login-btn" type="primary" @click="login">
-              登录
-            </el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-button class="reset-btn" type="info" @click="resetLoginForm">
-              重置
-            </el-button>
-          </el-form-item>
-          <!-- <router-link to="register">
-            <div style="margin-top: 20px">注册</div>
-          </router-link> -->
-        </el-form>
-      </el-col>
-    </el-row>
-  </div>
+  <main>
+    <aside>
+      <div>北京理工大学</div>
+      <div>
+        <span>睿信社区管理系统</span>
+        <div class="baseline"><span></span><span></span><span></span></div>
+      </div>
+    </aside>
+    <section>
+      <el-form :model="userForm">
+        <div class="tips">管理员登入</div>
+        <el-form-item prop="username">
+          <el-input placeholder="请输入用户名"  v-model="userForm.username"  class="input">
+            <template #prefix><i class="el-icon-user"></i></template>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input type="password" placeholder="请输入密码"  v-model="userForm.password"  class="input" @keyup.enter="handleLogin">
+            <template #prefix><i class="el-icon-lock"></i></template>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="handleLogin">登录</el-button>
+        </el-form-item>
+      </el-form>
+    </section>
+  </main>
 </template>
 
 <script>
-import { loginRequest } from "../network/login";
-import { reqSuccess, reqError } from "../utils/tips";
+import { reactive, getCurrentInstance } from 'vue'
+
 export default {
-  name: "Login",
-  data() {
+  components: {},
+  setup () {
+    /** @type {{proxy:import("../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
+    const { proxy } = getCurrentInstance()
+    const userForm = reactive({
+      username: '',
+      password: ''
+    })
+
+    const handleLogin = async () => {
+      const res = await proxy.$api.login(userForm)
+      proxy.$store.commit('saveUserInfo', res)
+      proxy.$router.push('/')
+      proxy.$message.success('登录成功')
+
+      // 获取房间信息保存到 vuex
+      const { rooms } = await proxy.$api.roomList()
+      proxy.$store.commit('saveRoomList', rooms)
+
+      // 获取时间列表信息保存到 vuex
+      const { beginTimes, endTimes } = await proxy.$api.timeList()
+      proxy.$store.commit('saveBeginTimes', beginTimes)
+      proxy.$store.commit('saveEndTimes', endTimes)
+
+      // 获取角色列表信息保存到 vuex
+      const { roles } = await proxy.$api.roleList()
+      proxy.$store.commit('saveRoleList', roles)
+    }
+
     return {
-      titleTips: "北京理工大学睿信社区管理系统",
-      loginForm: {
-        username: "",
-        password: ""
-      },
-      // 这是表单的验证规则对象
-      loginFormRules: {
-        username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 10, message: "长度为 3-10", trigger: "blur" }
-        ],
-        password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 5, max: 12, message: "长度为 5-12", trigger: "blur" }
-        ]
-      }
-    };
-  },
-  methods: {
-    // 登录
-    login() {
-      // 登陆前的校验
-      this.$refs.loginFormRef.validate(async valid => {
-        // 验证失败直接返回
-        if (valid === false) {
-          return;
-        }
-
-        loginRequest(this.loginForm)
-          .then(result => {
-            // 可以发送网络请求
-            const res = result.data;
-
-            if (res.code !== 200) {
-              return reqError("用户名或密码错误");
-            }
-
-            // 保存 token 到 localStorage
-            localStorage.setItem(
-              "token",
-              JSON.stringify({ token: res.data.token })
-            );
-            localStorage.setItem("userInfo", JSON.stringify(res.data.userInfo));
-
-            reqSuccess("登录成功");
-            this.$router.push("/home");
-          })
-          .catch(err => {
-            console.log(err);
-            return reqError("网络故障");
-          });
-      });
-    },
-    // 重置表单
-    resetLoginForm() {
-      this.$refs.loginFormRef.resetFields();
+      userForm,
+      handleLogin
     }
   }
-};
+}
 </script>
 
-<style lang="scss" scoped>
-.login-container {
+<style lang="less" scoped>
+main {
+  display: flex;
   height: 100vh;
-  /* 背景图片铺满屏幕, 且不随界面滑动而改变 */
-  background: url("../assets/img/background.jpg") center no-repeat fixed;
-  background-size: cover;
+  cursor: pointer;
+  aside {
+    display: none;
 
-  .login-form {
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px;
+    color: #fff;
+
+    background-image: linear-gradient(rgb(76, 150, 185), rgb(167, 171, 172));
+
+    div:first-child {
+      font-size: 25px;
+    }
+    div:last-child {
+      font-size: 60px;
+      .baseline {
+        display: flex;
+        span {
+          display: block;
+          width: 100px;
+          height: 10px;
+          background-color: #fff;
+          margin-top: 10px;
+          margin-right: 20px;
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+  section {
     position: relative;
-    max-width: 100%;
-    margin: calc((100vh - 500px) / 2) 10% 10%;
-    overflow: hidden;
-
-    .title {
-      font-size: 54px;
-      font-weight: 500;
-      color: rgba(14, 18, 26, 1);
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .el-form {
+      .tips {
+        margin-bottom: 40px;
+        font-size: 20px !important;
+        font-weight: bold;
+        color: #4e97b9;
+      }
+      .el-button {
+        background-color: #4e97b9;
+        color: #fff;
+      }
     }
+  }
+}
 
-    .title-tips {
-      margin-top: 29px;
-      font-size: 16px;
-      font-weight: 400;
-      color: rgba(14, 18, 26, 1);
-
-      /* 如果文本溢出, 显示省略符号来代表被修剪的文本 */
-      text-overflow: ellipsis;
-      /* 文本不换行 */
-      white-space: nowrap;
-    }
-
-    .form-item {
-      margin-top: 40px;
-    }
-
-    .login-btn,
-    .reset-btn {
-      display: inherit;
-      width: 220px;
-      height: 60px;
-      margin-top: 5px;
-    }
+@media screen and (min-width: 992px) {
+  main aside {
+    display: flex;
+    width: 60%;
+  }
+  main section {
+    width: 40%;
   }
 }
 </style>

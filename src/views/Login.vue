@@ -42,7 +42,16 @@ export default {
     })
 
     const handleLogin = async () => {
+      // (1) 检测userForm中的信息，正则表达式，至少两个都不能为空
+      if (userForm.username === '' || userForm.password === '') {
+        proxy.$message.warning('用户名或密码为空')
+        return
+      }
+      // (2)检测返回的res
       const res = await proxy.$api.login(userForm)
+      if (typeof (res) === 'undefined') {
+        return
+      }
       proxy.$store.commit('saveUserInfo', res)
       proxy.$router.push('/')
       proxy.$message.success('登录成功')

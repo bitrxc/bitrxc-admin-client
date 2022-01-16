@@ -34,10 +34,15 @@ service.interceptors.response.use(res => {
       router.push('/login')
       return
     }
+    if (message === null) {
+      ElMessage.error('用户名或密码错误')
+      router.push('/login')
+      return
+    }
     if (code === 200) {
       return data
     }
-    ElMessage.error(message)
+    // ElMessage.error(message)
     // throw Error(message)
   } else {
     ElMessage.error(NETWORK_ERROR)

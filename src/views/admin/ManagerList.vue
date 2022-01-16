@@ -78,10 +78,10 @@ export default {
       { label: '手机', prop: 'mobile' },
       {
         label: '角色',
-        prop: 'roleList'
-        // formatter (row) {
-        //   return row.roleList[0].roleName
-        // }
+        prop: 'roleList',
+        formatter (row) {
+          return row.roleList.map((v) => (v.roleName)).join()
+        }
       }
     ])
 

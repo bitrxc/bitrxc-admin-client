@@ -31,24 +31,20 @@ export default {
     const value = ref(new Date())
     const selectedTime = ref(1)
     const submitAppointment = async (event) => {
-      try {
-        const res = await proxy.$api.appointmentMany([{
-          // 让后端的类型转换器正常工作
-          id: null,
-          roomId: proxy.$route.params.id,
-          launcher: null,
-          begin: selectedTime.value,
-          end: selectedTime.value,
-          conductor: proxy.$store.getters.username,
-          execDate: value.value.getFullYear() +
+      const res = await proxy.$api.appointmentMany([{
+        // 让后端的类型转换器正常工作
+        id: null,
+        roomId: proxy.$route.params.id,
+        launcher: null,
+        begin: selectedTime.value,
+        end: selectedTime.value,
+        conductor: proxy.$store.getters.username,
+        execDate: value.value.getFullYear() +
           '-' + (value.value.getMonth() + 1) + '-' + value.value.getDate()
-        }])
-        if (res.status >= 300 || res.status < 200) {
-          // 请求函数库会将404 作为请求成功
-          throw Error()
-        }
+      }])
+      if (typeof res === 'object') {
         proxy.$message.success('预约成功')
-      } catch (e) {
+      } else {
         ElMessageBox.alert('预约失败', '提示', {
           confirmButtonText: '确定'
         })

@@ -66,6 +66,7 @@ export default {
       proxy.$store.commit('saveEndTimes', endTimes)
 
       // 获取角色列表信息保存到 vuex
+      // @todo 根据后端返回的权限决定是否进行此请求
       const { roles } = await proxy.$api.roleList()
       proxy.$store.commit('saveRoleList', roles)
     }

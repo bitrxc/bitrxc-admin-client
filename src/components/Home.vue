@@ -4,6 +4,7 @@
       <ul :class="[unfold ? 'unfold' : '']">
         <li @click="$router.push('/welcome')">欢迎页</li>
         <li @click="$router.push('/appointmentList')">订单列表</li>
+        <li @click="$router.push('/appointmentManage')">订单管理</li>
         <li @click="$router.push('/orderRoomList')">活动室预约</li>
         <li @click="$router.push('/managerList')">管理员列表</li>
         <li @click="$router.push('/roomList')">房间列表</li>

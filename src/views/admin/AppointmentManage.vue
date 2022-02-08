@@ -23,7 +23,7 @@
     <div class="item table-header">周五</div>
     <div class="item table-header">周六</div>
     <div class="item table-header">周日</div>
-    <template v-for="i in 6" :key="i">
+    <template v-for="i in beginTimeLength" :key="i">
       <div class="item table-header">{{i}}</div>
       <div class="item line-limit-length"
         v-for="item in roomWeekArr[i-1]"
@@ -62,9 +62,11 @@ export default {
     /** @type {{proxy:import("../../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
     const { proxy } = getCurrentInstance()
     const roomList = proxy.$store.getters.roomList
+    const beginTime = proxy.$store.getters.beginTimes
+    const beginTimeLength = Object.keys(beginTime).length
     const weekBeginDateStr = '2022-02-21' // 学期起始时间
     const weekBeginDate = new Date(weekBeginDateStr)
-    const totalAppointList = ref([])
+    var totalAppointList = []
     const monDate = new Date(weekBeginDate.getTime())
     const sunDate = new Date(monDate.getTime() + 6 * 1000 * 3600 * 24)
     const roomId = ref(1)
@@ -99,7 +101,7 @@ export default {
       initWeekArr()
       const monDatStr = getDateString(monDate)
       const sunDatStr = getDateString(sunDate)
-      for (var item of totalAppointList.value) {
+      for (var item of totalAppointList) {
         if (
           item.roomId === roomId.value &&
           item.execDate >= monDatStr &&
@@ -135,7 +137,7 @@ export default {
         current: 0,
         limit: 10 * totalPages
       })
-      totalAppointList.value = items
+      totalAppointList = items
       getRoomAppList()
     }
     // 选择房间
@@ -158,22 +160,23 @@ export default {
     }
     initWeekArr()
     // ajax 轮询实时更新订单
-    const timeRef = ref(0)
+    var timeRef = 0
     onMounted(() => {
       getTotalAppointList()
-      timeRef.value = setInterval(() => {
+      timeRef = setInterval(() => {
         getTotalAppointList()
       }, 1000 * 30)
     })
     // 组件销毁前，清除定时器，避免内存泄漏
     onBeforeUnmount(() => {
-      clearInterval(timeRef.value)
+      clearInterval(timeRef)
     })
     return {
       roomId,
       roomList,
       currentPage,
       roomWeekArr,
+      beginTimeLength,
       handlePageChange,
       handleSelectChange,
       handleClick

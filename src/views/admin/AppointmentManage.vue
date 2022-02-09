@@ -66,7 +66,7 @@ export default {
     const beginTimeLength = Object.keys(beginTime).length
     const weekBeginDateStr = '2022-02-21' // 学期起始时间
     const weekBeginDate = new Date(weekBeginDateStr)
-    var totalAppointList = []
+    let totalAppointList = []
     const monDate = new Date(weekBeginDate.getTime())
     const sunDate = new Date(monDate.getTime() + 6 * 1000 * 3600 * 24)
     const roomId = ref(1)
@@ -101,15 +101,15 @@ export default {
       initWeekArr()
       const monDatStr = getDateString(monDate)
       const sunDatStr = getDateString(sunDate)
-      for (var item of totalAppointList) {
+      for (const item of totalAppointList) {
         if (
           item.roomId === roomId.value &&
           item.execDate >= monDatStr &&
           item.execDate <= sunDatStr
         ) {
-          var tmpDay = new Date(item.execDate)
-          var tmpWeekDay = tmpDay.getDay()
-          var tmpTime = item.begin
+          const tmpDay = new Date(item.execDate)
+          let tmpWeekDay = tmpDay.getDay()
+          const tmpTime = item.begin
           if (tmpWeekDay === 0) {
             tmpWeekDay = 6
           } else {
@@ -160,7 +160,7 @@ export default {
     }
     initWeekArr()
     // ajax 轮询实时更新订单
-    var timeRef = 0
+    let timeRef = 0
     onMounted(() => {
       getTotalAppointList()
       timeRef = setInterval(() => {

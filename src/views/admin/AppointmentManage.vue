@@ -1,6 +1,7 @@
 <template>
 <div class="app-manage-container">
-  <div class="sel-menu">
+  <div class="sel-menu pager">
+    <div class="prompt">选择房间：</div>
     <el-select v-model="roomId" class="m-2" placeholder="选择房间" @change="handleSelectChange">
       <el-option
         v-for="item in roomList"
@@ -11,7 +12,16 @@
       </el-option>
     </el-select>
   </div>
-  <div class="prompt">
+  <div class="pager">
+    <div class="prompt">选择周次：</div>
+    <el-pagination
+      layout="prev, pager, next"
+      :total="250"
+      @current-change="handlePageChange"
+    >
+    </el-pagination>
+  </div>
+  <div class="prompt sp-prompt">
     <p>单击订单查看详情：</p>
   </div>
   <div class="calendar">
@@ -42,14 +52,6 @@
         </div>
       </div>
     </template>
-  </div>
-  <div class="pager">
-    <el-pagination
-      layout="prev, pager, next"
-      :total="250"
-      @current-change="handlePageChange"
-    >
-    </el-pagination>
   </div>
 </div>
 </template>
@@ -187,28 +189,32 @@ export default {
 
 <style lang="less" scoped>
 .app-manage-container {
+  background-color: #fff;
   .sel-menu {
-    height: 50px;
-    margin-bottom: 20px;
-    background-color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding-top: 10px;
     .m-2{
-    margin-left: 40px;
+    margin-left: 15px;
     }
   }
+  .pager {
+    height: 40px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
   .prompt {
-    padding-top: 15px;
     padding-left: 30px;
     padding-bottom: 0px;
-    font-size: 18px;
-    background-color: #fff;
+    font-size: 17px;
+  }
+  .sp-prompt {
+    padding-top: 7px;
   }
   .calendar {
-    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    padding-left: 30px;
     display: grid;
-    background-color: #fff;
     grid-template-columns: repeat(8, 113px);
     grid-template-rows: repeat(7, 93px);
     place-items: stretch stretch;
@@ -233,16 +239,8 @@ export default {
     }
     .table-header {
       font-size: 18px;
-      padding-top: 45px;
+      padding-top: 40px;
     }
-  }
-  .pager {
-    height: 40px;
-    margin-top: 10px;
-    background-color: #fff;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
   }
 }
 </style>

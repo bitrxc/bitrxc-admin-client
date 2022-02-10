@@ -27,7 +27,13 @@ service.interceptors.request.use(req => {
   return req
 })
 
-// 响应拦截
+/* 响应拦截
+ * 响应错误是一层一层处理的
+ * 第一层是响应体是否完整，这个体现在axios返回的http错误码上
+ * 第二层是服务器返回的业务逻辑是否有异常，体现在响应体里code属性对应的代码上
+ * 最内层是错误消息是否为空
+ * 如果某一层的数据缺失，就要补充默认响应
+ */
 service.interceptors.response.use(res => {
   if (res.status === 200) {
     const { code, data, message } = res.data

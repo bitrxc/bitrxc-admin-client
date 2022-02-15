@@ -26,7 +26,7 @@ type getterDef = {
 }
 
 type getterType = {
-    [k in keyof getterDef]:ReturnType<getterDef[k]>
+    [k in keyof getterDef]?:ReturnType<getterDef[k]>
 }
 
 type mutationType = {

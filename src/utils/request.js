@@ -18,7 +18,10 @@ const service = axios.create({
   timeout: 8000
 })
 
-// 请求拦截
+/**
+ * 拦截并修改服务器请求
+ * 如果客户端内有缓存的token，则将token加入请求头
+ */
 service.interceptors.request.use(req => {
   const token = store.getters.token || ''
   if (token) {
@@ -63,6 +66,10 @@ service.interceptors.response.use(res => {
 })
 
 /**
+ * @typedef {import("axios").AxiosRequestConfig & {mock:boolean} } requestOption
+ * @prop {boolean} mock 是否使用伪接口。如果该接口开发尚未完成，将此项置为true
+ */
+/**
  * 请求的核心函数
  * @todo 利用后端java文件生成接口的类型定义，来具体化option的类型
  * @example
@@ -78,7 +85,7 @@ service.interceptors.response.use(res => {
  *  }
  * @todo 区分返回值的类型，让错误返回值携带错误信息
  * @todo 开启严格null检查
- * @param {import("axios").AxiosRequestConfig} options 请求参数
+ * @param {requestOption} options 请求参数
  * @returns {import('axios').AxiosPromise<Record<string,any>|Record<number,any>|undefined>} 请求成功时，返回后端返回的请求体，
  *  否则返回`undefined`。检查js文件时默认不检查`null`，因此此接口的undefined返回会被忽略
  */

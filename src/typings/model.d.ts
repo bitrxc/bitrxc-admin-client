@@ -24,3 +24,8 @@ export type Schedule = {
     begin,
     end,
 }
+
+export type User = {
+    username:string,
+    checked:boolean,
+}

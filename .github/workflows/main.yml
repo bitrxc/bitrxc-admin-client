@@ -1,0 +1,23 @@
+name: CI
+
+on: [push]
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+            cd /home/bitrxcdev/github/bitrxc-admin-client
+            ls
+            git pull origin dev --rebase=true
+            docker-compose down
+            docker-compose --env-file .env.dev up -d --build

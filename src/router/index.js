@@ -44,6 +44,14 @@ const routes = [
         }
       },
       {
+        path: 'userList',
+        name: 'userList',
+        component: () => import('../views/admin/UserList.vue'),
+        meta: {
+          title: '用户列表'
+        }
+      },
+      {
         path: 'managerList',
         name: 'ManagerList',
         component: () => import('../views/admin/ManagerList.vue'),

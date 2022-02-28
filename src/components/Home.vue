@@ -2,6 +2,7 @@
   <div class="basic-layout">
     <div :class="['nav-side', unfold ? 'unfold' : '']">
       <ul :class="[unfold ? 'unfold' : '']">
+        <!-- 在下方列表当中添加项，从而在左侧导航栏中显示该页面 -->
         <li @click="$router.push('/welcome')">欢迎页</li>
         <li @click="$router.push('/appointmentList')">订单列表</li>
         <li @click="$router.push('/appointmentManage')">订单管理</li>

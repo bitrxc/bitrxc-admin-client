@@ -134,9 +134,13 @@ export default {
 
     // 删除管理员
     const handleManagerDelete = async (row) => {
-      await proxy.$api.managerDelete(row)
-      proxy.$message.success('删除成功')
-      getManagerList()
+      const res = await proxy.$api.managerDelete(row)
+      if (typeof (res) === 'undefined') {
+        proxy.$message.error('删除失败')
+      } else {
+        proxy.$message.success('删除成功')
+        getManagerList()
+      }
     }
 
     const test = async () => {

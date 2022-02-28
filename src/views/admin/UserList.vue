@@ -6,6 +6,7 @@
         :key="item.prop"
         :label="item.label"
         :prop="item.prop"
+        :formatter="item.formatter"
       >
       </el-table-column>
       <el-table-column label="操作">
@@ -46,12 +47,12 @@ export default {
     })
     const pageCount = ref(0)
     const columns = ref([
-      { label: '用户名', prop: 'username' },
+      { label: '微信标识符', prop: 'username' },
       { label: '姓名', prop: 'name' },
       { label: '手机号', prop: 'phone' },
       { label: '学号', prop: 'schoolId' },
       { label: '所属组织', prop: 'organization' },
-      { label: '状态', prop: 'checked' }
+      { label: '状态', prop: 'checked', formatter: (row) => (row.checked ? '已检查' : '未检查') }
     ])
 
     /** @type {{proxy:import("../../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
@@ -101,7 +102,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.manager-list-container {
+.user-list-container {
   .operation-menu {
     height: 50px;
     padding: 0 20px;

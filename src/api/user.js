@@ -29,15 +29,15 @@ export default {
     })
   },
   /**
-   * @param {string} schoolId
+   * @param {string} username
    */
-  getUserInfoByWxid ({ wxid }) {
+  getUserInfoByWxid ({ username }) {
     return request({
       url: '/user/byWxid',
       method: 'get',
       mock: false,
       data: {
-        wxid
+        username
       }
     })
   },

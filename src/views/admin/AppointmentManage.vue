@@ -24,18 +24,20 @@
   <div class="prompt sp-prompt">
     <p>单击订单查看详情：</p>
   </div>
-  <div class="calendar">
-    <div class="item table-header">时段</div>
-    <div class="item table-header">周一</div>
-    <div class="item table-header">周二</div>
-    <div class="item table-header">周三</div>
-    <div class="item table-header">周四</div>
-    <div class="item table-header">周五</div>
-    <div class="item table-header">周六</div>
-    <div class="item table-header">周日</div>
-    <template v-for="i in beginTimeLength" :key="i">
-      <div class="item table-header">{{i}}</div>
-      <div class="item line-limit-length"
+  <table class="calendar">
+    <tr class="row">
+      <th class="item table-header">时段</th>
+      <th class="item table-header">周一</th>
+      <th class="item table-header">周二</th>
+      <th class="item table-header">周三</th>
+      <th class="item table-header">周四</th>
+      <th class="item table-header">周五</th>
+      <th class="item table-header">周六</th>
+      <th class="item table-header">周日</th>
+    </tr>
+    <tr class="row" v-for="i in beginTimeLength" :key="i">
+      <th class="item table-header">{{i}}</th>
+      <td class="item line-limit-length"
         v-for="item in roomWeekArr[i-1]"
         :key="item"
       >
@@ -50,13 +52,14 @@
           <div v-else-if="item.status==='rejected'">审批拒绝</div>
           <div v-else>待审批</div>
         </div>
-      </div>
-    </template>
-  </div>
+      </td>
+    </tr>
+  </table>
 </div>
 </template>
 
 <script>
+// todo: check whether more than six time schedule can be display
 import { ref, getCurrentInstance, onMounted, onBeforeUnmount } from 'vue'
 
 export default {
@@ -215,11 +218,16 @@ export default {
     padding-bottom: 30px;
     padding-left: 30px;
     display: grid;
-    grid-template-columns: repeat(8, 113px);
+    grid-template-columns: repeat(1, 8 * 113px);
     grid-template-rows: repeat(7, 93px);
     place-items: stretch stretch;
     font-size: 12px;
+    .row {
+      display: grid;
+      grid-template-columns: repeat(8 , 113px);
+    }
     .item {
+      display: block;
       text-align: center;
       line-height: 15px;
       border: 1px solid rgb(58, 57, 57);

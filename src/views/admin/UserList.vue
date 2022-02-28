@@ -33,8 +33,11 @@ export default {
     const userForm = reactive({
       username: '',
       password: '',
-      email: '',
-      mobile: ''
+      name: '',
+      phone: '',
+      schoolId: '',
+      organization: '',
+      checked: ''
     })
     const userList = ref([])
     const searchForm = reactive({
@@ -76,12 +79,12 @@ export default {
     }
 
     // 切换用户状态
-    const handleEdit = (row) => {
-      if (row.checked === true) {
-        row.checked = false
-      } else {
-        row.checked = true
-      }
+    const handleEdit = async (row) => {
+      await proxy.$api.checkUser({
+        username: row.username,
+        check: !row.checked
+      })
+      row.checked = !row.checked
     }
 
     return {

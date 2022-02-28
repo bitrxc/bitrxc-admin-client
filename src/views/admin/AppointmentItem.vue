@@ -74,7 +74,7 @@ export default {
       schoolId: '学号',
       phone: '联系电话',
       roomName: '房间名字',
-      execDate: '预定时间',
+      execDate: '预定日期',
       begin: '开始时间',
       end: '结束时间',
       status: '订单状态',
@@ -115,7 +115,10 @@ export default {
 
     const handleCheck = async () => {
       const res = await proxy.$api.appointmentCheck(appForm)
-      console.log(res)
+      // 刷新上方视图
+      if (typeof res !== 'undefined') {
+        await getAppointmentItem()
+      }
     }
 
     return {

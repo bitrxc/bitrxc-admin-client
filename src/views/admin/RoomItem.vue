@@ -18,7 +18,8 @@
           <el-input v-model="roomItem.name" />
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="roomItem.description" type="textarea" />
+          <!--<el-input v-model="roomItem.description" type="textarea" />-->
+          <JsonEditorVue class="editor" v-model="jsonData" @change="handleJsonChange" />
         </el-form-item>
         <el-form-item label="图片">
           <el-input v-model="roomItem.images" />
@@ -36,14 +37,15 @@
 
 <script>
 import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
-
+import JsonEditorVue from 'json-editor-vue3'
 export default {
+  components: { JsonEditorVue },
   setup () {
     /** @type {{proxy:import("../../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
     const { proxy } = getCurrentInstance()
     const roomItem = reactive({})
     const roomItemVisible = ref(false)
-
+    const jsonData = ref({})
     const labels = ref({
       id: '房间编号',
       name: '名字',
@@ -55,9 +57,14 @@ export default {
       getRoomItem()
     })
 
+    const handleJsonChange = () => {
+      roomItem.description = JSON.stringify(jsonData.value)
+    }
+
     const getRoomItem = async () => {
       const { roomInfo } = await proxy.$api.roomItem({ id: proxy.$route.params.id })
       Object.assign(roomItem, roomInfo)
+      jsonData.value = JSON.parse(roomInfo.description)
     }
 
     const handleRoomUpdate = async () => {
@@ -73,10 +80,12 @@ export default {
     }
 
     return {
+      jsonData,
       labels,
       roomItem,
       roomItemVisible,
-      handleRoomUpdate
+      handleRoomUpdate,
+      handleJsonChange
     }
   }
 }

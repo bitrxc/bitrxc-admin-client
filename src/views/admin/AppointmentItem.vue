@@ -3,7 +3,14 @@
     <div class="description">
       <el-descriptions title="订单详情" border size="small">
         <el-descriptions-item :label="labels.username">{{ appItem.username }}</el-descriptions-item>
-        <el-descriptions-item :label="labels.schoolId">{{ appItem.schoolId }}</el-descriptions-item>
+        <el-descriptions-item :label="labels.schoolId">
+          <span v-if="isAdmin">该预约由管理员发起</span>
+          <span v-else>{{ userItem.schoolId }}</span>
+        </el-descriptions-item>
+        <el-descriptions-item :label="labels.phone">
+          <span v-if="isAdmin">该预约由管理员发起</span>
+          <span v-else>{{ userItem.phone }}</span>
+        </el-descriptions-item>
         <el-descriptions-item :label="labels.roomName">{{ appItem.roomName }}</el-descriptions-item>
         <el-descriptions-item :label="labels.execDate">{{ appItem.execDate }}</el-descriptions-item>
         <el-descriptions-item :label="labels.begin">{{ beginTimes[appItem.begin] }}</el-descriptions-item>
@@ -52,6 +59,8 @@ export default {
     const beginTimes = proxy.$store.getters.beginTimes
     const endTimes = proxy.$store.getters.endTimes
     const appItem = ref({})
+    const userItem = ref({})
+    const isAdmin = ref(true)
     const appForm = reactive({
       id: proxy.$route.params.id,
       status: '',
@@ -63,8 +72,9 @@ export default {
       id: '订单编号',
       username: '姓名',
       schoolId: '学号',
+      phone: '联系电话',
       roomName: '房间名字',
-      execDate: '预定时间',
+      execDate: '预定日期',
       begin: '开始时间',
       end: '结束时间',
       status: '订单状态',
@@ -93,17 +103,29 @@ export default {
 
     const getAppointmentItem = async () => {
       const { appointment } = await proxy.$api.appointmentItem({ id: proxy.$route.params.id })
+      // 将后端传回的日期转成人类可读的字符串
+      appointment.launchDate = (new Date(appointment.launchDate)).toLocaleString()
       appItem.value = appointment
+      if (typeof appointment.launcher === 'string') {
+        isAdmin.value = false
+        const { userInfo } = await proxy.$api.getUserInfoByWxid({ username: appointment.launcher })
+        userItem.value = userInfo
+      }
     }
 
     const handleCheck = async () => {
       const res = await proxy.$api.appointmentCheck(appForm)
-      console.log(res)
+      // 刷新上方视图
+      if (typeof res !== 'undefined') {
+        await getAppointmentItem()
+      }
     }
 
     return {
       labels,
       statusOptions,
+      isAdmin,
+      userItem,
       appItem,
       appForm,
       beginTimes,

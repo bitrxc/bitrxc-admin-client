@@ -3,8 +3,19 @@
     <div class="description">
       <el-descriptions title="房间详情" border size="small" :column="1">
         <el-descriptions-item :label="labels.name">{{ roomItem.name }}</el-descriptions-item>
-        <el-descriptions-item :label="labels.description">{{ roomItem.description }}</el-descriptions-item>
-        <el-descriptions-item :label="labels.name">
+        <el-descriptions-item :label="labels.description">
+          {{ roomItem.description }}
+          <!-- TODO: Use JsonEditor to display this string
+             <JsonEditorVue
+            v-model="jsonData" language="zh-CN" currentMode="view"
+            :modeList='["view"]'
+            :options='{
+              navigationBar: false,
+              mainMenuBar: false
+            }'
+          /> -->
+        </el-descriptions-item>
+        <el-descriptions-item :label="labels.images">
           <el-image style="height: 250px" :src="roomItem.images"></el-image>
         </el-descriptions-item>
       </el-descriptions>
@@ -18,7 +29,13 @@
           <el-input v-model="roomItem.name" />
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="roomItem.description" type="textarea" />
+          <JsonEditorVue class="editor"
+            v-model="jsonData" language="zh-CN" currentMode="form"
+            :modeList='["tree", "code", "form", "view"]'
+            :options='{
+              navigationBar: false
+            }'
+            @change="handleJsonChange" />
         </el-form-item>
         <el-form-item label="图片">
           <el-input v-model="roomItem.images" />
@@ -36,14 +53,15 @@
 
 <script>
 import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
-
+import JsonEditorVue from 'json-editor-vue3'
 export default {
+  components: { JsonEditorVue },
   setup () {
     /** @type {{proxy:import("../../main").LocalComponentInstance}} 访问 app 实例上挂载的各插件 */
     const { proxy } = getCurrentInstance()
     const roomItem = reactive({})
     const roomItemVisible = ref(false)
-
+    const jsonData = ref({})
     const labels = ref({
       id: '房间编号',
       name: '名字',
@@ -55,9 +73,14 @@ export default {
       getRoomItem()
     })
 
+    const handleJsonChange = () => {
+      roomItem.description = JSON.stringify(jsonData.value)
+    }
+
     const getRoomItem = async () => {
       const { roomInfo } = await proxy.$api.roomItem({ id: proxy.$route.params.id })
       Object.assign(roomItem, roomInfo)
+      jsonData.value = JSON.parse(roomInfo.description)
     }
 
     const handleRoomUpdate = async () => {
@@ -73,10 +96,12 @@ export default {
     }
 
     return {
+      jsonData,
       labels,
       roomItem,
       roomItemVisible,
-      handleRoomUpdate
+      handleRoomUpdate,
+      handleJsonChange
     }
   }
 }

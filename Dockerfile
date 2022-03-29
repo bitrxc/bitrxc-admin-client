@@ -1,5 +1,5 @@
 # Build
-FROM node:14.16 AS build-env
+FROM node:16-alpine AS build-env
 WORKDIR /usr/src/app
 
 COPY package*.json ./

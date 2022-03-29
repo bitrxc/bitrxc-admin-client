@@ -42,7 +42,16 @@ export default {
     })
 
     const handleLogin = async () => {
+      // (1) 检测userForm中的信息，正则表达式，至少两个都不能为空
+      if (userForm.username === '' || userForm.password === '') {
+        proxy.$message.warning('用户名或密码为空')
+        return
+      }
+      // (2)检测返回的res
       const res = await proxy.$api.login(userForm)
+      if (typeof (res) === 'undefined') {
+        return
+      }
       proxy.$store.commit('saveUserInfo', res)
       proxy.$router.push('/')
       proxy.$message.success('登录成功')
@@ -57,6 +66,7 @@ export default {
       proxy.$store.commit('saveEndTimes', endTimes)
 
       // 获取角色列表信息保存到 vuex
+      // @todo 根据后端返回的权限决定是否进行此请求
       const { roles } = await proxy.$api.roleList()
       proxy.$store.commit('saveRoleList', roles)
     }

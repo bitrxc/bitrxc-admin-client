@@ -1,5 +1,4 @@
 
-import mutations from './mutations.js';
 import { CommitOptions, Store } from "vuex";
 import { Admin, Role, Room, Schedule, Token } from "../typings/model"
 
@@ -10,8 +9,11 @@ export type stateType = {
     },
     roomList: Array<Room>,
     roleList: Array<Role>,
-    beginTimes: Array<Schedule>,
-    endTimes: Array<Schedule>,
+    /** 存储时间段时将时间段数组重新构造为以数字为键的键值对（类数组对象）
+     * {@link mutation.ts/saveBeginTimes}
+     */
+    beginTimes: Record<number,string>,
+    endTimes: Record<number,string>,
 }
 
 type getterDef = {
@@ -19,12 +21,12 @@ type getterDef = {
     username(state: stateType): Admin["username"],
     roomList(state: stateType): Array<Room>,
     roleList(state: stateType): Array<Role>,
-    beginTimes(state: stateType): Array<Schedule>,
-    endTimes(state: stateType): Array<Schedule>,
+    beginTimes(state: stateType): Record<number,string>,
+    endTimes(state: stateType): Record<number,string>,
 }
 
 type getterType = {
-    [k in keyof getterDef]:ReturnType<getterDef[k]>
+    [k in keyof getterDef]?:ReturnType<getterDef[k]>
 }
 
 type mutationType = {
@@ -46,7 +48,7 @@ type LocalStoreDef = {
 }
 
 type LocalCommit = {
-    <F extends keyof mutationType>(type: F, payload: Parameters<mutationType[F]>[2], options?: CommitOptions): void;
+    <F extends keyof mutationType>(type: F, payload: Parameters<mutationType[F]>[1], options?: CommitOptions): void;
     <F extends keyof mutationType>(payloadWithType: LocalPayload<F>, options?: CommitOptions): void;
 };
 

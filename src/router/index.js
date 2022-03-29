@@ -28,11 +28,27 @@ const routes = [
         }
       },
       {
+        path: 'appointmentManage',
+        name: 'AppointmentManage',
+        component: () => import('../views/admin/AppointmentManage.vue'),
+        meta: {
+          title: '订单管理'
+        }
+      },
+      {
         path: 'appointmentItem/:id',
         name: 'AppointmentItem',
         component: () => import('../views/admin/AppointmentItem.vue'),
         meta: {
           title: '订单详情'
+        }
+      },
+      {
+        path: 'userList',
+        name: 'userList',
+        component: () => import('../views/admin/UserList.vue'),
+        meta: {
+          title: '用户列表'
         }
       },
       {

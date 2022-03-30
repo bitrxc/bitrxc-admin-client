@@ -3,7 +3,7 @@
     <aside>
       <div>北京理工大学</div>
       <div>
-        <span>睿信社区管理系统</span>
+        <span>人文学院教育教学实践中心教室借用管理系统</span>
         <div class="baseline"><span></span><span></span><span></span></div>
       </div>
     </aside>

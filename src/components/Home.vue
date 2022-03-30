@@ -16,7 +16,7 @@
       <div class="top-menu">
         <div class="left">
           <img :src="unfoldUrl" @click="unfold = !unfold" />
-          <span>睿信社区管理系统后台</span>
+          <span>人文学院教育教学实践中心教室借用管理系统后台</span>
         </div>
         <div class="right">
           <el-button size="small" @click="handleLogout">登出</el-button>

@@ -64,8 +64,8 @@ export default {
 
     const getUserList = async () => {
       const { items, totalPages } = await proxy.$api.getUserInfoByExample({
-        current: 0,
-        limit: 10,
+        current: searchForm.current,
+        limit: searchForm.pagesize,
         userInfo: {}
       })
       userList.value = items

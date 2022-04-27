@@ -17,7 +17,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://api-dev.bitrxc.com',
+        target: 'https://api-renwen.bitrxc.com',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
